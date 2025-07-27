@@ -6,6 +6,7 @@ import Button from "./ui/Button";
 import AuthLink from "./ui/AuthLink";
 import { useToast } from "@/hooks/useToast";
 import axios from "axios";
+import SocialLoginLink from "./SocialLoginLink";
 
 interface AuthValues {
   email: string;
@@ -103,6 +104,7 @@ const LoginForm = () => {
           descripton="아직 회원이 아니신가요?"
           linkTitle="회원가입"
         />
+        <SocialLoginLink />
       </div>
     </div>
   );
