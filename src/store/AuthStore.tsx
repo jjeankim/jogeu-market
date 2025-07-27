@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/constants";
 import axios from "axios";
 import { create } from "zustand";
 
@@ -11,7 +12,7 @@ const useAuthStore = create<AuthStore>((set, get) => ({
   login: async (email: string, password: string) => {
     console.log("로그인 시도", email, password);
 
-    const res = await axios.post("http://localhost:4000/api/auth/login", {
+    const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
       email,
       password,
     });

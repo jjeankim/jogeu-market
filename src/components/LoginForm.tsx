@@ -81,7 +81,7 @@ const LoginForm = () => {
             register={register("password", {
               required: "비밀번호는 필수입니다.",
               minLength: {
-                value: 8,
+                value: 4,
                 message: "비밀번호는 최소 4자 이상이어야 합니다.",
               },
             })}
