@@ -14,10 +14,14 @@ const useAuthStore = create<AuthStore>((set, get) => ({
   login: async ({ email, password }: AuthValues) => {
     console.log("로그인 시도", email, password);
 
-    const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
-      email,
-      password,
-    });
+    const res = await axios.post(
+      `${API_BASE_URL}/api/auth/login`,
+      {
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
 
     const token = res.data.token;
     set({ isLoggedIn: true });
