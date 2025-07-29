@@ -1,5 +1,3 @@
-"use client";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -52,7 +50,7 @@ async function fetchDynamicLabel(
   }
 }
 
-export default function DynamicBreadcrumb() {
+const DynamicBreadcrumb = () => {
   const router = useRouter();
   const [items, setItems] = useState<BreadcrumbItem[]>([]);
 
@@ -115,4 +113,6 @@ export default function DynamicBreadcrumb() {
       })}
     </nav>
   );
-}
+};
+
+export default DynamicBreadcrumb;
