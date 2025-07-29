@@ -24,10 +24,10 @@ const STATIC_LABELS: Record<string, string> = {
   payComplete: "결제 완료",
 };
 
-async function fetchDynamicLabel(
+const fetchDynamicLabel = async (
   segmentName: string,
   id: string
-): Promise<string> {
+): Promise<string> => {
   try {
     switch (segmentName) {
       case "products":
@@ -48,7 +48,7 @@ async function fetchDynamicLabel(
   } catch {
     return id;
   }
-}
+};
 
 const DynamicBreadcrumb = () => {
   const router = useRouter();
@@ -62,7 +62,7 @@ const DynamicBreadcrumb = () => {
 
     const crumbs: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
 
-    async function buildBreadcrumbs() {
+    const buildBreadcrumbs = async () => {
       for (let i = 0; i < pathSegments.length; i++) {
         const routeSeg = pathSegments[i];
         const actualSeg = asPathSegments[i];
@@ -83,7 +83,7 @@ const DynamicBreadcrumb = () => {
         });
       }
       setItems(crumbs);
-    }
+    };
     buildBreadcrumbs();
   }, [router.isReady, router.pathname, router.asPath]);
 
@@ -101,7 +101,7 @@ const DynamicBreadcrumb = () => {
                 <FiChevronRight size={16} />
               </span>
             )}
-            {isLast ? (
+            {isLast || !item.href ? (
               <span className="font-semibold">{item.label}</span>
             ) : (
               <Link href={item.href!} className="hover:underline">
