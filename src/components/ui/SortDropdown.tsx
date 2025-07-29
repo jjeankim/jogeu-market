@@ -15,7 +15,7 @@ interface SortDropdownProps {
 
 const SortDropdown = ({ options, value, onChange }: SortDropdownProps) => {
   const [open, setOpen] = useState(false);
-  const selected = options.find((o) => o.value === value);
+  const selected = options.find((option) => option.value === value);
 
   return (
     <div className="relative inline-block text-left">
