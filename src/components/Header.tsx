@@ -119,7 +119,7 @@ const Header = () => {
             <Link href="/wishlist">
               <PiHeartBold size={22} />
             </Link>
-            <Link href="/mypage">
+            <Link href="/my">
               <FaRegCircleUser size={22} />
             </Link>
           </div>
