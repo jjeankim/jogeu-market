@@ -1,14 +1,12 @@
 import Header from "@/components/Header";
-import DynamicBreadcrumb from "@/components/ui/autoBreadcrumb";
 import Footer from "@/components/ui/Footer";
-import MyPageAside from "@/components/ui/MyPageAside";
 import Image from "next/image";
 import { FiChevronRight } from "react-icons/fi";
 
 const MyOrderPage = () => {
   return (
     <>
-      <Header />
+      
       <main className="container w-full h-screen mx-auto p-2 flex flex-col align-center ">
         <div className="flex mx-auto w-2/3 justify-between py-6">
           <h2 className="font-bold w-1/3 text-2xl">주문 배송 조회</h2>
