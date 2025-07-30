@@ -1,12 +1,11 @@
+
 import DynamicBreadcrumb from "@/components/ui/autoBreadcrumb";
 import Footer from "@/components/ui/Footer";
+import Main from "./main";
+        
 export default function Home() {
   return (
     <>
-      <div>홈페이지</div>
-      <div>홈페이지</div>
+       <Main />
       <DynamicBreadcrumb />
       <Footer />
-    </>
-  );
-}
