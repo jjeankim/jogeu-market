@@ -7,9 +7,8 @@ import MyPageAside from "@/components/ui/MyPageAside";
 export default function Home() {
   return (
     <>
+    <Header />
       <Main />
-      <MyPageAside />
-
       <DynamicBreadcrumb />
       <Footer />
     </>
