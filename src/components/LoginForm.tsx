@@ -62,7 +62,7 @@ const LoginForm = () => {
           })}
           onChange={(e) => {
             clearErrors("email");
-            register("email").onChange(e);
+            // register("email").onChange(e);
           }}
         />
         {errors.email && <FormErrorText>{errors.email.message}</FormErrorText>}
@@ -80,7 +80,7 @@ const LoginForm = () => {
           })}
           onChange={(e) => {
             clearErrors("password");
-            register("password").onChange(e);
+            // register("password").onChange(e);
           }}
         />
         {errors.password && (
@@ -92,7 +92,7 @@ const LoginForm = () => {
       </form>
       <AuthLink
         link="/signup"
-        descripton="아직 회원이 아니신가요?"
+        description="아직 회원이 아니신가요?"
         linkTitle="회원가입"
       />
       <SocialLoginLink />

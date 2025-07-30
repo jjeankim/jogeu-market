@@ -12,7 +12,7 @@ interface AuthStore {
 const useAuthStore = create<AuthStore>((set, get) => ({
   isLoggedIn: false,
   login: async ({ email, password }: AuthValues) => {
-    console.log("로그인 시도", email, password);
+    // console.log("로그인 시도", email, password);
 
     const res = await axios.post(
       `${API_BASE_URL}/api/auth/login`,
@@ -23,8 +23,12 @@ const useAuthStore = create<AuthStore>((set, get) => ({
       { withCredentials: true }
     );
 
-    const token = res.data.token;
-    set({ isLoggedIn: true });
+    const token = res.data.accessToken;
+
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      set({ isLoggedIn: true });
+    }
     return token;
   },
   signup: async ({ email, password, name, phoneNumber }: AuthValues) => {
