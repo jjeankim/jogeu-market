@@ -1,12 +1,13 @@
-import Header from "@/components/Header";
+
+
 
 
 const Main = () => {
   return (
     <>
-    <Header />
+
     <main className="m-15 mt-5 flex flex-col">
-    <p className="h-[15rem] w-full mb-30 bg-lime-50">여기가 배너이미지~~</p>
+    <p className="h-[15rem] w-full mt-10 mb-30 bg-lime-50">여기가 배너이미지~~</p>
 
       <div className="mb-20">
         <h2 className="text-2xl font-bold mb-5">BEST MD PICK!!</h2>

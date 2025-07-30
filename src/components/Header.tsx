@@ -3,6 +3,12 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { PiShoppingCartSimpleBold } from "react-icons/pi";
+import { PiHeartBold } from "react-icons/pi";
+import { FiSearch } from "react-icons/fi";
+import { HiMenu } from "react-icons/hi";
+
 
 type User = {
   id: number;
@@ -46,40 +52,80 @@ const Header = () => {
   };
 
   return (
-    <header className="relative">
-      {/* 상단 오른쪽 링크들 */}
-      <div className="absolute top-4 right-4 flex gap-4 text-sm">
-        {user ? (
-          <div>
-            <span>{user.email}님 환영합니다!</span>
-            <button onClick={logout} className="logout">
-              로그아웃
-            </button>
-          </div>
-        ) : (
-          <Link href="/login" className="text-gray-600 hover:text-gray-800 transition-colors">
-            로그인/회원가입
+      <header className="relative w-full border-b">
+        <div className="absolute top-2 right-4 flex gap-4 text-sm text-gray-600 z-10">
+          {user ? (
+            <div className="flex gap-2 items-center">
+              <span className="text-gray-800">{user.email}님 환영합니다!</span>
+              <button
+                onClick={logout}
+                className="hover:text-gray-800 hover:underline transition"
+              >
+                로그아웃
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="hover:text-gray-800 transition-colors"
+            >
+              로그인 / 회원가입
+            </Link>
+          )}
+          <Link href="/support" className="hover:text-gray-800 transition-colors">
+            고객센터
           </Link>
-        )}
-        <Link href="/" className="text-gray-600 hover:text-gray-800 transition-colors">
-          고객센터
-        </Link>
-      </div>
-
-      {/* 메인 헤더 내용 */}
-      <div className="m-10 flex justify-center items-center flex-col">
-        <div className="flex justify-center items-center">
-          <Image width={150} height={1} src="/images/logo_jogeuMarket.svg" alt="로고" />
         </div>
-        <nav className="text-center m-5">
-          <Link href="/"> Best |</Link>
-          <Link href="/"> Brands |</Link>
-          <Link href="/"> Products |</Link>
-          <Link href="/"> Review</Link>
-        </nav>
-      </div>
-    </header>
-  );
+  
+        {/* ✅ 메인 헤더 영역 */}
+        <div className="flex items-start justify-between px-6 py-4">
+          <div className="flex flex-col">
+            <Link href="/">
+              <Image
+                src="/images/logo_s_jogeuMarket.svg"
+                alt="조그마켓 로고"
+                width={100}
+                height={40}
+              />
+            </Link>
+
+            <div className="flex items-center gap-6 mt-8">
+              <HiMenu size={24} className="text-gray-600 " />
+              <nav className="flex gap-30 text-2xl font-medium">
+                <Link href="/" className="hover:text-yellow-500 transition-colors ml-10">Best</Link>
+                <Link href="/" className="hover:text-yellow-500 transition-colors">Brand</Link>
+                <Link href="/" className="hover:text-yellow-500 transition-colors">Pick</Link>
+                <Link href="/" className="hover:text-yellow-500 transition-colors">New</Link>
+              </nav>
+            </div>
+          </div>
+
+          {/* 오른쪽 영역: 검색창 + 아이콘 */}
+          <div className="flex items-center gap-6 mt-22">
+            {/* 검색창 */}
+            <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
+              <input
+                type="text"
+                placeholder="검색어를 입력하세요"
+                className="bg-transparent outline-none text-sm w-60"
+              />
+              <FiSearch className="text-gray-600" size={22} />
+            </div>
+  
+            {/* 아이콘 */}
+            <Link href="/cart">
+              <PiShoppingCartSimpleBold size={22} />
+            </Link>
+            <Link href="/wishlist">
+              <PiHeartBold size={22} />
+            </Link>
+            <Link href="/mypage">
+              <FaRegCircleUser size={22} />
+            </Link>
+          </div>
+        </div>
+      </header>
+    );
 };
 
 export default Header;
