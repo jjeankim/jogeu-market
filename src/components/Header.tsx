@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/router";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { PiHeartBold } from "react-icons/pi";
@@ -17,6 +18,12 @@ type User = {
 
 const Header = () => {
   const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+
+  const handleMenuClick = (menu : string) => {
+    router.push(`/?menu=${menu}`);
+  }
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -52,7 +59,7 @@ const Header = () => {
   };
 
   return (
-      <header className="relative w-full border-b">
+      <header className="relative w-full ">
         <div className="absolute top-2 right-4 flex gap-4 text-sm text-gray-600 z-10">
           {user ? (
             <div className="flex gap-2 items-center">
@@ -92,16 +99,16 @@ const Header = () => {
             <div className="flex items-center gap-6 mt-8">
               <HiMenu size={24} className="text-gray-600 " />
               <nav className="flex gap-30 text-2xl font-medium">
-                <Link href="/" className="hover:text-yellow-500 transition-colors ml-10">Best</Link>
-                <Link href="/" className="hover:text-yellow-500 transition-colors">Brand</Link>
-                <Link href="/" className="hover:text-yellow-500 transition-colors">Pick</Link>
-                <Link href="/" className="hover:text-yellow-500 transition-colors">New</Link>
+                <button onClick={() => handleMenuClick('best')} className="hover:text-yellow-500 transition-colors ml-10">Best</button>
+                <button onClick={() => handleMenuClick('brand')} className="hover:text-yellow-500 transition-colors">Brand</button>
+                <button onClick={() => handleMenuClick('pick')} className="hover:text-yellow-500 transition-colors">Pick</button>
+                <button onClick={() => handleMenuClick('new')} className="hover:text-yellow-500 transition-colors">New</button>
               </nav>
             </div>
           </div>
 
           {/* 오른쪽 영역: 검색창 + 아이콘 */}
-          <div className="flex items-center gap-6 mt-22">
+          <div className="flex items-center gap-6 mt-24">
             {/* 검색창 */}
             <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
               <input
@@ -119,7 +126,7 @@ const Header = () => {
             <Link href="/wishlist">
               <PiHeartBold size={22} />
             </Link>
-            <Link href="/mypage">
+            <Link href="/my">
               <FaRegCircleUser size={22} />
             </Link>
           </div>
