@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Pretendard";
-  src: url("/fonts/PretendardStdVariable.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "GmarketSans";
+  src: url("/fonts/GmarketSansLight.woff2") format("woff2");
+  font-weight: 300;
   font-style: normal;
-  font-display: swap;
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  src: url("/fonts/GmarketSansMedium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  src: url("/fonts/GmarketSansBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard", Arial, Helvetica, sans-serif;
+  font-family: "GmarketSans", Arial, Helvetica, sans-serif;
 }
