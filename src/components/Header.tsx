@@ -91,7 +91,7 @@ const Header = () => {
 
             <div className="flex items-center gap-6 mt-8">
               <HiMenu size={24} className="text-gray-600 " />
-              <nav className="flex gap-30 text-base font-medium">
+              <nav className="flex gap-30 text-2xl font-medium">
                 <Link href="/" className="hover:text-yellow-500 transition-colors ml-10">Best</Link>
                 <Link href="/" className="hover:text-yellow-500 transition-colors">Brand</Link>
                 <Link href="/" className="hover:text-yellow-500 transition-colors">Pick</Link>
