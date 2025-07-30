@@ -1,5 +1,5 @@
-import MyPageInfo from "@/components/ui/MyPageWelcomeCard";
-import MyPageLayout from "@/components/ui/MyPageLayout";
+import MyPageInfo from "@/components/my/MyPageWelcomeCard";
+import MyPageLayout from "@/components/my/MyPageLayout";
 
 const index = () => {
   return (
