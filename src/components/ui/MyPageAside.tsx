@@ -17,23 +17,21 @@ const MyPageAside = () => {
   ];
 
   return (
-    <div className="h-screen">
-      <aside className="p-10 w-1/4 bg-white  m-16  h-2/3 flex flex-col justify-between ">
-        {sections.map(({ title, items }, idx) => (
-          <ul key={idx} className="flex flex-col text-gray-400 gap-y-2 ">
-            <li className="font-bold text-2xl text-black mb-2 ">{title}</li>
-            {items.map((item) => (
-              <li
-                key={item}
-                className="text-lg  hover:text-black transition-colors duration-200"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        ))}
-      </aside>
-    </div>
+    <aside className=" bg-white flex flex-col gap-20 justify-between ">
+      {sections.map(({ title, items }, idx) => (
+        <ul key={idx} className="flex flex-col text-gray-400 gap-y-2 ">
+          <li className="font-bold text-2xl text-black mb-2 ">{title}</li>
+          {items.map((item) => (
+            <li
+              key={item}
+              className="text-lg  hover:text-black transition-colors duration-200"
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      ))}
+    </aside>
   );
 };
 
