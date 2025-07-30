@@ -1,7 +1,28 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const MainForm = () => {
+  const router = useRouter();
+  const { menu } = router.query;
+
+  const getTitle = () => {
+    switch(menu) {
+      case 'brand': return 'BRAND';
+      case 'pick': return 'PICK';
+      case 'new': return 'NEW';
+      default: return 'BEST';
+    }
+  }; 
+
+  const handleCategoryClick = (category : string) => {
+    const currentMenu = menu || 'best'; // 현재 메뉴 정보 유지
+    router.push(`/?menu=${currentMenu}&category=${category}`);
+  }
+
+
+
+
   return (
     <>
     <main className="m-15 mt-5 flex flex-col">
@@ -11,12 +32,12 @@ const MainForm = () => {
     <div className='flex flex-row gap-10'>
       {/* 필터 */}
       <div className='ml-10 w-[10rem]'>
-        <h2 className='text-2xl font-bold mb-5'>BEST</h2>
-        <nav className='flex flex-col gap-5'>
-        <Link href="/beauty" className='hover:text-yellow-500 transition-colors'>beauty</Link>
-        <Link href='/food' className='hover:text-yellow-500 transition-colors'>food</Link>
-        <Link href='/living' className='hover:text-yellow-500 transition-colors'>living</Link>
-        <Link href='/pet' className='hover:text-yellow-500 transition-colors'>pet</Link>
+      <h2 className='text-2xl font-bold mb-5'>{getTitle()}</h2>
+        <nav className='flex flex-col gap-5 place-items-start'>
+        <button onClick={() => handleCategoryClick('beauty')} className='hover:text-yellow-500 transition-colors'>beauty</button>
+        <button onClick={() => handleCategoryClick('food')} className='hover:text-yellow-500 transition-colors'>food</button>
+        <button onClick={() => handleCategoryClick('living')} className='hover:text-yellow-500 transition-colors'>living</button>
+        <button onClick={() => handleCategoryClick('pet')} className='hover:text-yellow-500 transition-colors'>pet</button>
         </nav>
       </div>
 
