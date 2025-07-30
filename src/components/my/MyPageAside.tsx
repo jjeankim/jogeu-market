@@ -17,7 +17,7 @@ const MyPageAside = () => {
   ];
 
   return (
-    <aside className="w-2xs bg-white  m-16 mx-auto flex flex-col justify-between ">
+    <aside className=" bg-white flex flex-col gap-20 justify-between ">
       {sections.map(({ title, items }, idx) => (
         <ul key={idx} className="flex flex-col text-gray-400 gap-y-2 ">
           <li className="font-bold text-2xl text-black mb-2 ">{title}</li>

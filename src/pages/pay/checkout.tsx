@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
+import "@/styles/style.css";
 
 // TossPayments 타입 정의
 declare global {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import "@/styles/style.css";
 
 interface PaymentData {
   paymentKey: string;
