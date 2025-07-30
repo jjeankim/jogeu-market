@@ -1,6 +1,5 @@
 import MainForm from "@/components/MainForm";
 
-
 const Main = () => {
   return <MainForm />;
 };
