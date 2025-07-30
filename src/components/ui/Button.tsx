@@ -7,8 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ children, variant = "filled", ...rest }: ButtonProps) => {
-  const baseClass =
-    "w-full text-xl p-4 rounded-[10px] cursor-pointer";
+  const baseClass = "w-full text-xl p-4 rounded-[10px] cursor-pointer";
 
   const variantClass =
     variant === "filled"
