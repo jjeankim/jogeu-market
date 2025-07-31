@@ -9,15 +9,11 @@ import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { PiHeartBold } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import { HiMenu } from "react-icons/hi";
+import useAuthStore from "@/store/AuthStore";
 
-
-type User = {
-  id: number;
-  email: string;
-};
 
 const Header = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const { isLoggedIn, userName, initializeAuth } = useAuthStore();
   const router = useRouter();
 
   const handleMenuClick = (menu : string) => {
@@ -27,43 +23,24 @@ const Header = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const fetchUser = async () => {
-        try {
-          const token = localStorage.getItem("token"); // 또는 쿠키에서 가져오기
-          if (!token) return;
-
-          const res = await axios.get("http://localhost:4000/api/users/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          setUser(res.data); // { id, email, nickname }
-        } catch (err) {
-          console.error("유저 정보 가져오기 실패", err);
-          setUser(null);
-        }
-      };
-
-      fetchUser();
+      initializeAuth();
     }
-  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
+  }, [initializeAuth]); 
 
   const logout = () => {
-    // window 객체가 존재하는지 확인하여 클라이언트 환경인지 확인
     if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      setUser(null);
-      window.location.href = "/"; // 또는 router.push("/")
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userName");
+      window.location.href = "/"; 
     }
   };
 
   return (
       <header className="relative w-full ">
         <div className="absolute top-2 right-4 flex gap-4 text-sm text-gray-600 z-10">
-          {user ? (
+          {isLoggedIn ? (
             <div className="flex gap-2 items-center">
-              <span className="text-gray-800">{user.email}님 환영합니다!</span>
+              <span className="text-gray-800">{userName}님 환영합니다!</span>
               <button
                 onClick={logout}
                 className="hover:text-gray-800 hover:underline transition"
@@ -84,7 +61,7 @@ const Header = () => {
           </Link>
         </div>
   
-        {/* ✅ 메인 헤더 영역 */}
+       
         <div className="flex items-start justify-between px-6 py-4">
           <div className="flex flex-col">
             <Link href="/">
@@ -107,9 +84,8 @@ const Header = () => {
             </div>
           </div>
 
-          {/* 오른쪽 영역: 검색창 + 아이콘 */}
+         
           <div className="flex items-center gap-6 mt-24">
-            {/* 검색창 */}
             <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
               <input
                 type="text"
@@ -119,7 +95,6 @@ const Header = () => {
               <FiSearch className="text-gray-600" size={22} />
             </div>
   
-            {/* 아이콘 */}
             <Link href="/cart">
               <PiShoppingCartSimpleBold size={22} />
             </Link>
