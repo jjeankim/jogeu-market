@@ -22,9 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ToastProvider>
-      {showHeaderFooter && <Header />}
-      <Component {...pageProps} />
-      {showHeaderFooter && <Footer />}
+      <div className="max-w-screen-xl mx-auto px-4">
+        {showHeaderFooter && <Header />}
+        <Component {...pageProps} />
+        {showHeaderFooter && <Footer />}
+      </div>
     </ToastProvider>
   );
 }
