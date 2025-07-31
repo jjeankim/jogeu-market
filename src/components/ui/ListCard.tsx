@@ -22,6 +22,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
   const [wish, setWish] = useState(false);
   const [wishId, setWishId] = useState<number | null>(null);
 
+  // 하트아이콘 클릭 시 위시리스트 추가
   const handleWishClick = async () => {
     try {
       if (!wish) {
@@ -53,6 +54,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
     }
   };
 
+  // 장바구니 아이콘 클릭 시 장바구니 추가
   const handleAddCart = async () => {
     try {
       const res = await axios.post("/api/cart", {
