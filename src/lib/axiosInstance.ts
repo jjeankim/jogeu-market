@@ -8,13 +8,13 @@ const axiosInstance = axios.create({
 })
 
 // 인증이 필요한 요청 시 액세스토큰 자동 삽입
-axiosInstance.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accessToken;
-  if(token) {
-    config.headers.Authorization = `Baerer ${token}`
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return config
-})
+  return config;
+});
 
 // 응답 인터셉터로 액세스토큰 만료 시 재발급
 axiosInstance.interceptors.response.use(
@@ -22,31 +22,21 @@ axiosInstance.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    // accessToken 만료 (401) && 아직 재시도 안 했으면
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const res = await axios.post(
-          `${API_BASE_URL}/api/auth/refresh`,
-          {},
-          { withCredentials: true }
-        );
-        const newAccessToken = res.data.accessToken;
+        const refreshRes = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {}, { withCredentials: true });
+        const newToken = refreshRes.data.accessToken;
+        useAuthStore.getState().setAccessToken(newToken);
 
-        // zustand 상태 갱신
-        useAuthStore.getState().setAccessToken(newAccessToken);
-
-        // 원래 요청 헤더에 토큰 다시 셋팅
         if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
         }
 
-        // 원래 요청 재시도
         return axiosInstance(originalRequest);
-      } catch (refreshError) {
-        // refresh 실패 → 강제 로그아웃
+      } catch (refreshErr) {
         useAuthStore.getState().logout();
-        return Promise.reject(refreshError);
+        return Promise.reject(refreshErr);
       }
     }
 

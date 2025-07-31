@@ -1,9 +1,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/ui/Footer";
+import useAuthStore from "@/store/AuthStore";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
 const ToastProvider = ({ children }: { children: ReactNode }) => {
@@ -15,6 +16,16 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const AppInitializer = () => {
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
+
+  useEffect(() => {
+    initializeAuth(); // 새로고침 시 accessToken 복원 시도
+  }, [initializeAuth]);
+
+  return null;
+};
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const noHeaderFooterPaths = ["/login", "/signup"];
@@ -22,6 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ToastProvider>
+      <AppInitializer />
       <div className="flex flex-col h-screen">
         {showHeaderFooter && <Header />}
         <div className="flex-1">

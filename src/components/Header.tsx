@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -14,6 +13,7 @@ import useAuthStore from "@/store/AuthStore";
 const Header = () => {
   const { isLoggedIn, userName, initializeAuth } = useAuthStore();
   const router = useRouter();
+  const logout = useAuthStore((state) => state.logout);
 
   const handleMenuClick = (menu: string) => {
     router.push(`/?menu=${menu}`);
@@ -25,12 +25,14 @@ const Header = () => {
     }
   }, [initializeAuth]);
 
-  const logout = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("userName");
-      window.location.href = "/";
-    }
+  const handleLogout = async () => {
+    // if (typeof window !== "undefined") {
+    //   localStorage.removeItem("accessToken");
+    //   localStorage.removeItem("userName");
+    //   window.location.href = "/";
+    // }
+    await logout();
+    router.push("/")
   };
 
   return (
@@ -40,7 +42,7 @@ const Header = () => {
           <div className="flex gap-2 items-center">
             <span className="text-gray-800">{userName}님 환영합니다!</span>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="hover:text-gray-800 hover:underline transition"
             >
               로그아웃
