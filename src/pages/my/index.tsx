@@ -1,12 +1,10 @@
-import MyPageInfo from "@/components/my/MyPageWelcomeCard";
-import MyPageLayout from "@/components/my/MyPageLayout";
 import MyPageOrderStatusCard from "@/components/my/MyPageOrderStatusCard";
 import Image from "next/image";
+import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 
 const index = () => {
   return (
-    <MyPageLayout pageTitle="마이페이지">
-      <MyPageInfo />
+    <MyPageLayoutWithWelcome>
       <MyPageOrderStatusCard>
         <div className="flex gap-14 items-baseline mb-10">
           <h3 className="text-3xl font-bold">진행 중인 주문</h3>
@@ -28,7 +26,7 @@ const index = () => {
           alt="진행 중인 주문 없음 이미지"
         />
       </div>
-    </MyPageLayout>
+    </MyPageLayoutWithWelcome>
   );
 };
 
