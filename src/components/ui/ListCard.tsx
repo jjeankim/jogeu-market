@@ -3,6 +3,7 @@ import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
 import { FiStar } from "react-icons/fi";
 import { useState } from "react";
 import axios from "axios";
+import { useToast } from "@/hooks/useToast";
 
 type Product = {
   id: number;
@@ -21,6 +22,7 @@ interface ListCardProps {
 const ListCard = ({ product, onClick }: ListCardProps) => {
   const [wish, setWish] = useState(false);
   const [wishId, setWishId] = useState<number | null>(null);
+  const { showSuccess, showError } = useToast();
 
   // 하트아이콘 클릭 시 위시리스트 추가
   const handleWishClick = async () => {
@@ -29,24 +31,24 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
         const res = await axios.post("/api/wishlist", {
           productId: product.id,
         });
-        alert(res.data.message);
+        showSuccess(res.data.message);
         setWish(true);
         setWishId(res.data.wishlist.id);
       } else {
         if (!wishId) {
-          alert("삭제할 위시리스트 상품을 찾을 수 없습니다.");
+          showError("삭제할 위시리스트 상품을 찾을 수 없습니다.");
           return;
         }
         const res = await axios.delete(`/api/wishlist/${wishId}`);
-        alert(res.data.message);
+        showSuccess(res.data.message);
         setWish(false);
         setWishId(null);
       }
     } catch (error: any) {
       if (error.response?.status === 409) {
-        alert("이미 위시리스트에 추가된 상품입니다.");
+        showError("이미 위시리스트에 추가된 상품입니다.");
       } else if (error.response?.status === 401) {
-        alert("유효하지 않은 사용자입니다.");
+        showError("유효하지 않은 사용자입니다.");
       } else {
         alert("서버 오류가 발생했습니다.");
         console.error(error);
@@ -61,12 +63,12 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
         productId: product.id,
         quantity: 1,
       });
-      alert(res.data.message);
+      showSuccess(res.data.message);
     } catch (error: any) {
       if (error.response?.status === 401) {
-        alert("유효하지 않은 사용자입니다.");
+        showError("유효하지 않은 사용자입니다.");
       } else {
-        alert("서버 오류가 발생했습니다.");
+        showError("서버 오류가 발생했습니다.");
         console.error(error);
       }
     }
