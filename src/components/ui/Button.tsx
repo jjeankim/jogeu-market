@@ -11,8 +11,8 @@ const Button = ({ children, variant = "filled", ...rest }: ButtonProps) => {
 
   const variantClass =
     variant === "filled"
-      ? "bg-[#405DE6] text-white"
-      : "border border-[#405DE6] text-[#405DE6] bg-white";
+      ? "bg-black text-white"
+      : "border border-black text-black bg-white";
 
   return (
     <button className={clsx(baseClass, variantClass)} {...rest}>
