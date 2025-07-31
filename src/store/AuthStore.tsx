@@ -7,15 +7,13 @@ interface AuthStore {
   login: ({ email, password }: AuthValues) => Promise<string | undefined>;
   signup: ({ email, password, name, phoneNumber }: AuthValues) => Promise<void>;
   isLoggedIn: boolean;
-
-  //accessToken test
-  accessToken: string | null;
-  setAccessToken: (token:string) =>  void;
-  logout: () => void;
+  userName: string;
+  initializeAuth: () => void;
 }
 
 const useAuthStore = create<AuthStore>((set, get) => ({
   isLoggedIn: false,
+  userName: "",
   login: async ({ email, password }: AuthValues) => {
     // console.log("로그인 시도", email, password);
 
@@ -28,17 +26,18 @@ const useAuthStore = create<AuthStore>((set, get) => ({
       { withCredentials: true }
     );
 
-    const token = res.data.accessToken;
-    console.log(token);
-    
+    console.log("백엔드 응답:", res.data); // 디버깅용
 
-  //   if (token) {
-  //     localStorage.setItem("accessToken", token);
-  //     set({ isLoggedIn: true });
-  //   }
-   return token;
-   },
-  
+ const {accessToken: token, data: userName} = res.data;
+
+    if (token && userName) {
+      localStorage.setItem("accessToken", token);
+      localStorage.setItem("userName", userName); // 로컬스토리지에 유저 이름 저장
+
+      set({ isLoggedIn: true, userName });
+    }
+    return token;
+  },
   signup: async ({ email, password, name, phoneNumber }: AuthValues) => {
     await axios.post(`${API_BASE_URL}/api/auth/signup`, {
       email,
@@ -47,9 +46,15 @@ const useAuthStore = create<AuthStore>((set, get) => ({
       phoneNumber,
     });
   },
-  accessToken: null,
-  setAccessToken: (token) => set({accessToken: token}),
-  logout:() => set({accessToken: null})
+  initializeAuth: () => {
+    const token = localStorage.getItem("accessToken");
+    const userName = localStorage.getItem("userName");
+    
+    if (token && userName) {
+      set({ isLoggedIn: true, userName });
+    }
+  },
 }));
 
 export default useAuthStore;
+

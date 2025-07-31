@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
-import "@/styles/style.css";
 
 // TossPayments 타입 정의
 declare global {
@@ -103,13 +102,13 @@ const Checkout = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       
-      <div className="wrapper">
-        <div className="box_section padding--l">
+      <div className="max-w-[800px] mx-auto">
+        <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-[50px] mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap py-[11px] px-[22px]">
           <div id="payment-method"></div>
           <div id="agreement"></div>
-          <div className="result wrapper">
+          <div className="mt-5 max-w-[800px] mx-auto">
             <button
-              className="button padding--t"
+              className="text-[#f9fafb] bg-[#3182f6] my-[30px] mx-[15px] mt-0 text-[15px] font-semibold leading-[18px] whitespace-nowrap text-center cursor-pointer border-0 border-transparent select-none transition-all duration-200 ease-in-out no-underline rounded-[7px] py-[11px] px-4 w-[250px] inline-block hover:text-white hover:bg-[#1b64da] pt-1 pb-1 px-2"
               id="payment-button"
             >
               결제하기

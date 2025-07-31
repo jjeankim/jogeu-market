@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-logo: #B29977;
+}
+
 @font-face {
   font-family: "GmarketSans";
   src: url("/fonts/GmarketSansLight.woff2") format("woff2");
