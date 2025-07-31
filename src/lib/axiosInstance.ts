@@ -10,7 +10,8 @@ const axiosInstance = axios.create({
 // 인증이 필요한 요청 시 액세스토큰 자동 삽입
 axiosInstance.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accessToken;
-  if (token && config.headers) {
+  if (token) {
+    config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

@@ -75,6 +75,14 @@ const useAuthStore = create<AuthStore>((set) => ({
         set({ accessToken, isLoggedIn: true });
         console.log("재발급 성공", accessToken);
       }
+
+      const profileRes = await axios.get(`${API_BASE_URL}/api/users/me`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      const userName = profileRes.data.name;
+      set({ userName });
+      console.log(userName)
     } catch (err) {
       console.error("refresh 요청 실패", err);
     }
