@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { FiAlertCircle } from "react-icons/fi";
 
-const SubTitle = ({ title }: { title: string }) => {
+export  const SubTitle = ({ title }: { title: string }) => {
   return <h3 className="text-3xl font-bold inline-block mb-10">{title}</h3>;
 };
 
