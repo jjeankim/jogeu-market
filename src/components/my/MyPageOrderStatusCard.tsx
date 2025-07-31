@@ -23,7 +23,6 @@ const MyPageOrderStatusCard = ({ children }: MyPageOrderStatusCardProps) => {
   return (
     <div className="mb-20">
       {children}
-
       <div className="border-2 rounded-2xl flex justify-between items-center px-16 py-6">
         <OrderStatusCount count={0} status="주문완료" />
         <FiChevronRight size={35} />
