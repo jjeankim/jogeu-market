@@ -7,7 +7,18 @@ const index = () => {
   return (
     <MyPageLayout pageTitle="마이페이지">
       <MyPageInfo />
-      <MyPageOrderStatusCard />
+      <MyPageOrderStatusCard>
+        <div className="flex gap-14 items-baseline mb-10">
+          <h3 className="text-3xl font-bold">진행 중인 주문</h3>
+          <span className="text-gray-400 hover:text-[#b29977]">최근 1개월</span>
+          <span className="text-gray-400 hover:text-[#b29977]">최근 3개월</span>
+          <span className="text-gray-400 hover:text-[#b29977]">최근 6개월</span>
+          <span className="text-gray-400 hover:text-[#b29977]">최근 1년</span>
+          <span className="text-gray-400 hover:text-[#b29977]">
+            최근 1년 이상
+          </span>
+        </div>
+      </MyPageOrderStatusCard>
       {/* 오더 없을때 조건 부 렌더링 */}
       <div className="flex justify-center">
         <Image
