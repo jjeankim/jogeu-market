@@ -3,12 +3,14 @@ import Footer from "@/components/ui/Footer";
 import MainForm from "@/components/MainForm";
 
 
+
+
 export default function Home() {
   return (
     <>
-     <MainForm />
+
+      <MainForm />
       <DynamicBreadcrumb />
-      <Footer />
     </>
   );
 }

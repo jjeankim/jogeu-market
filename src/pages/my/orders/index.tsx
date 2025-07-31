@@ -1,0 +1,177 @@
+import Footer from "@/components/ui/Footer";
+import Image from "next/image";
+import { FiChevronRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
+// Page Layout
+import MyPageLayout from "@/components/my/MyPageLayout";
+import MyPageInfo from "@/components/my/MyPageWelcomeCard";
+import MyPageOrderStatusCard from "@/components/my/MyPageOrderStatusCard";
+
+const MyOrderPage = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) return;
+
+    fetch("http://localhost:4000/api/orders", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("주문 조회 실패");
+        return res.json();
+      })
+      .then((data) => {
+        setOrders(data);
+        console.log(JSON.stringify(data));
+      })
+      .catch((err) => {
+        console.error("에러:", err);
+      });
+  }, []);
+
+  return (
+    <>
+      <MyPageLayout pageTitle="마이페이지">
+        <MyPageInfo />
+        <MyPageOrderStatusCard>
+          <div className="flex gap-14 items-baseline mb-10">
+            <h3 className="text-3xl font-bold">주문 배송 조회</h3>
+            <span className="text-gray-400 hover:text-[#b29977]">
+              최근 1개월
+            </span>
+            <span className="text-gray-400 hover:text-[#b29977]">
+              최근 3개월
+            </span>
+            <span className="text-gray-400 hover:text-[#b29977]">
+              최근 6개월
+            </span>
+            <span className="text-gray-400 hover:text-[#b29977]">최근 1년</span>
+            <span className="text-gray-400 hover:text-[#b29977]">
+              최근 1년 이상
+            </span>
+          </div>
+        </MyPageOrderStatusCard>
+        {/* <main className=" container w-full  h-screen mx-auto p-2 flex flex-col align-center ">
+          <div className="flex mx-auto w-2/3 justify-between py-6">
+            <h2 className="font-bold w-1/3 text-2xl">주문 배송 조회</h2>
+            <ul className="flex justify-between w-2/3 border-box text-lg">
+              <li className="hover:text-[#b29977]">최근 1개월</li>
+              <li className="hover:text-[#b29977]">최근 3개월</li>
+              <li className="hover:text-[#b29977]">최근 6개월</li>
+              <li className="hover:text-[#b29977]">최근 1년</li>
+              <li className="hover:text-[#b29977]">최근 1년 이상</li>
+            </ul>
+          </div> */}
+
+        {/* <div className="flex mx-auto w-2/3 mb-6">
+          <ul className="flex justify-between text-gray-400 rounded-lg border-2 w-full px-3 py-3.5">
+            <li className="flex flex-col px-3">
+              <span className="text-5xl text-center font-bold">O</span>
+              <span className="text-gray-600 font-bold text-lg">주문 완료</span>
+            </li>
+            <li className="flex items-center px-3  text-xl">
+              <FiChevronRight />
+            </li>
+            <li className="flex flex-col px-3 ">
+              <span className="text-5xl text-center font-bold">O</span>
+              <span className="text-gray-600 font-bold text-lg">
+                배송 준비 중
+              </span>
+            </li>
+            <li className="flex items-center px-3  text-xl">
+              <FiChevronRight />
+            </li>
+            <li className="flex flex-col px-3">
+              <span className="text-5xl text-center font-bold">O</span>
+              <span className="text-gray-600 font-bold text-lg">배송 중</span>
+            </li>
+            <li className="flex items-center px-3  text-xl">
+              <FiChevronRight />
+            </li>
+            <li className="flex flex-col px-3 ">
+              <span className="text-5xl text-center font-bold">O</span>
+              <span className="text-gray-600 font-bold text-lg">배송 완료</span>
+            </li>
+          </ul>
+        </div> */}
+
+        <div className="w-full min-w-[42]rem  mx-auto  p-4 ">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-300 text-left p-3">
+                <th className="w-1/5 p-3 text-center">주문 일자</th>
+                <th className="w-2/5 p-3 text-center">상품</th>
+                <th className="w-1/12 p-3 text-center">수량</th>
+                <th className="w-1/6 p-3 text-center">주문 금액</th>
+                <th className="w-1/6 px-8 text-center">상태</th>
+              </tr>
+            </thead>
+            <tbody className=" border-box">
+              <tr className="border-t ">
+                <td className="p-2 algin-top space-y-1 border-r-2 border-b-2 border-gray-300">
+                  <p className="text-center">2025.07.30</p>
+                  <p className=" text-center text-[#b29977]">Y25060362479</p>
+                  <a href="#" className="text-gray-400 text-center block">
+                    상세보기
+                  </a>
+                </td>
+                <td className="p-2 mt-3 border-r-2 border-b-2 border-gray-300 ">
+                  <div className=" flex gap-3 items-center">
+                    <Image
+                      src="/images/noImg.png"
+                      width={80}
+                      height={80}
+                      alt="상품이미지"
+                      className="rounded-md border object-cover"
+                    ></Image>
+                    <div>
+                      <p className="text-gray-500">브랜드명</p>
+                      <p className="text-black line-clamp-2">
+                        어쩌구저쩌구 블라어쩌구저쩌구 블라어쩌구저쩌구
+                        블라어쩌구저쩌구 블라어쩌구저쩌구 블라어쩌구저쩌구
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="text-center border-r-2 border-b-2 border-gray-300">
+                  1
+                </td>
+                <td className="text-center text-red-600 pr-3 border-r-2 border-b-2 border-gray-300">
+                  <span>9000</span>원
+                </td>
+                <td className="text-center pr-3  border-box p-3  border-b-2 border-gray-300 ">
+                  <div className="flex flex-col items-center space-y-1 ">
+                    <p className="px-1 p-1 ">배송완료</p>
+                    <a
+                      href=""
+                      className="px-3 py-1 border-1 rounded-full inline-block text-xs"
+                    >
+                      배송조회
+                    </a>
+                    <a
+                      href=""
+                      className="px-3 py-1 border-1 rounded-full inline-block text-xs"
+                    >
+                      리뷰작성
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {/* </main> */}
+      </MyPageLayout>
+
+      <Footer />
+    </>
+  );
+};
+
+export default MyOrderPage;
