@@ -24,7 +24,7 @@ const MainForm = () => {
 
   return (
     <>
-    <main className="m-15 mt-5 flex flex-col">
+    <main className=" mt-5 flex flex-col">
     <p className="h-[15rem] w-full mt-10 mb-30 bg-lime-50">여기가 배너이미지~~</p>
  
     {/* 필터와 제품 리스트를 가로로 배치 */}
