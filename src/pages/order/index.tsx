@@ -1,8 +1,9 @@
-// import orderForm from "@/components/orderForm";
+import OrderForm from "@/components/OrderForm";
 
-// const order = () => {
-//   return (
-//   <orderForm />;);
-// };
+const Order = () => {
+  return (
+  <OrderForm />
+);
+};
 
-// export default order;
+export default Order;
