@@ -2,7 +2,7 @@ import { fetchUser } from "@/lib/apis/user";
 import { SubTitle } from "@/pages/my/coupons";
 import { User, UserSettingListProps } from "@/types/my/settings";
 import { useEffect, useState } from "react";
-import TestModal from "./TestModal";
+import TestModal from "./PasswordChangeModal";
 
 const UserSettingList = ({
   title,

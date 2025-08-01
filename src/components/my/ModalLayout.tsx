@@ -1,12 +1,12 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { FiX } from "react-icons/fi";
 
-interface TestModalLayoutProps {
+interface ModalLayoutProps {
   children: ReactNode;
   onClose: () => void;
 }
 
-const TestModalLayout = ({ children, onClose }: TestModalLayoutProps) => {
+const ModalLayout = ({ children, onClose }: ModalLayoutProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
 
@@ -44,4 +44,4 @@ const TestModalLayout = ({ children, onClose }: TestModalLayoutProps) => {
   );
 };
 
-export default TestModalLayout;
+export default ModalLayout;
