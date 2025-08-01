@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Footer from "@/components/ui/Footer";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import OrderTable from "@/components/my/OrderTable";
+import ProductCard from "@/components/ui/ProductCard";
 
 interface Brand {
   id: number;
