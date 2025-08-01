@@ -1,11 +1,9 @@
 import Pagination from "@/components/Pagination";
 import CustomInput from "@/components/ui/CustomInput";
 import ListCard from "../../components/ui/ListCard";
-import Header from "../../components/Header";
 import Image from "next/image";
 import BrandSlide from "../../components/ui/BrandSlide";
 import Link from "next/link";
-import Footer from "@/components/ui/Footer";
 import SortDropdown from "@/components/ui/SortDropdown";
 import { useState } from "react";
 import { PiSlidersDuotone } from "react-icons/pi";
@@ -43,7 +41,6 @@ const ProductList = () => {
 
   return (
     <>
-      <Header />
       {/* 상품 목록 카테고리 및 브랜드 표시 */}
       <div className="flex flex-col items-center mx-10">
         <div className="font-bold text-3xl mt-20">BEAUTY</div>
@@ -106,7 +103,6 @@ const ProductList = () => {
           onPageChange={(newPage) => setPage(newPage)}
         />
       </div>
-      <Footer />
     </>
   );
 };
