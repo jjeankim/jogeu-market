@@ -1,5 +1,4 @@
-import axiosInstance from "@/lib/axiosInstance";
-import { API_BASE_URL } from "@/lib/constants";
+import { fetchUser } from "@/lib/apis/user";
 import { SubTitle } from "@/pages/my/coupons";
 import { User, UserSettingListProps } from "@/types/my/settings";
 import { useEffect, useState } from "react";
@@ -34,17 +33,14 @@ const MypageUserSetting = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axiosInstance.get(`${API_BASE_URL}/api/users/me`);
-        setUser(res.data);
-      } catch (error) {
-        console.error("유저 정보 불러오기 실패", error);
-      }
-    };
-    fetchUser();
+    const getUser = async () => {
+      const userData = await fetchUser();
+      setUser(userData)
+    }
+    getUser()
   }, []);
 
+  // 임시로 만든 로직 
   if (!user) {
     return <div>...로딩중</div>;
   }
