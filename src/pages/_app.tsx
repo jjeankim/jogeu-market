@@ -34,12 +34,14 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ToastProvider>
       <AppInitializer />
-      <div className="flex flex-col h-screen">
-        {showHeaderFooter && <Header />}
-        <div className="flex-1">
-          <Component {...pageProps} />
+      <div className="max-w-screen-xl mx-auto px-4">
+        <div className="flex flex-col h-screen">
+          {showHeaderFooter && <Header />}
+          <div className="flex-1">
+            <Component {...pageProps} />
+          </div>
+          {showHeaderFooter && <Footer />}
         </div>
-        {showHeaderFooter && <Footer />}
       </div>
     </ToastProvider>
   );
