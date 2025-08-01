@@ -72,7 +72,7 @@ interface Order {
   orderItems: OrderItem[];
 }
 
-interface OrderTableProps {
+interface OrderTableProps { 
   orders: Order[];
 }
 
