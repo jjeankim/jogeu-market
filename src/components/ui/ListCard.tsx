@@ -50,7 +50,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
       } else if (error.response?.status === 401) {
         showError("유효하지 않은 사용자입니다.");
       } else {
-        alert("서버 오류가 발생했습니다.");
+        showError("서버 오류가 발생했습니다.");
         console.error(error);
       }
     }

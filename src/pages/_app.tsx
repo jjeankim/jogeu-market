@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/ui/Footer";
 import useAuthStore from "@/store/AuthStore";
 import "@/styles/globals.css";
+import "@/styles/swiper.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
