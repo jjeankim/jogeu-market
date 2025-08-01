@@ -1,13 +1,12 @@
-import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome"
-import MypageUserSetting from "@/components/my/MypageUserSetting"
-
+import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
+import MypageUserSetting from "@/components/my/MypageUserSetting";
 
 const index = () => {
   return (
     <MyPageLayoutWithWelcome>
-      <MypageUserSetting/>
+      <MypageUserSetting />
     </MyPageLayoutWithWelcome>
-  )
-}
+  );
+};
 
-export default index
+export default index;
