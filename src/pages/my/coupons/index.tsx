@@ -1,6 +1,8 @@
 import MyPageLayout from "@/components/my/MyPageLayout";
 import Button from "@/components/ui/Button";
+import { fetchMyCoupon } from "@/lib/apis/coupon";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
 export  const SubTitle = ({ title }: { title: string }) => {
@@ -8,13 +10,26 @@ export  const SubTitle = ({ title }: { title: string }) => {
 };
 
 const MyCoupon = () => {
+  const [coupon, setCoupon] = useState([])
+
+  
+  useEffect(() => {
+    const getMyCoupon = async () => {
+      const myCoupons = await fetchMyCoupon()
+      setCoupon(myCoupons)
+    }
+    getMyCoupon()
+  },[])
+
+  console.log(coupon.length);
+  
   return (
     <>
       <SubTitle title="내 쿠폰" />
       <div className="border-2 rounded-2xl px-8 py-2">
         <div className="flex justify-between py-4 border-b-1 border-b-gray-400">
           <span>사용 가능한 쿠폰</span>
-          <span className="text-[#b29977]">3장</span>
+          <span className="text-[#b29977]">{coupon.length}장</span>
         </div>
         <div className="flex justify-between py-4">
           <div className="flex gap-4 items-center">

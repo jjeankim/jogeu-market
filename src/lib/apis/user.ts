@@ -6,7 +6,7 @@ export const fetchUser = async (): Promise<User | null> => {
     const res = await axiosInstance.get("/api/users/me");
     return res.data;
   } catch (error) {
-    console.error("유저 정보 조회 실패", error);
+    console.error("내 정보 조회 실패", error);
     return null;
   }
 };
