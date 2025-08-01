@@ -1,4 +1,5 @@
 import { AuthValues } from "@/components/LoginForm";
+import axiosInstance from "@/lib/axiosInstance";
 
 import { API_BASE_URL } from "@/lib/constants";
 import axios from "axios";
@@ -76,7 +77,7 @@ const useAuthStore = create<AuthStore>((set) => ({
         console.log("재발급 성공", accessToken);
       }
 
-      const profileRes = await axios.get(`${API_BASE_URL}/api/users/me`, {
+      const profileRes = await axiosInstance.get(`${API_BASE_URL}/api/users/me`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
