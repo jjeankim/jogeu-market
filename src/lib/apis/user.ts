@@ -10,3 +10,22 @@ export const fetchUser = async (): Promise<User | null> => {
     return null;
   }
 };
+
+export const changePassword = async ({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string;
+  newPassword: string;
+}): Promise<boolean> => {
+  try {
+    await axiosInstance.patch("/api/users/me/password", {
+      currentPassword,
+      newPassword,
+    });
+    return true;
+  } catch (error) {
+    console.error("비밀번호 변경 실패", error);
+    return false;
+  }
+};

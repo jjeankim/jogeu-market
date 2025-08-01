@@ -2,7 +2,7 @@ import { fetchUser } from "@/lib/apis/user";
 import { SubTitle } from "@/pages/my/coupons";
 import { User, UserSettingListProps } from "@/types/my/settings";
 import { useEffect, useState } from "react";
-// import TestModal from "./TestModal";
+import TestModal from "./TestModal";
 
 const UserSettingList = ({
   title,
@@ -32,17 +32,17 @@ const UserSettingList = ({
 
 const MypageUserSetting = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
     const getUser = async () => {
       const userData = await fetchUser();
-      setUser(userData)
-    }
-    getUser()
+      setUser(userData);
+    };
+    getUser();
   }, []);
 
-  // 임시로 만든 로직 
+  // 임시로 만든 로직
   if (!user) {
     return <div>...로딩중</div>;
   }
@@ -60,11 +60,11 @@ const MypageUserSetting = () => {
         <UserSettingList title="주소" info={defaultAddress} />
         <UserSettingList
           title="비밀번호"
-          onEdit={() => console.log("수정 버튼 클릭")}
+          onEdit={()=> setOpenModal(true)}
           isLast
         />
       </div>
-      {/* {openModal && <TestModal />} */}
+      {openModal && <TestModal onClose={() => setOpenModal(false)} />}
     </div>
   );
 };
