@@ -20,7 +20,10 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const { name, price, imgUrl, shippingFee } = product;
   return (
-    <div onClick={onClick} className="flex border rounded-[10px] w-[600px] p-3">
+    <div
+      onClick={onClick}
+      className="flex border rounded-[10px] w-[600px] p-3 max-w-full"
+    >
       <Image
         width={150}
         height={150}
