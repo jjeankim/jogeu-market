@@ -2,6 +2,7 @@ import { fetchUser } from "@/lib/apis/user";
 import { SubTitle } from "@/pages/my/coupons";
 import { User, UserSettingListProps } from "@/types/my/settings";
 import { useEffect, useState } from "react";
+// import TestModal from "./TestModal";
 
 const UserSettingList = ({
   title,
@@ -31,6 +32,7 @@ const UserSettingList = ({
 
 const MypageUserSetting = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,7 +52,7 @@ const MypageUserSetting = () => {
     addresses.find((a) => a.isDefault)?.address || "등록된 주소가 없습니다.";
 
   return (
-    <div>
+    <div className="relative">
       <SubTitle title="회원 정보 관리" />
       <div className="border-2 rounded-2xl px-8 py-4">
         <UserSettingList title="휴대전화" info={phoneNumber} />
@@ -58,10 +60,11 @@ const MypageUserSetting = () => {
         <UserSettingList title="주소" info={defaultAddress} />
         <UserSettingList
           title="비밀번호"
-          onEdit={() => console.log("수정 버튼")}
+          onEdit={() => console.log("수정 버튼 클릭")}
           isLast
         />
       </div>
+      {/* {openModal && <TestModal />} */}
     </div>
   );
 };
