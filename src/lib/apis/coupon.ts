@@ -1,6 +1,6 @@
 import axiosInstance from "../axiosInstance";
 
-export const fetchMyCoupon = async () => {
+export const fetchMyCouponList = async () => {
   try {
     const res = await axiosInstance.get("/api/coupon/me");
     return res.data.userCoupon;

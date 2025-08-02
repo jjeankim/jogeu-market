@@ -3,7 +3,7 @@ import MyCoupon from "@/components/my/coupon/MyCoupon";
 // import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayout from "@/components/my/MyPageLayout";
-import { fetchMyCoupon } from "@/lib/apis/coupon";
+import { fetchMyCouponList } from "@/lib/apis/coupon";
 import { isExpiringThisMonth } from "@/lib/utils/expiringSoonCount";
 import { CouponData } from "@/types/my/coupon";
 import { useEffect, useState } from "react";
@@ -13,11 +13,11 @@ const MyCouponPage = () => {
   //coupon은 객체 배열로 들어옴
 
   useEffect(() => {
-    const getMyCoupon = async () => {
-      const myCoupon = await fetchMyCoupon();
+    const getMyCouponList = async () => {
+      const myCoupon = await fetchMyCouponList();
       setCouponList(myCoupon);
     };
-    getMyCoupon();
+    getMyCouponList();
   }, []);
 
   return (
