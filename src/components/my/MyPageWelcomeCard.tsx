@@ -19,7 +19,7 @@ const MyPageWelcomeCard = () => {
   }, []);
 
   return (
-    <div className="border-2 rounded-2xl mb-30">
+    <div className="border-2 rounded-2xl">
       <div className="p-16">
         <h3 className="text-4xl font-bold">
           <span className="text-[#B29977]">{userName}</span> 님 환영합니다!

@@ -8,7 +8,7 @@ interface MyCouponProps {
 
 const MyCoupon = ({ totalCount, expiringSoonCount }: MyCouponProps) => {
   return (
-    <>
+    <div>
       <SubTitle title="내 쿠폰" />
       <div className="border-2 rounded-2xl px-8 py-2">
         <div className="flex justify-between py-4 border-b border-gray-400">
@@ -23,7 +23,7 @@ const MyCoupon = ({ totalCount, expiringSoonCount }: MyCouponProps) => {
           <span className="text-[#b29977]">{expiringSoonCount}장</span>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -32,7 +32,7 @@ const MyCouponPage = () => {
       />
       {/* {쿠폰 등록 api 없음} */}
       {/* <RegisterCoupon /> */}
-      <div className="mt-16">
+      <div>
         <SubTitle title="보유 쿠폰" />
         <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
           {couponList.length > 0 ? (

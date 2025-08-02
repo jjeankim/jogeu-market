@@ -13,7 +13,7 @@ const MyPageLayout = ({ children }: MyPageLayout) => {
         <h2 className="text-3xl font-bold inline-block mb-20">마이 페이지</h2>
         <MyPageAside />
       </section>
-      <section className="flex-4">{children}</section>
+      <section className="flex-4 flex flex-col gap-25">{children}</section>
     </main>
   );
 };
