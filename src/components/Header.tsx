@@ -1,4 +1,4 @@
-import { useEffect} from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -19,6 +19,11 @@ const Header = () => {
     router.push(`/?menu=${menu}`);
   };
 
+  const handleRedirect = (path: string) => {
+    if (isLoggedIn) router.push(path);
+    else router.push("/login");
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       initializeAuth();
@@ -32,7 +37,7 @@ const Header = () => {
     //   window.location.href = "/";
     // }
     await logout();
-    router.push("/")
+    router.push("/");
   };
 
   return (
@@ -110,15 +115,27 @@ const Header = () => {
             <FiSearch className="text-gray-600" size={22} />
           </div>
 
-          <Link href="/cart">
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => handleRedirect("/cart")}
+          >
             <PiShoppingCartSimpleBold size={22} />
-          </Link>
-          <Link href="/wishlist">
+          </button>
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => handleRedirect("/wishlist")}
+          >
             <PiHeartBold size={22} />
-          </Link>
-          <Link href="/my">
+          </button>
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => handleRedirect("/my")}
+          >
             <FaRegCircleUser size={22} />
-          </Link>
+          </button>
         </div>
       </div>
     </header>
