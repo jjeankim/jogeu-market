@@ -1,11 +1,11 @@
 import CouponCard from "@/components/my/coupon/CouponCard";
 import MyCoupon from "@/components/my/coupon/MyCoupon";
-import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
+// import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayout from "@/components/my/MyPageLayout";
 import { fetchMyCoupon } from "@/lib/apis/coupon";
 import { isExpiringThisMonth } from "@/lib/utils/expiringSoonCount";
-import { CouponData } from "@/types/coupon";
+import { CouponData } from "@/types/my/coupon";
 import { useEffect, useState } from "react";
 
 const MyCouponPage = () => {
@@ -14,8 +14,8 @@ const MyCouponPage = () => {
 
   useEffect(() => {
     const getMyCoupon = async () => {
-      const myCoupons = await fetchMyCoupon();
-      setCouponList(myCoupons);
+      const myCoupon = await fetchMyCoupon();
+      setCouponList(myCoupon);
     };
     getMyCoupon();
   }, []);
@@ -25,7 +25,9 @@ const MyCouponPage = () => {
       <MyCoupon
         totalCount={couponList.length}
         expiringSoonCount={
-          couponList.filter((item) => isExpiringThisMonth(item.coupon.validUntil)).length
+          couponList.filter((item) =>
+            isExpiringThisMonth(item.coupon.validUntil)
+          ).length
         }
       />
       {/* {쿠폰 등록 api 없음} */}

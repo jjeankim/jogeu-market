@@ -1,19 +1,12 @@
 import { useForm } from "react-hook-form";
-import CustomInput from "../ui/CustomInput";
-import TestModalLayout from "./ModalLayout";
+import CustomInput from "../../ui/CustomInput";
+import TestModalLayout from "../../ui/ModalLayout";
 import { changePassword } from "@/lib/apis/user";
 import { useToast } from "@/hooks/useToast";
-import Button from "../ui/Button";
+import Button from "../../ui/Button";
+import { PasswordChangeModalProps, PasswordChangeModalValues } from "@/types/my/settings";
 
-interface PasswordChangeModalProps {
-  onClose: () => void;
-}
 
-export interface PasswordChangeModalValues {
-  currentPassword: string;
-  newPassword: string;
-  newPasswordConfirm: string;
-}
 
 const PasswordChangeModal = ({ onClose }: PasswordChangeModalProps) => {
   const { showSuccess, showError } = useToast();

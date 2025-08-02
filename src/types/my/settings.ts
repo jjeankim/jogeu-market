@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // settings page
 export type Address = {
   id: string;
@@ -22,4 +24,19 @@ export interface UserSettingListProps {
   info?: string;
   onEdit?: () => void;
   isLast?: boolean;
+}
+
+export interface PasswordChangeModalProps {
+  onClose: () => void;
+}
+
+export interface PasswordChangeModalValues {
+  currentPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}
+
+export interface ModalLayoutProps {
+  children: ReactNode;
+  onClose: () => void;
 }

@@ -2,7 +2,8 @@ import MyPageOrderStatusCard from "@/components/my/MyPageOrderStatusCard";
 import Image from "next/image";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 
-const index = () => {
+const MyPage = () => {
+  
   return (
     <MyPageLayoutWithWelcome>
       <MyPageOrderStatusCard>
@@ -30,4 +31,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default MyPage;

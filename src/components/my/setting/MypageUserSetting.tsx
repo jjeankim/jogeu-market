@@ -1,9 +1,8 @@
 import { fetchUser } from "@/lib/apis/user";
-
 import { User, UserSettingListProps } from "@/types/my/settings";
 import { useEffect, useState } from "react";
-import TestModal from "./PasswordChangeModal";
-import SubTitle from "./coupon/SubTitle";
+import SubTitle from "../coupon/SubTitle";
+import PasswordChangeModal from "./PasswordChangeModal";
 
 const UserSettingList = ({
   title,
@@ -61,11 +60,11 @@ const MypageUserSetting = () => {
         <UserSettingList title="주소" info={defaultAddress} />
         <UserSettingList
           title="비밀번호"
-          onEdit={()=> setOpenModal(true)}
+          onEdit={() => setOpenModal(true)}
           isLast
         />
       </div>
-      {openModal && <TestModal onClose={() => setOpenModal(false)} />}
+      {openModal && <PasswordChangeModal onClose={() => setOpenModal(false)} />}
     </div>
   );
 };

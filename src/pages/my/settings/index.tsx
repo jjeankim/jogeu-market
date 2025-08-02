@@ -1,5 +1,6 @@
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
-import MypageUserSetting from "@/components/my/MypageUserSetting";
+import MypageUserSetting from "@/components/my/setting/MypageUserSetting";
+
 
 const index = () => {
   return (
