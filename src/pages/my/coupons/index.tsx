@@ -28,7 +28,8 @@ const MyCouponPage = () => {
           couponList.filter((item) => isExpiringThisMonth(item.coupon.validUntil)).length
         }
       />
-      <RegisterCoupon />
+      {/* {쿠폰 등록 api 없음} */}
+      {/* <RegisterCoupon /> */}
       <div className="mt-16">
         <SubTitle title="보유 쿠폰" />
         <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
