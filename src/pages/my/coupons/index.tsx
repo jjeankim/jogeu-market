@@ -21,7 +21,7 @@ const MyCouponPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageTitle="마이페이지">
+    <MyPageLayout>
       <MyCoupon
         totalCount={couponList.length}
         expiringSoonCount={

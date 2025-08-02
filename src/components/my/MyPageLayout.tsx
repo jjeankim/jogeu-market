@@ -3,14 +3,14 @@ import MyPageAside from "./MyPageAside";
 
 interface MyPageLayout {
   children: ReactNode;
-  pageTitle: string;
+ 
 }
 
-const MyPageLayout = ({ children, pageTitle }: MyPageLayout) => {
+const MyPageLayout = ({ children }: MyPageLayout) => {
   return (
     <main className="m-20 mb-40 flex gap-10">
       <section className="flex-1">
-        <h2 className="text-3xl font-bold inline-block mb-20">{pageTitle}</h2>
+        <h2 className="text-3xl font-bold inline-block mb-20">마이 페이지</h2>
         <MyPageAside />
       </section>
       <section className="flex-4">{children}</section>

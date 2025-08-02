@@ -30,7 +30,7 @@ const MyPageWelcomeCard = () => {
           <LuTicketPercent size={30} />
           <span className="text-2xl font-bold leading-[64px]">쿠폰</span>
           <Link href={"/my/coupons"}>
-            <span className="text-2xl font-bold leading-[64px]">
+            <span className="text-2xl font-bold leading-[64px] hover:text-[#B29977]">
               {couponList.length} 개
             </span>
           </Link>
