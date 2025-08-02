@@ -7,7 +7,7 @@ const MyPage = () => {
   return (
     <MyPageLayoutWithWelcome>
       <MyPageOrderStatusCard>
-        <div className="flex gap-14 items-baseline mb-10">
+        <div className="flex gap-10 items-baseline mb-10">
           <h3 className="text-3xl font-bold">진행 중인 주문</h3>
           <span className="text-gray-400 hover:text-[#b29977]">최근 1개월</span>
           <span className="text-gray-400 hover:text-[#b29977]">최근 3개월</span>
