@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 const Fail = () => {
@@ -27,7 +28,12 @@ const Fail = () => {
       </Head>
       
       <div id="info" className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-[50px] mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap w-[600px] max-w-[600px] mx-auto">
-        <img width="100px" src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png" />
+        <Image 
+          width={100} 
+          height={100}
+          src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png" 
+          alt="결제 실패 아이콘"
+        />
         <h2>결제를 실패했어요</h2>
 
         <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[18px] pb-[18px] px-6">

@@ -75,15 +75,29 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
   };
 
   const { brand, name, price, review, imgUrl } = product;
+  
+  // 이미지 URL이 유효한지 확인하고 기본 이미지로 대체
+  const getImageUrl = () => {
+    if (!imgUrl) return "/images/noImg.png";
+    if (imgUrl.startsWith('http') && !imgUrl.includes('localhost') && !imgUrl.includes('yourcdn.com')) {
+      return "/images/noImg.png";
+    }
+    return imgUrl;
+  };
+
   return (
     <>
       <div className="relative border-2 rounded-lg mb-3">
         <Image
           width={150}
           height={150}
-          src={imgUrl || "/images/noImg.png"}
-          alt=""
+          src={getImageUrl()}
+          alt={name}
           className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "/images/noImg.png";
+          }}
         />
         <div className="absolute bottom-0 w-full flex justify-between p-4">
           <button
