@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 import MainSwiper from "./MainSwiper";
 import { fetchProductList } from "@/lib/apis/product";
 import { Product } from "@/types/home";
+import MainCard from "./ui/MainCard";
 
 const MainForm = () => {
-  const [productList, setProductList] = useState<Product[]>([])
+  const [productList, setProductList] = useState<Product[]>([]);
   const router = useRouter();
   const { menu } = router.query;
 
@@ -24,13 +25,13 @@ const MainForm = () => {
 
   useEffect(() => {
     const getProductList = async () => {
-      const res = await fetchProductList()
-      setProductList(res)
-    }
-    getProductList()
-  },[])
-  console.log(productList);
-  
+      const res = await fetchProductList();
+      setProductList(res);
+    };
+    getProductList();
+  }, []);
+
+  const visibleProducts = productList.slice(0, 9);
 
   const handleCategoryClick = (category: string) => {
     const currentMenu = menu || "best"; // 현재 메뉴 정보 유지
@@ -43,7 +44,7 @@ const MainForm = () => {
         {/* <p className="h-[15rem] w-full mt-10 mb-30 bg-lime-50">
           여기가 배너이미지~~
         </p> */}
-        <MainSwiper/>
+        <MainSwiper />
         {/* 필터와 제품 리스트를 가로로 배치 */}
         <div className="flex flex-row gap-10">
           {/* 필터 */}
@@ -86,10 +87,8 @@ const MainForm = () => {
               <div className="bg-yellow-50  h-[20rem]">4번 제품 카드</div>
               <div className="bg-yellow-50  h-[20rem]">5번 제품 카드</div>
               <div className="bg-yellow-50  h-[20rem]">6번 제품 카드</div> */}
-              {productList.map(item => (
-                <>
-                <div>item.
-                  </div></>
+              {visibleProducts.map((item) => (
+                <MainCard key={item.id} item={item} />
               ))}
             </div>
           </div>
