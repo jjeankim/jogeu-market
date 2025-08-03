@@ -1,4 +1,4 @@
-import { fetchMyCoupon } from "@/lib/apis/coupon";
+import { fetchMyCouponList } from "@/lib/apis/coupon";
 import useAuthStore from "@/store/AuthStore";
 import { CouponData } from "@/types/my/coupon";
 import Link from "next/link";
@@ -12,7 +12,7 @@ const MyPageWelcomeCard = () => {
 
   useEffect(() => {
     const getMyCoupon = async () => {
-      const myCoupons = await fetchMyCoupon();
+      const myCoupons = await fetchMyCouponList();
       setCouponList(myCoupons);
     };
     getMyCoupon();
