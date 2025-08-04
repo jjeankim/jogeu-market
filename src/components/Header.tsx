@@ -65,7 +65,7 @@ const Header = () => {
 
       <div className="flex items-start justify-between px-6 py-4">
         <div className="flex flex-col">
-          <Link href="/">
+          <Link href="/" className="w-50">
             <Image
               src="/images/logo_s_jogeuMarket.svg"
               alt="조그마켓 로고"
