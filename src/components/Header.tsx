@@ -76,7 +76,7 @@ const Header = () => {
 
           <div className="flex items-center gap-6 mt-8">
             <HiMenu size={24} className="text-gray-600  relative" />
-            <div className="absolute w-full h-72   bg-amber-200 top-36  z-50 rounded-b-4xl"></div>
+            {/* <div className="absolute w-full h-72   bg-amber-200 top-36  z-50 rounded-b-4xl"></div> */}
 
             <nav className="flex gap-30 text-2xl font-medium">
               <button

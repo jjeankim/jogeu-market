@@ -50,15 +50,11 @@ const CartForm = () => {
   };
 
   return (
-    <div className="container mx-auto  px-28 mt-10 mb-10">
+    <div className="container mx-auto  px-28 mt-10 ">
       <h1 className="text-2xl text-center border-b-2 py-3 mb-3 border-gray-200">
         장바구니
       </h1>
-      <div className="flex flex-col space-y-3">
-        <div className="inline-flex rounded-xl bg-[#405DE6]  px-6 py-1.5 w-fit text-sm text-white">
-          <span className="mr-1">일반 상품</span>
-          <span>1</span>
-        </div>
+      <div className="flex flex-col space-y-3 pt-6">
         <div className=" font-bold text-sm">
           <div className="flex justify-between  ">
             <div>

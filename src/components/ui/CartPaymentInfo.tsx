@@ -1,4 +1,5 @@
 import { CartPayProps } from "@/types/cart/cart";
+import { ButtonSmall } from "../ui/Button";
 
 const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
   return (
@@ -28,13 +29,11 @@ const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col space-y-1 ">
-        <button className="w-full bg-white border-1 border-[#405DE6] px-6 py-1.5  rounded-md text-[#405DE6]">
+      <div className="flex flex-col space-y-2 ">
+        <ButtonSmall className="w-full" variant="outline">
           위시리스트
-        </button>
-        <button className="w-full bg-[#405DE6] px-6 py-2  rounded-md text-white">
-          주문하기
-        </button>
+        </ButtonSmall>
+        <ButtonSmall className="w-full"> 주문하기</ButtonSmall>
       </div>
     </div>
   );

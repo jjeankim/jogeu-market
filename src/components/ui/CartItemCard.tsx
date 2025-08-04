@@ -1,6 +1,8 @@
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import ProductCard from "./ProductCard";
 import { Product } from "@/types/cart/cart";
+// import { ButtonSmall } from "./Button";
+import { ButtonSmall } from "../ui/Button";
 
 const CartItemCard = ({
   product,
@@ -41,12 +43,10 @@ const CartItemCard = ({
         </div>
       </div>
       <div className="flex w-full space-x-3 text-sm">
-        <button className="bg-white border-1 border-[#405DE6] px-6 py- w-1/2 rounded-md text-[#405DE6]">
+        <ButtonSmall className="w-1/2" variant="outline">
           위시리스트
-        </button>
-        <button className="bg-[#405DE6] px-6 py-3 w-1/2 rounded-md text-white">
-          주문하기
-        </button>
+        </ButtonSmall>
+        <ButtonSmall className="w-1/2"> 주문하기</ButtonSmall>
       </div>
     </div>
   );
