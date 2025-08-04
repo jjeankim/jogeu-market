@@ -93,7 +93,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
           height={150}
           src={getImageUrl()}
           alt={name}
-          className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75"
+          className="aspect-square w-full rounded-lg bg-transparent object-cover group-hover:opacity-75"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = "/images/noImg.png";
