@@ -24,8 +24,9 @@ export interface ProductResponse {
 
 export const axiosProducts = async (category?: string): Promise<Product[]> => {
   try {
-    const params = category && category !== "all" ? `category=${category}` : "";
-    const res = await axiosInstance.get(`/api/product?${params}`);
+    const params =
+      category && category !== "all" ? `?category=${category}` : "";
+    const res = await axiosInstance.get(`/api/products${params}`);
     return res.data.products;
   } catch (error) {
     console.error("상품 목록 조회 실패", error);
@@ -35,7 +36,7 @@ export const axiosProducts = async (category?: string): Promise<Product[]> => {
 
 export const axiosProductById = async (id: number): Promise<Product | null> => {
   try {
-    const res = await axiosInstance.get(`/api/product/${id}`);
+    const res = await axiosInstance.get(`/api/products/${id}`);
     return res.data.products;
   } catch (error) {
     console.error("상품 상세 조회 실패", error);
