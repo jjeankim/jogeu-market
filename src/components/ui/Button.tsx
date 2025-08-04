@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
-import { ButtonHTMLAttributes} from "react";
+import { ButtonHTMLAttributes, ReactNode} from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: "filled" | "outlined";
   size?: "sm" | "md" | "lg" |"full";
 }
@@ -26,8 +26,8 @@ const Button = ({
 
   const variantClass =
     variant === "filled"
-      ? "bg-[#405DE6] text-white hover:bg-[#3348C7] hover:text-white"
-      : "border border-[#405DE6] hover:bg-[#3348C7] hover:text-white text-[#405DE6] bg-white";
+      ? "bg-black text-white hover:opacity-60 hover:text-white"
+      : "border hover:bg-[#3348C7] hover:text-white text-black bg-white";
 
   const disabledClass = disabled
     ? "opacity-50  bg-gray-400 text-gray-600 hover:bg-gray-400 hover:text-gray-600 hover:cursor-not-allowed"
