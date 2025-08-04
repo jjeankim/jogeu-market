@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
+import Button from "@/components/ui/Button";
 
 // TossPayments 타입 정의
 declare global {
@@ -57,10 +58,10 @@ const Checkout = () => {
         
         const amount = {
           currency: "KRW",
-          value: 100,
+          value: 1000, // 1000원으로 증가
         };
         
-        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 위젯 연동용 테스트 키 (문서용)
         const TossPayments = window.TossPayments;
         if (!TossPayments) {
           console.error("TossPayments SDK를 로드할 수 없습니다.");
@@ -88,15 +89,17 @@ const Checkout = () => {
             try {
               await widgets.requestPayment({
                 orderId: generateRandomString(),
-                orderName: "토스 티셔츠 외 2건",
+                orderName: "테스트 상품",
                 successUrl: window.location.origin + "/pay/success",
                 failUrl: window.location.origin + "/pay/fail",
-                customerEmail: "customer123@gmail.com",
-                customerName: "김토스",
-                customerMobilePhone: "01012341234",
+                customerEmail: "test@example.com",
+                customerName: "테스트 고객",
+                customerMobilePhone: "01012345678",
+                windowTarget: "iframe", // iframe 모드로 변경
               });
             } catch (error) {
               console.error("결제 요청 중 오류 발생:", error);
+              alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
           });
         }
@@ -142,17 +145,18 @@ const Checkout = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       
-      <div className="max-w-[800px] mx-auto">
-        <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-[50px] mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap py-[11px] px-[22px]">
-          <div id="payment-method"></div>
-          <div id="agreement"></div>
-          <div className="mt-5 max-w-[800px] mx-auto">
-            <button
-              className="text-[#f9fafb] bg-[#3182f6] my-[30px] mx-[15px] mt-0 text-[15px] font-semibold leading-[18px] whitespace-nowrap text-center cursor-pointer border-0 border-transparent select-none transition-all duration-200 ease-in-out no-underline rounded-[7px] py-[11px] px-4 w-[250px] inline-block hover:text-white hover:bg-[#1b64da] pt-1 pb-1 px-2"
+      <div className="max-w-[1000px] mx-auto min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-4 sm:p-6 md:p-[40px] lg:p-[60px] mt-[20px] sm:mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap py-3 sm:py-4 md:py-[20px] px-3 sm:px-6 md:px-[40px] min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col justify-center w-full">
+          <div id="payment-method" className="w-full mb-4 sm:mb-6"></div>
+          <div id="agreement" className="w-full mb-6 sm:mb-8"></div>
+          <div className="mt-6 sm:mt-8 max-w-[800px] mx-auto">
+            <Button
+             
               id="payment-button"
+              className="text-lg sm:text-xl md:text-2xl py-4 sm:py-5 md:py-6 px-8 sm:px-10 md:px-12 font-semibold"
             >
               결제하기
-            </button>
+            </Button>
           </div>
         </div>
       </div>

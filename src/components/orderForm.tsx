@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Button from './ui/Button'
 import { useRouter } from 'next/router'
 
+// 카카오 주소 API 콜백 함수 타입 선언
+declare global {
+  interface Window {
+    daum: any
+  }
+}
+
 const OrderForm = () => {
   const router = useRouter()
   const [addressData, setAddressData] = useState({
@@ -10,61 +17,29 @@ const OrderForm = () => {
     roadAddrPart2: '',
     addrDetail: ''
   })
+  const [isAgreed, setIsAgreed] = useState(false)
 
 
 
-
-  const searchAddress = async (keyword: string) => {
-    const confmKey = process.env.NEXT_PUBLIC_JUSO_KEY
-
-    console.log('도로명주소 API 키:', confmKey)
-    console.log('검색어:', keyword)
-
-    if (!confmKey) {
-      alert('주소 검색 API 키가 설정되지 않았습니다. 환경 변수 NEXT_PUBLIC_JUSO_KEY를 설정해주세요.')
-      return
-    }
-
-    try {
-      const params = new URLSearchParams({
-        confmKey: confmKey,
-        currentPage: '1',
-        countPerPage: '10',
-        keyword: keyword,
-        resultType: 'json',
-        hstryYn: 'N',
-        firstSort: 'none',
-        addInfoYn: 'N'
-      })
-
-      const response = await fetch(`https://business.juso.go.kr/addrlink/addrLinkApi.do?${params}`)
-      const data = await response.json()
-
-      console.log('API 응답:', data)
-
-      if (data.results && data.results.juso && data.results.juso.length > 0) {
-        const firstResult = data.results.juso[0]
-        setAddressData({
-          zipNo: firstResult.zipNo,
-          roadAddrPart1: firstResult.roadAddrPart1,
-          roadAddrPart2: firstResult.roadAddrPart2 || '',
-          addrDetail: addressData.addrDetail
-        })
-        console.log('주소 설정 완료:', firstResult)
-      } else {
-        alert('검색 결과가 없습니다.')
-      }
-    } catch (error) {
-      console.error('주소 검색 에러:', error)
-      alert('주소 검색 중 오류가 발생했습니다.')
-    }
-  }
 
   const openJusoPopup = () => {
-    const keyword = prompt('주소를 입력하세요:')
-    if (keyword) {
-      searchAddress(keyword)
+    // 카카오 주소 API 스크립트 로드
+    const script = document.createElement('script')
+    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
+    script.onload = () => {
+      // 카카오 주소 검색 팝업 열기
+      new window.daum.Postcode({
+        oncomplete: function(data: any) {
+          setAddressData({
+            zipNo: data.zonecode,
+            roadAddrPart1: data.roadAddress,
+            roadAddrPart2: data.jibunAddress || '',
+            addrDetail: addressData.addrDetail
+          })
+        }
+      }).open()
     }
+    document.head.appendChild(script)
   }
 
   return (
@@ -277,6 +252,8 @@ const OrderForm = () => {
                 <div className="flex items-start space-x-3">
                   <input 
                     type="checkbox" 
+                    checked={isAgreed}
+                    onChange={(e) => setIsAgreed(e.target.checked)}
                     className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label className="text-sm text-gray-700 leading-relaxed">
@@ -285,7 +262,8 @@ const OrderForm = () => {
                 </div>
                 
                 <Button 
-                  onClick={() => router.push('/pay/checkout')}>
+                  onClick={() => router.push('/pay/checkout')}
+                  disabled={!isAgreed}>
                   결제하기 2,000 원
                 </Button>
               </div>
@@ -293,6 +271,8 @@ const OrderForm = () => {
           </div>
         </div>
       </div>
+
+
     </div>
   )
 }

@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import ListCard from './ui/ListCard';
+import { fetchProducts, Product } from '@/lib/apis/product';
 
 const MainForm = () => {
   const router = useRouter();
-  const { menu } = router.query;
+  const { menu, category } = router.query;
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const getTitle = () => {
     switch(menu) {
@@ -19,8 +24,33 @@ const MainForm = () => {
     router.push(`/?menu=${currentMenu}&category=${category}`);
   }
 
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const productData = await fetchProducts(category as string);
+        setProducts(productData);
+      } catch (error) {
+        console.error('상품 데이터 로딩 실패:', error);
+        setError('상품을 불러오는데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    loadProducts();
+  }, [category]);
 
+  // ListCard에 맞는 형식으로 데이터 변환
+  const transformProductForListCard = (product: Product) => ({
+    id: product.id,
+    brand: product.brand?.name || '브랜드명 없음',
+    name: product.name,
+    price: product.price,
+    review: 0, // 리뷰 데이터가 없으므로 기본값
+    imgUrl: product.thumbnailImageUrl || '/images/noImg.png',
+  });
 
   return (
     <>
@@ -42,14 +72,27 @@ const MainForm = () => {
 
       {/* 상품 리스트 */}
       <div className='flex-1 px-8'>
-        <div className='grid grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))] gap-6'>
-          <div className='bg-yellow-50  h-[20rem]'>1번 제품 카드</div>
-          <div className='bg-yellow-50  h-[20rem]'>2번 제품 카드</div>
-          <div className='bg-yellow-50  h-[20rem]'>3번 제품 카드</div>
-          <div className='bg-yellow-50  h-[20rem]'>4번 제품 카드</div>
-          <div className='bg-yellow-50  h-[20rem]'>5번 제품 카드</div>
-          <div className='bg-yellow-50  h-[20rem]'>6번 제품 카드</div>
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-lg">상품을 불러오는 중...</div>
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-lg text-red-500">{error}</div>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-lg text-gray-500">등록된 상품이 없습니다.</div>
+          </div>
+        ) : (
+          <div className='grid grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))] gap-6'>
+            {products.map((product) => (
+              <div key={product.id} className="">
+                <ListCard product={transformProductForListCard(product)} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
     </main>
