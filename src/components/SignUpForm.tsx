@@ -120,7 +120,7 @@ const SignUpForm = () => {
           <FormErrorText>{errors.passwordConfirm?.message}</FormErrorText>
         )}
 
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" size="full" disabled={isSubmitting}>
           회원가입
         </Button>
       </form>

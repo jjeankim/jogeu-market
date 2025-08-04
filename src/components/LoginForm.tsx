@@ -80,7 +80,7 @@ const LoginForm = () => {
         {errors.password && (
           <FormErrorText>{errors.password.message}</FormErrorText>
         )}
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" size="full" disabled={isSubmitting}>
           로그인
         </Button>
       </form>

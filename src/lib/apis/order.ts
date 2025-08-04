@@ -1,6 +1,6 @@
 import axiosInstance from "../axiosInstance";
 
-export const fetchMyOrder = async () => {
+export const fetchMyOrderList = async () => {
   try {
     const res = await axiosInstance.get("/api/orders");
     return res.data.data;

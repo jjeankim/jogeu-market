@@ -1,26 +1,47 @@
 import { clsx } from "clsx";
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes} from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
-  variant?: "filled" | "outline";
+  children: React.ReactNode;
+  variant?: "filled" | "outlined";
+  size?: "sm" | "md" | "lg" |"full";
 }
 
-const Button = ({ children, variant = "filled", disabled, className, ...rest }: ButtonProps) => {
-  const baseClass = "w-full text-xl p-4 rounded-[10px] cursor-pointer";
+const Button = ({
+  children,
+  variant = "filled",
+  disabled,
+  size = "md",
+  className,
+  ...rest
+}: ButtonProps) => {
+  const baseSizeClass =
+    size === "sm"
+      ? "text-sm px-3 py-1"
+      : size === "lg"
+      ? "text-xl px-6 py-3"
+      : size === "full"
+      ? "w-full text-base px-4 py-2" 
+      : "text-base px-4 py-2";
 
   const variantClass =
     variant === "filled"
       ? "bg-[#405DE6] text-white hover:bg-[#3348C7] hover:text-white"
       : "border border-[#405DE6] hover:bg-[#3348C7] hover:text-white text-[#405DE6] bg-white";
 
-  const disabledClass = disabled 
-    ? "opacity-50 cursor-not-allowed bg-gray-400 text-gray-600 hover:bg-gray-400 hover:text-gray-600" 
+  const disabledClass = disabled
+    ? "opacity-50  bg-gray-400 text-gray-600 hover:bg-gray-400 hover:text-gray-600 hover:cursor-not-allowed"
     : "";
 
   return (
-    <button 
-      className={clsx(baseClass, variantClass, disabledClass, className)} 
+    <button
+      className={clsx(
+        "rounded-[10px] cursor-pointer",
+        baseSizeClass,
+        variantClass,
+        disabledClass,
+        className
+      )}
       disabled={disabled}
       {...rest}
     >
