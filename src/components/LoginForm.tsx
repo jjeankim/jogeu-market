@@ -12,9 +12,9 @@ import FormErrorText from "./FormErrorText";
 
 export interface AuthValues {
   email: string;
-  password: string;
   name?: string;
-  phoneNumber?: string;
+  password: string;
+  passwordConfirm?: string;
 }
 
 const LoginForm = () => {
@@ -60,10 +60,7 @@ const LoginForm = () => {
               message: "올바른 이메일 형식이 아닙니다.",
             },
           })}
-          onChange={(e) => {
-            clearErrors("email");
-            // register("email").onChange(e);
-          }}
+          onChange={() => clearErrors("email")}
         />
         {errors.email && <FormErrorText>{errors.email.message}</FormErrorText>}
         <CustomInput
@@ -78,10 +75,7 @@ const LoginForm = () => {
               message: "비밀번호는 최소 4자 이상이어야 합니다.",
             },
           })}
-          onChange={(e) => {
-            clearErrors("password");
-            // register("password").onChange(e);
-          }}
+          onChange={() => clearErrors("password")}
         />
         {errors.password && (
           <FormErrorText>{errors.password.message}</FormErrorText>

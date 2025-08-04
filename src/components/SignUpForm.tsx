@@ -20,20 +20,18 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { isSubmitting, errors },
     clearErrors,
+    watch,
   } = useForm<AuthValues>({
     mode: "onSubmit",
   });
 
   const { signup } = useAuthStore();
 
-  const onSubmit = async ({
-    email,
-    password,
-    name,
-    phoneNumber,
-  }: AuthValues) => {
+  const password = watch("password");
+
+  const onSubmit = async ({ email, password, name }: AuthValues) => {
     try {
-      await signup({ email, password, name, phoneNumber });
+      await signup({ email, password, name });
       showSuccess("회원가입에 성공했습니다.");
       router.push("/login");
     } catch (error) {
@@ -68,32 +66,9 @@ const SignUpForm = () => {
               message: "올바른 이메일 형식이 아닙니다.",
             },
           })}
-          onChange={(e) => {
-            clearErrors("email");
-            register("email").onChange(e);
-          }}
+          onChange={() => clearErrors("email")}
         />
         {errors.email && <FormErrorText>{errors.email.message}</FormErrorText>}
-        <CustomInput
-          type="password"
-          id="password"
-          label="비밀번호"
-          placeholder="비밀번호를 입력해주세요"
-          register={register("password", {
-            required: "비밀번호는 필수입니다.",
-            minLength: {
-              value: 4,
-              message: "비밀번호는 최소 4자 이상이어야 합니다.",
-            },
-          })}
-          onChange={(e) => {
-            clearErrors("password");
-            register("password").onChange(e);
-          }}
-        />
-        {errors.password && (
-          <FormErrorText>{errors.password?.message}</FormErrorText>
-        )}
         <CustomInput
           type="text"
           id="name"
@@ -114,27 +89,44 @@ const SignUpForm = () => {
         {errors.name && <FormErrorText>{errors.name.message}</FormErrorText>}
         <CustomInput
           type="text"
-          id="phoneNumber"
-          label="핸드폰 번호"
-          placeholder="010-1234-5678"
-          register={register("phoneNumber", {
-            required: "핸드폰 번호는 필수 입니다.",
-            pattern: {
-              value: /^01[016789][-]?\d{3,4}[-]?\d{4}$/,
-              message: "올바른 휴대폰 번호 형식이 아닙니다.",
+          id="password"
+          label="비밀번호"
+          placeholder="비밀번호를 입력해주세요"
+          register={register("password", {
+            required: "비밀번호는 필수입니다.",
+            minLength: {
+              value: 4,
+              message: "비밀번호는 최소 4자 이상이어야 합니다.",
             },
           })}
+          onChange={() => clearErrors("password")}
         />
-        {errors.phoneNumber && (
-          <FormErrorText>{errors.phoneNumber.message}</FormErrorText>
+        {errors.password && (
+          <FormErrorText>{errors.password?.message}</FormErrorText>
         )}
+        <CustomInput
+          type="text"
+          id="passwordConfirm"
+          label="비밀번호 확인"
+          placeholder="비밀번호 확인을 입력해주세요"
+          register={register("passwordConfirm", {
+            required: "비밀번호는 필수입니다.",
+            validate: (value) =>
+              value === password || "비밀번호가 일치하지 않습니다.",
+          })}
+          onChange={() => clearErrors("passwordConfirm")}
+        />
+        {errors.passwordConfirm && (
+          <FormErrorText>{errors.passwordConfirm?.message}</FormErrorText>
+        )}
+
         <Button type="submit" disabled={isSubmitting}>
           회원가입
         </Button>
       </form>
       <AuthLink
         link="/login"
-        descripton="이미 회원이신가요?"
+        description="이미 회원이신가요?"
         linkTitle="로그인"
       />
       <SocialLoginLink />

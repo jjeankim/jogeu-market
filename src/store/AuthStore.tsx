@@ -7,7 +7,7 @@ import { create } from "zustand";
 
 interface AuthStore {
   login: ({ email, password }: AuthValues) => Promise<string | undefined>;
-  signup: ({ email, password, name, phoneNumber }: AuthValues) => Promise<void>;
+  signup: ({ email, password, name }: AuthValues) => Promise<void>;
   isLoggedIn: boolean;
   userName: string;
   initializeAuth: () => void;
@@ -44,21 +44,15 @@ const useAuthStore = create<AuthStore>((set) => ({
     }
     return token;
   },
-  signup: async ({ email, password, name, phoneNumber }: AuthValues) => {
+  signup: async ({ email, password, name }: AuthValues) => {
     await axios.post(`${API_BASE_URL}/api/auth/signup`, {
       email,
       password,
       name,
-      phoneNumber,
+    
     });
   },
   initializeAuth: async () => {
-    // const token = localStorage.getItem("accessToken");
-    // const userName = localStorage.getItem("userName");
-
-    // if (token && userName) {
-    //   set({ isLoggedIn: true, userName });
-    // }
     try {
       const res = await axios.post(
         `${API_BASE_URL}/api/auth/refresh`,
