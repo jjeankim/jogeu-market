@@ -3,7 +3,7 @@ import { ButtonSmall } from "../ui/Button";
 
 const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
   return (
-    <div className="w-full sticky  bg-white rounded-lg h-80 p-6 space-y-3 flex flex-col justify-between ">
+    <div className="w-full sticky  bg-white rounded-lg shadow-sm h-80 p-6 space-y-3 flex flex-col justify-between ">
       <div className="flex flex-col space-y-3">
         <div className="flex justify-between">
           <span>총 상품 금액</span>
@@ -30,9 +30,6 @@ const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
       </div>
 
       <div className="flex flex-col space-y-2 ">
-        <ButtonSmall className="w-full" variant="outline">
-          위시리스트
-        </ButtonSmall>
         <ButtonSmall className="w-full"> 주문하기</ButtonSmall>
       </div>
     </div>

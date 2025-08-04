@@ -14,7 +14,7 @@ const CartItemCard = ({
   onCheck: () => void;
 }) => {
   return (
-    <div className="space-y-3 bg-white rounded-lg  p-4">
+    <div className="space-y-3 bg-white rounded-lg  p-6 shadow-sm mx-auto  ">
       <div className="flex ">
         <input
           type="checkbox"
@@ -43,10 +43,7 @@ const CartItemCard = ({
         </div>
       </div>
       <div className="flex w-full space-x-3 text-sm">
-        <ButtonSmall className="w-1/2" variant="outline">
-          위시리스트
-        </ButtonSmall>
-        <ButtonSmall className="w-1/2"> 주문하기</ButtonSmall>
+        <ButtonSmall className="w-full bg-logo"> 주문하기</ButtonSmall>
       </div>
     </div>
   );

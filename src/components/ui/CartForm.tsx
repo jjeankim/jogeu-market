@@ -50,7 +50,7 @@ const CartForm = () => {
   };
 
   return (
-    <div className="container mx-auto  px-28 mt-10 ">
+    <div className=" mx-auto mt-10 ">
       <h1 className="text-2xl text-center border-b-2 py-3 mb-3 border-gray-200">
         장바구니
       </h1>
@@ -69,7 +69,7 @@ const CartForm = () => {
             <span className="underline">선택 삭제</span>
           </div>
         </div>
-        <div className="w-full grid grid-cols-[60%_40%] gap-6  p-10 text-sm bg-[#c3cdff] rounded-xl mb-7">
+        <div className="w-full grid grid-cols-[60%_40%] gap-6  p-10 text-sm bg-bg/50   rounded-xl mb-7">
           {/* 상품 list */}
           <div className="flex flex-col space-y-6 w-full">
             {sampleProducts.map((product) => (
