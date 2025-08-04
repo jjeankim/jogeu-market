@@ -1,14 +1,10 @@
-import { ReactNode } from "react";
+import { fetchMyOrder } from "@/lib/apis/order";
+import type {
+  MyPageOrderStatusCardProps,
+  OrderStatusCount,
+} from "@/types/my/order";
+import { useEffect, useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
-
-interface OrderStatusCount {
-  count: number;
-  status: string;
-}
-
-interface MyPageOrderStatusCardProps {
-  children: ReactNode;
-}
 
 const OrderStatusCount = ({ count, status }: OrderStatusCount) => {
   return (
@@ -20,9 +16,22 @@ const OrderStatusCount = ({ count, status }: OrderStatusCount) => {
 };
 
 const MyPageOrderStatusCard = ({ children }: MyPageOrderStatusCardProps) => {
+  const [orderList, setOrderList] = useState([])
+
+  useEffect(() => {
+    const getMyOrder = async () => {
+      const myOrder = await fetchMyOrder();
+      setOrderList(myOrder)
+    }
+    getMyOrder()
+  },[])
+
+  console.log(orderList);
+  // order 모델에 주문 상태누락으로 추후 변경해야함
+
   return (
     <div className="mb-20">
-      {children} 
+      {children}
       <div className="border-2 rounded-2xl flex justify-between items-center px-16 py-6">
         <OrderStatusCount count={0} status="주문완료" />
         <FiChevronRight size={35} />

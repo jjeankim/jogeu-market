@@ -1,11 +1,18 @@
+import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
-import MypageUserSetting from "@/components/my/setting/MypageUserSetting";
 
+const MypageReviewList = () => {
+  return (
+    <div>
+      <SubTitle title="내 상품 후기" />
+    </div>
+  );
+};
 
 const index = () => {
   return (
     <MyPageLayoutWithWelcome>
-      <MypageUserSetting />
+      <MypageReviewList />
     </MyPageLayoutWithWelcome>
   );
 };

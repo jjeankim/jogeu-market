@@ -1,3 +1,4 @@
+
 import axiosInstance from "../axiosInstance";
 
 export interface Product {
@@ -42,3 +43,4 @@ export const fetchProductById = async (id: number): Promise<Product | null> => {
     return null;
   }
 }; 
+

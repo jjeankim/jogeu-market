@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import MainSwiper from "./MainSwiper";
 import ListCard from './ui/ListCard';
 import { fetchProducts, Product } from '@/lib/apis/product';
 
 const MainForm = () => {
+  const [productList, setProductList] = useState<Product[]>([]);
   const router = useRouter();
   const { menu, category } = router.query;
   const [products, setProducts] = useState<Product[]>([]);
@@ -11,18 +14,17 @@ const MainForm = () => {
   const [error, setError] = useState<string | null>(null);
 
   const getTitle = () => {
-    switch(menu) {
-      case 'brand': return 'BRAND';
-      case 'pick': return 'PICK';
-      case 'new': return 'NEW';
-      default: return 'BEST';
+    switch (menu) {
+      case "brand":
+        return "BRAND";
+      case "pick":
+        return "PICK";
+      case "new":
+        return "NEW";
+      default:
+        return "BEST";
     }
-  }; 
-
-  const handleCategoryClick = (category : string) => {
-    const currentMenu = menu || 'best'; // 현재 메뉴 정보 유지
-    router.push(`/?menu=${currentMenu}&category=${category}`);
-  }
+  };
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -96,6 +98,7 @@ const MainForm = () => {
       </div>
     </div>
     </main>
+
     </>
   );
 };

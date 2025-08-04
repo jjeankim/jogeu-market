@@ -1,14 +1,9 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { ModalLayoutProps } from "@/types/my/settings";
+import { useEffect, useRef } from "react";
 import { FiX } from "react-icons/fi";
-
-interface ModalLayoutProps {
-  children: ReactNode;
-  onClose: () => void;
-}
 
 const ModalLayout = ({ children, onClose }: ModalLayoutProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -24,7 +19,7 @@ const ModalLayout = ({ children, onClose }: ModalLayoutProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
-  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
       <div
