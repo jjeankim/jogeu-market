@@ -23,7 +23,7 @@ export interface ProductResponse {
   products: Product[];
 }
 
-export const fetchProducts = async (category?: string): Promise<Product[]> => {
+export const axiosProducts = async (category?: string): Promise<Product[]> => {
   try {
     const params = category && category !== 'all' ? `?category=${category}` : '';
     const res = await axiosInstance.get(`/api/products?${params}`);
@@ -34,7 +34,7 @@ export const fetchProducts = async (category?: string): Promise<Product[]> => {
   }
 };
 
-export const fetchProductById = async (id: number): Promise<Product | null> => {
+export const  axiosProductById = async (id: number): Promise<Product | null> => {
   try {
     const res = await axiosInstance.get(`/api/products/${id}`);
     return res.data.products;

@@ -84,8 +84,17 @@ const useAuthStore = create<AuthStore>((set) => ({
       const userName = profileRes.data.name;
       set({ userName });
       console.log(userName)
-    } catch (err) {
-      console.error("refresh 요청 실패", err);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        console.log("refresh token이 없거나 만료됨 - 로그인이 필요합니다");
+        set({ accessToken: null, isLoggedIn: false, userName: "" });
+      } else if (err.code === 'ECONNREFUSED' || err.message === 'Network Error') {
+        console.log("백엔드 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.");
+        set({ accessToken: null, isLoggedIn: false, userName: "" });
+      } else {
+        console.error("refresh 요청 실패", err);
+        set({ accessToken: null, isLoggedIn: false, userName: "" });
+      }
     }
   },
 
