@@ -1,4 +1,3 @@
-
 import axiosInstance from "../axiosInstance";
 
 export interface Product {
@@ -25,7 +24,9 @@ export interface ProductResponse {
 
 export const axiosProducts = async (category?: string): Promise<Product[]> => {
   try {
+
     const params = category && category !== 'all' ? `?category=${category}` : '';
+
     const res = await axiosInstance.get(`/api/product${params}`);
     return res.data.products;
   } catch (error) {
@@ -34,7 +35,7 @@ export const axiosProducts = async (category?: string): Promise<Product[]> => {
   }
 };
 
-export const  axiosProductById = async (id: number): Promise<Product | null> => {
+export const axiosProductById = async (id: number): Promise<Product | null> => {
   try {
     const res = await axiosInstance.get(`/api/product/${id}`);
     return res.data.products;
@@ -42,5 +43,4 @@ export const  axiosProductById = async (id: number): Promise<Product | null> => 
     console.error("상품 상세 조회 실패", error);
     return null;
   }
-}; 
-
+};
