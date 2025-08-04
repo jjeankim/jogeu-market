@@ -88,7 +88,7 @@ const SignUpForm = () => {
         />
         {errors.name && <FormErrorText>{errors.name.message}</FormErrorText>}
         <CustomInput
-          type="text"
+          type="password"
           id="password"
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요"
@@ -105,7 +105,7 @@ const SignUpForm = () => {
           <FormErrorText>{errors.password?.message}</FormErrorText>
         )}
         <CustomInput
-          type="text"
+          type="password"
           id="passwordConfirm"
           label="비밀번호 확인"
           placeholder="비밀번호 확인을 입력해주세요"
