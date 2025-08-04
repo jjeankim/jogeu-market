@@ -41,7 +41,7 @@ const Header = () => {
   };
 
   return (
-    <header className="relative w-full shrink-0">
+    <header className="relative w-full shrink-0 mt-6">
       <div className="absolute top-2 right-4 flex gap-4 text-sm text-gray-600 z-10">
         {isLoggedIn ? (
           <div className="flex gap-2 items-center">
@@ -63,9 +63,9 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="flex items-start justify-between px-6 py-4">
+      <div className="flex items-start justify-between">
         <div className="flex flex-col">
-          <Link href="/">
+          <Link href="/" className="w-50 inline-block">
             <Image
               src="/images/logo_s_jogeuMarket.svg"
               alt="조그마켓 로고"
@@ -75,7 +75,9 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center gap-6 mt-8">
-            <HiMenu size={24} className="text-gray-600 " />
+            <HiMenu size={24} className="text-gray-600  relative" />
+            <div className="absolute w-full h-72   bg-amber-200 top-36  z-50 rounded-b-4xl"></div>
+
             <nav className="flex gap-30 text-2xl font-medium">
               <button
                 onClick={() => handleMenuClick("best")}
