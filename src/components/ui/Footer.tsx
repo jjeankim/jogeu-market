@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="w-full h-72 bg-black px-10 py-4 flex justify-center items-center mx-auto">
+      <footer className="shrink-0 w-full h-72 bg-black px-10 py-4 flex justify-center items-center mx-auto">
         <div className=" w-full h-full grid grid-cols-6 gap-5 text-white ">
           <div className="w-full col-span-2 companyInfo flex flex-col justify-between  space-y-1  text-xs ">
             <h4 className="font-bold text-lg mb-3">COMPANY.조그 마켓</h4>

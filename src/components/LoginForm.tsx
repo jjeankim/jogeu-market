@@ -33,7 +33,7 @@ const LoginForm = () => {
 
   const onSubmit = async ({ email, password }: AuthValues) => {
     try {
-      const token = await login({ email, password });
+      await login({ email, password });
       router.push("/");
       showSuccess("로그인에 성공했습니다.");
     } catch (error) {

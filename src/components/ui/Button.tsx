@@ -7,12 +7,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ children, variant = "filled", ...rest }: ButtonProps) => {
-  const baseClass = "w-full text-xl p-4 rounded-[10px] cursor-pointer";
+  const baseClass = "w-full text-xl p-4 rounded-[10px] hover:bg-[#3348C7] hover:text-white cursor-pointer";
 
   const variantClass =
     variant === "filled"
       ? "bg-[#405DE6] text-white"
-      : "border border-[#405DE6] text-[#405DE6] bg-white";
+      : "border border-[#405DE6] hover:bg-[#3348C7] hover:text-white text-[#405DE6] bg-white";
 
   return (
     <button className={clsx(baseClass, variantClass)} {...rest}>

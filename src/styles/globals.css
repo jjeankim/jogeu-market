@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-logo: #b29977;
+
+  --color-logo: #B29977;
 }
 
 @font-face {

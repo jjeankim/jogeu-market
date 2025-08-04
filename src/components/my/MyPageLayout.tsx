@@ -8,7 +8,7 @@ interface MyPageLayout {
 
 const MyPageLayout = ({ children, pageTitle }: MyPageLayout) => {
   return (
-    <main className="m-20 flex gap-10">
+    <main className="m-20 mb-40 flex gap-10">
       <section className="flex-1">
         <h2 className="text-3xl font-bold inline-block mb-20">{pageTitle}</h2>
         <MyPageAside />
