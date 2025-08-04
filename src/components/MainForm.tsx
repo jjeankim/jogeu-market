@@ -6,7 +6,6 @@ import ListCard from './ui/ListCard';
 import { fetchProducts, Product } from '@/lib/apis/product';
 
 const MainForm = () => {
-  const [productList, setProductList] = useState<Product[]>([]);
   const router = useRouter();
   const { menu, category } = router.query;
   const [products, setProducts] = useState<Product[]>([]);
@@ -24,6 +23,16 @@ const MainForm = () => {
       default:
         return "BEST";
     }
+  };
+
+  const handleCategoryClick = (selectedCategory: string) => {
+    router.push({
+      pathname: router.pathname,
+      query: { 
+        ...router.query,
+        category: selectedCategory 
+      }
+    });
   };
 
   useEffect(() => {
@@ -57,7 +66,7 @@ const MainForm = () => {
   return (
     <>
     <main className=" mt-5 flex flex-col">
-    <p className="h-[15rem] w-full mt-10 mb-30 bg-lime-50">여기가 배너이미지~~</p>
+    <MainSwiper />
  
     {/* 필터와 제품 리스트를 가로로 배치 */}
     <div className='flex flex-row gap-10'>
