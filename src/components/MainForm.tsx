@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MainSwiper from "./MainSwiper";
 import ListCard from './ui/ListCard';
-import { fetchProducts, Product } from '@/lib/apis/product';
+import { axiosProducts, Product } from '@/lib/apis/product';
 
 const MainForm = () => {
   const router = useRouter();
@@ -40,7 +40,7 @@ const MainForm = () => {
       setLoading(true);
       setError(null);
       try {
-        const productData = await fetchProducts(category as string);
+        const productData = await axiosProducts(category as string);
         setProducts(productData);
       } catch (error) {
         console.error('상품 데이터 로딩 실패:', error);
