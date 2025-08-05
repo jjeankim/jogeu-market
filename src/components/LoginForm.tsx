@@ -9,13 +9,9 @@ import axios from "axios";
 import SocialLoginLink from "./SocialLoginLink";
 import AuthFormLayout from "./ui/AuthFormLayout";
 import FormErrorText from "./FormErrorText";
+import { AuthValues } from "@/types/auth";
 
-export interface AuthValues {
-  email: string;
-  name?: string;
-  password: string;
-  passwordConfirm?: string;
-}
+
 
 const LoginForm = () => {
   const router = useRouter();
