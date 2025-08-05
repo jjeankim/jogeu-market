@@ -1,15 +1,24 @@
 import { CartPayProps } from "@/types/cart/cart";
 import Button from "./Button";
-import Link from "next/link";
 
-const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
+interface ExtendedCartPayProps extends CartPayProps {
+  onOrderClick?: () => void;
+  selectedItemsCount?: number;
+}
+
+const CartPaymentInfo = ({ 
+  totalPrice, 
+  shippingFee, 
+  onOrderClick,
+  selectedItemsCount = 0 
+}: ExtendedCartPayProps) => {
   const finalPrice = totalPrice + shippingFee;
   
   return (
     <div className="w-full sticky bg-white rounded-lg shadow-sm h-80 p-6 space-y-3 flex flex-col justify-between">
       <div className="flex flex-col space-y-3">
         <div className="flex justify-between">
-          <span>총 상품 금액</span>
+          <span>선택 상품 ({selectedItemsCount}개)</span>
           <div className="flex">
             <span>{totalPrice.toLocaleString()}</span>
             <span>원</span>
@@ -38,9 +47,14 @@ const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
       </div>
 
       <div className="flex flex-col space-y-2 ">
-        <Link href="/pay/checkout">
-          <Button color='gold' className="w-full text-lg"> 주문하기</Button>
-        </Link>
+        <Button 
+          color='gold' 
+          className="w-full text-lg" 
+          onClick={onOrderClick}
+          disabled={selectedItemsCount === 0}
+        > 
+          주문하기 ({selectedItemsCount}개)
+        </Button>
       </div>
     </div>
   );
