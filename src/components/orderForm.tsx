@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Button, { ButtonSmall } from './ui/Button'
+import PayBox from './ui/PayBox'
 import { useRouter } from 'next/router'
 
 // 카카오 주소 API 콜백 함수 타입 선언
@@ -221,54 +222,15 @@ const OrderForm = () => {
             </div>
           </div>
 
-          <div className="lg:w-80">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
-              <h2 className="text-xl font-semibold mb-4">결제정보</h2>
-              <div className="border-b border-gray-200 mb-4"></div>
-              
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">총 상품금액</span>
-                  <span className="font-medium">3,000원</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">총 배송비</span>
-                  <span className="font-medium">+ 0원</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">총 할인금액</span>
-                  <span className="font-medium text-red-600">- 1,000원</span>
-                </div>
-                
-                <div className="border-t border-gray-200 pt-3 mt-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold">총 결제금액</span>
-                    <span className="text-xl font-bold text-blue-600">2,000원</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-6 space-y-4">
-                <div className="flex items-start space-x-3">
-                  <input 
-                    type="checkbox" 
-                    checked={isAgreed}
-                    onChange={(e) => setIsAgreed(e.target.checked)}
-                    className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label className="text-sm text-gray-700 leading-relaxed">
-                    주문동의 및 개인정보 수집 이용 동의
-                  </label>
-                </div>
-                
-                <Button 
-                  onClick={() => router.push('/pay/checkout')}
-                  disabled={!isAgreed}>
-                  결제하기 2,000 원
-                </Button>
-              </div>
-            </div>
-          </div>
+          <PayBox
+            productAmount={3000}
+            shippingFee={0}
+            discountAmount={1000}
+            totalAmount={2000}
+            isAgreed={isAgreed}
+            onAgreedChange={setIsAgreed}
+            onPaymentClick={() => router.push('/pay/checkout')}
+          />
         </div>
       </div>
 
