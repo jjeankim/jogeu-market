@@ -1,5 +1,5 @@
 import { CartPayProps } from "@/types/cart/cart";
-import { ButtonSmall } from "../ui/Button";
+import Button from "./Button";
 
 const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
   return (
@@ -30,7 +30,7 @@ const CartPaymentInfo = ({ totalPrice, shippingFee }: CartPayProps) => {
       </div>
 
       <div className="flex flex-col space-y-2 ">
-        <ButtonSmall className="w-full"> 주문하기</ButtonSmall>
+        <Button color='gold' className="w-full"> 주문하기</Button>
       </div>
     </div>
   );
