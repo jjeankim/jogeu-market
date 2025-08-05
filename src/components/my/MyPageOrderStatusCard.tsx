@@ -1,4 +1,4 @@
-import { fetchMyOrder } from "@/lib/apis/order";
+import { fetchMyOrderList } from "@/lib/apis/order";
 import type {
   MyPageOrderStatusCardProps,
   OrderStatusCount,
@@ -20,7 +20,7 @@ const MyPageOrderStatusCard = ({ children }: MyPageOrderStatusCardProps) => {
 
   useEffect(() => {
     const getMyOrder = async () => {
-      const myOrder = await fetchMyOrder();
+      const myOrder = await fetchMyOrderList();
       setOrderList(myOrder)
     }
     getMyOrder()
