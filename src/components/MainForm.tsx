@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MainSwiper from "./MainSwiper";
-import ListCard from './ui/ListCard';
+import ListCard from "./ui/ListCard";
 import { axiosProducts, Product } from '@/lib/apis/product';
 
 const MainForm = () => {
@@ -40,7 +40,10 @@ const MainForm = () => {
       setLoading(true);
       setError(null);
       try {
-        const productData = await axiosProducts(category as string);
+        const productData = await axiosProducts(
+          category as string,
+          menu as string,
+            10 );
         setProducts(productData);
       } catch (error) {
         console.error('상품 데이터 로딩 실패:', error);
@@ -51,7 +54,7 @@ const MainForm = () => {
     };
 
     loadProducts();
-  }, [category]);
+  }, [category, menu]);
 
   // ListCard에 맞는 형식으로 데이터 변환
   const transformProductForListCard = (product: Product) => ({
