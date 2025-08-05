@@ -1,10 +1,10 @@
 import { clsx } from "clsx";
-import { ButtonHTMLAttributes, ReactNode} from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: "filled" | "outlined";
-  size?: "sm" | "md" | "lg" |"full";
+  size?: "sm" | "md" | "lg" | "full";
 }
 
 const Button = ({
@@ -14,14 +14,19 @@ const Button = ({
   className,
   ...rest
 }: ButtonProps) => {
-  const baseClass = "w-full text-xl p-4 rounded-[10px] cursor-pointer";
-  const variantClass =
-    variant === "filled"
+  const baseClass = "text-xl p-4 rounded-[10px] cursor-pointer";
+  // const variantClass =
+  //   variant === "filled"
+  //     ? "bg-black text-white hover:opacity-60 hover:text-white"
+  //     : "border hover:bg-[#3348C7] hover:text-white text-black bg-white";
+  const variantClass = !disabled
+    ? variant === "filled"
       ? "bg-black text-white hover:opacity-60 hover:text-white"
-      : "border hover:bg-[#3348C7] hover:text-white text-black bg-white";
+      : "border hover:bg-[#3348C7] hover:text-white text-black bg-white"
+    : "";
 
   const disabledClass = disabled
-    ? "opacity-50  bg-gray-400 text-gray-600 hover:bg-gray-400 hover:text-gray-600 hover:cursor-not-allowed"
+    ? "opacity-50 bg-gray-400 text-white hover:cursor-not-allowed"
     : "";
   return (
     <button

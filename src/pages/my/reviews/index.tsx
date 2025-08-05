@@ -30,7 +30,7 @@ const ReviewCard = ({ product, review, orderedAt }: ReviewCardProps) => {
               <p className="underline underline-offset-4 text-gray-500">주문일: {formmatedDate}</p>
             </div>
           </div>
-          <Button size="md" disabled={!!review?.reviewText}>
+          <Button size="sm" disabled={!!review?.reviewText}>
             {review ? "작성완료" : "후기작성"}
           </Button>
         </div>

@@ -113,7 +113,6 @@ const MyOrderPage = () => {
           <OrderTable orders={orders} />
         </div>
       </MyPageLayoutWithWelcome>
-      <Footer />
     </>
   );
 };
