@@ -11,6 +11,7 @@ const Button = ({
   children,
   variant = "filled",
   disabled,
+  size = "md",
   className,
   ...rest
 }: ButtonProps) => {
@@ -19,6 +20,14 @@ const Button = ({
   //   variant === "filled"
   //     ? "bg-black text-white hover:opacity-60 hover:text-white"
   //     : "border hover:bg-[#3348C7] hover:text-white text-black bg-white";
+
+  const sizeClass = {
+    sm: "text-sm py-2 px-3",
+    md: "text-md py-3 px-4",
+    lg: "text-lg py-4 px-5",
+    full: "w-full text-xl py-4",
+  }[size];
+
   const variantClass = !disabled
     ? variant === "filled"
       ? "bg-black text-white hover:opacity-60 hover:text-white"
@@ -30,7 +39,7 @@ const Button = ({
     : "";
   return (
     <button
-      className={clsx(baseClass, variantClass, disabledClass, className)}
+      className={clsx(baseClass, sizeClass, variantClass, disabledClass, className)}
       disabled={disabled}
       {...rest}
     >
