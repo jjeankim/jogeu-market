@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -8,6 +8,7 @@ import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { PiHeartBold } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import { HiMenu } from "react-icons/hi";
+import { IoMdClose } from "react-icons/io";
 import useAuthStore from "@/store/AuthStore";
 
 const Header = () => {
@@ -40,6 +41,12 @@ const Header = () => {
     router.push("/");
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   return (
     <header className="relative w-full shrink-0 mt-6">
       <div className="absolute top-2 right-4 flex gap-4 text-sm text-gray-600 z-10">
@@ -66,7 +73,6 @@ const Header = () => {
       <div className="flex items-start justify-between">
         <div className="flex flex-col">
           <Link href="/" className="w-50">
-
             <Image
               src="/images/logo_s_jogeuMarket.svg"
               alt="조그마켓 로고"
@@ -76,9 +82,106 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center gap-6 mt-8">
-            <HiMenu size={24} className="text-gray-600  relative" />
-            {/* <div className="absolute w-full h-72   bg-amber-200 top-36  z-50 rounded-b-4xl"></div> */}
-
+            {isMenuOpen ? (
+              <>
+                <IoMdClose
+                  size={32}
+                  onClick={toggleMenu}
+                  className="cursor-pointer"
+                />
+              </>
+            ) : (
+              <HiMenu
+                size={32}
+                onClick={toggleMenu}
+                className="cursor-pointer"
+              />
+            )}
+            <div
+              className={`shadow-b grid grid-cols-4 absolute left-0 top-36 w-full overflow-hidden z-50 bg-white transition-all duration-1000 ease-in-out transform origin-top rounded-b-2xl ${
+                isMenuOpen
+                  ? "max-h-[800px] opacity-100 scale-y-100"
+                  : "max-h-0 opacity-0 scale-y-0"
+              }`}
+            >
+              <ul className="flex flex-col items-center  p-3 space-y-4 text-lg">
+                <li className="font-semibold text-xl">Beauty</li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    스킨케어
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    메이크업
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    헤어/바디
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    미용소품
+                  </Link>
+                </li>
+              </ul>
+              <ul className="flex flex-col items-center  p-3 space-y-4 text-lg">
+                <li className="font-semibold text-xl">Food</li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    간편식
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    헬스케어
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    건강식품
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    간식/디저트
+                  </Link>
+                </li>
+              </ul>
+              <ul className="flex flex-col items-center  p-3 space-y-4 text-lg">
+                <li className="font-semibold text-xl">Living</li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    주방
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    생활
+                  </Link>
+                </li>
+              </ul>
+              <ul className="flex flex-col items-center  p-3 space-y-4 text-lg">
+                <li className="font-semibold text-xl">Pet supplies</li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    강아지
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    고양이
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:font-semibold">
+                    장난감
+                  </Link>
+                </li>
+              </ul>
+            </div>
             <nav className="flex gap-30 text-2xl font-medium">
               <button
                 onClick={() => handleMenuClick("best")}
