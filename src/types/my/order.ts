@@ -40,6 +40,7 @@ export interface ReviewCardProps {
   product: Product;
   review?: Review | null;
   orderedAt: string;
+  id?: number;
   onWriteReview?: () => void
 }
 
