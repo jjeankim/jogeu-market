@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Button, { ButtonSmall } from './ui/Button'
+import Button from './ui/Button'
 import PayBox from './ui/PayBox'
 import { useRouter } from 'next/router'
 
@@ -117,9 +117,9 @@ const OrderForm = () => {
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">배송지 정보</h2>
-                <ButtonSmall className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm hover:bg-gray-800 transition-colors">
+                <Button className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm hover:bg-gray-800 transition-colors">
                   배송지 관리
-                </ButtonSmall>
+                </Button>
               </div>
               <div className="border-b border-gray-200 mb-4"></div>
               
@@ -153,12 +153,12 @@ const OrderForm = () => {
                       className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
                       placeholder="우편번호"
                     />
-                    <ButtonSmall 
+                    <Button
                       onClick={openJusoPopup}
                       className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm hover:bg-gray-800 transition-colors cursor-pointer"
                     >
                       우편번호
-                    </ButtonSmall>
+                    </Button>
 
                   </div>
                   <div className="space-y-2">
