@@ -1,0 +1,35 @@
+import Image from "next/image";
+
+export default function ProductImage({
+  imgUrl,
+  name,
+}: {
+  imgUrl?: string;
+  name: string;
+}) {
+  const getImageUrl = () => {
+    if (!imgUrl) return "/images/noImg.png";
+    if (
+      imgUrl.startsWith("http") &&
+      !imgUrl.includes("localhost") &&
+      !imgUrl.includes("yourcdn.com")
+    ) {
+      return "/images/noImg.png";
+    }
+    return imgUrl;
+  };
+
+  return (
+    <div className="w-[50%] relative pr-15">
+      <div className="relative overflow-hidden border-2 border-gray-100 rounded-lg aspect-square">
+        <Image
+          src={getImageUrl()}
+          width={300}
+          height={300}
+          className="w-full object-cover"
+          alt={name}
+        />
+      </div>
+    </div>
+  );
+}
