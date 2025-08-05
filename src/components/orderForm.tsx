@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react'
 import Button from './ui/Button'
 import PayBox from './ui/PayBox'
 import { useRouter } from 'next/router'
+import { CartItem } from '@/lib/apis/cart'
 
 // 카카오 주소 API 콜백 함수 타입 선언
 declare global {
   interface Window {
     daum: any
   }
+}
+
+interface OrderData {
+  items: CartItem[];
+  totalPrice: number;
+  shippingFee: number;
 }
 
 const OrderForm = () => {
@@ -19,6 +26,38 @@ const OrderForm = () => {
     addrDetail: ''
   })
   const [isAgreed, setIsAgreed] = useState(false)
+  const [orderData, setOrderData] = useState<OrderData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // 세션 스토리지에서 주문 데이터 읽어오기
+  useEffect(() => {
+    console.log('OrderForm: 세션스토리지에서 데이터 읽기 시도');
+    
+    // 브라우저 환경에서만 세션스토리지 접근
+    if (typeof window !== 'undefined') {
+      const savedOrderData = sessionStorage.getItem('orderData')
+      console.log('OrderForm: 저장된 데이터:', savedOrderData);
+      
+      if (savedOrderData) {
+        try {
+          const parsedData = JSON.parse(savedOrderData)
+          console.log('OrderForm: 파싱된 데이터:', parsedData);
+          setOrderData(parsedData)
+        } catch (error) {
+          console.error('주문 데이터 파싱 실패:', error)
+          router.push('/cart')
+        }
+      } else {
+        console.log('OrderForm: 주문 데이터가 없음, 장바구니로 리다이렉트');
+        // 주문 데이터가 없으면 장바구니로 리다이렉트
+        router.push('/cart')
+      }
+    } else {
+      console.log('OrderForm: 서버 환경에서는 세션스토리지 접근 불가');
+    }
+    
+    setLoading(false)
+  }, [router])
 
 
 
@@ -43,6 +82,25 @@ const OrderForm = () => {
     document.head.appendChild(script)
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">주문 정보를 불러오는 중...</div>
+      </div>
+    )
+  }
+
+  if (!orderData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg text-gray-600 mb-4">주문 데이터를 찾을 수 없습니다</div>
+          <Button onClick={() => router.push('/cart')}>장바구니로 돌아가기</Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -56,19 +114,38 @@ const OrderForm = () => {
       
           <div className="flex-1 space-y-8">
             
-
+            {/* 주문 상품들 */}
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">주문 상품 1</h2>
+              <h2 className="text-xl font-semibold mb-4">주문 상품 ({orderData.items.length}개)</h2>
               <div className="border-b border-gray-200 mb-4"></div>
               
-              <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
-                <div className="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0"></div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-gray-900">라운드랩 1025 독도 토너 키트</h3>
-                  <p className="text-lg font-semibold text-blue-600 mt-1">3,000원</p>
-                  <p className="text-sm text-gray-600 mt-1">배송: [무료] / 기본배송</p>
-                  <p className="text-sm text-gray-600">수량: 1개</p>
-                </div>
+              <div className="space-y-4">
+                {orderData.items.map((item) => (
+                  <div key={item.id} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
+                      {item.product.thumbnailImageUrl ? (
+                        <img 
+                          src={item.product.thumbnailImageUrl} 
+                          alt={item.product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200"></div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium text-gray-900">{item.product.name}</h3>
+                      <p className="text-lg font-semibold text-blue-600 mt-1">
+                        {parseInt(item.product.price).toLocaleString()}원
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">배송: [무료] / 기본배송</p>
+                      <p className="text-sm text-gray-600">수량: {item.quantity}개</p>
+                      <p className="text-sm font-semibold text-gray-800 mt-1">
+                        소계: {(parseInt(item.product.price) * item.quantity).toLocaleString()}원
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -223,13 +300,25 @@ const OrderForm = () => {
           </div>
 
           <PayBox
-            productAmount={3000}
-            shippingFee={0}
-            discountAmount={1000}
-            totalAmount={2000}
+            productAmount={orderData.totalPrice}
+            shippingFee={orderData.shippingFee}
+            discountAmount={0}
+            totalAmount={orderData.totalPrice + orderData.shippingFee}
             isAgreed={isAgreed}
             onAgreedChange={setIsAgreed}
-            onPaymentClick={() => router.push('/pay/checkout')}
+            onPaymentClick={() => {
+              // 주문 정보를 결제 페이지로 전달
+              if (typeof window !== 'undefined') {
+                sessionStorage.setItem('paymentData', JSON.stringify({
+                  ...orderData,
+                  orderInfo: {
+                    address: addressData,
+                    // 추가 주문 정보들을 여기에 포함할 수 있음
+                  }
+                }))
+              }
+              router.push('/pay/checkout')
+            }}
           />
         </div>
       </div>

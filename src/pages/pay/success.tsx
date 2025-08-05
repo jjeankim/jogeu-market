@@ -85,21 +85,6 @@ const Success = () => {
             {paymentData?.paymentKey}
           </div>
         </div>
-        <div className="h-full flex flex-wrap -mr-6 pt-1 pb-1 px-2">
-          <button 
-            className="text-[#f9fafb] bg-[#3182f6] my-[30px] mx-[15px] mt-0 text-[15px] font-semibold leading-[18px] whitespace-nowrap text-center cursor-pointer border-0 border-transparent select-none transition-all duration-200 ease-in-out no-underline rounded-[7px] py-[11px] px-4 w-[250px] inline-block hover:text-white hover:bg-[#1b64da] flex-[0_0_41.66667%] max-w-[41.66667%]" 
-            onClick={() => window.open('https://docs.tosspayments.com/guides/v2/payment-widget/integration')}
-          >
-            연동 문서
-          </button>
-          <button 
-            className="text-[#f9fafb] bg-[#3182f6] my-[30px] mx-[15px] mt-0 text-[15px] font-semibold leading-[18px] whitespace-nowrap text-center cursor-pointer border-0 border-transparent select-none transition-all duration-200 ease-in-out no-underline rounded-[7px] py-[11px] px-4 w-[250px] inline-block hover:text-white hover:bg-[#1b64da] flex-[0_0_41.66667%] max-w-[41.66667%]" 
-            onClick={() => window.open('https://discord.gg/A4fRFXQhRu')}
-            style={{ backgroundColor: "#e8f3ff", color: "#1b64da" }}
-          >
-            실시간 문의
-          </button>
-        </div>
         
         <div className="h-full flex flex-wrap -mr-6 pt-1 pb-1 px-2">
           <button 
@@ -112,12 +97,6 @@ const Success = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-[50px] mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap w-[600px] max-w-[600px] mx-auto text-left">
-        <b>Response Data :</b>
-        <div style={{ whiteSpace: "initial" }}>
-          {responseData && <pre>{JSON.stringify(responseData, null, 4)}</pre>}
-        </div>
-      </div>
     </>
   );
 };

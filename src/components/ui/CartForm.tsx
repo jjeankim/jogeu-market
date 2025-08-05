@@ -130,12 +130,40 @@ const CartForm = () => {
     }
   };
 
-  // 계산
+  // 계산 (함수들보다 먼저 정의)
   const selectedItems = cartItems.filter(item => checkedItems[item.id]);
   const totalPrice = selectedItems.reduce((sum, item) => {
     return sum + (parseInt(item.product.price) * item.quantity);
   }, 0);
   const shippingFee = totalPrice > 50000 ? 0 : 3000;
+
+  // 주문하기
+  const handleOrderClick = () => {
+    console.log('주문하기 클릭됨, 선택된 아이템들:', selectedItems);
+    console.log('체크된 아이템들:', checkedItems);
+    
+    if (selectedItems.length === 0) {
+      alert('주문할 상품을 선택해주세요.');
+      return;
+    }
+
+    // 선택된 상품 정보를 세션 스토리지에 저장
+    const orderData = {
+      items: selectedItems,
+      totalPrice,
+      shippingFee
+    };
+    
+    console.log('장바구니에서 저장하는 주문 데이터:', orderData);
+    
+    // 브라우저 환경에서만 세션스토리지 사용
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('orderData', JSON.stringify(orderData));
+      console.log('세션스토리지에 저장된 데이터:', sessionStorage.getItem('orderData'));
+    }
+    
+    router.push('/order');
+  };
 
   if (loading) {
     return (
@@ -203,6 +231,8 @@ const CartForm = () => {
             <CartPaymentInfo
               totalPrice={totalPrice}
               shippingFee={shippingFee}
+              onOrderClick={handleOrderClick}
+              selectedItemsCount={selectedItems.length}
             />
           </div>
         </div>
