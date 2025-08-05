@@ -73,6 +73,11 @@ const PayBox = ({
           <Button 
             onClick={onPaymentClick}
             disabled={!isAgreed}
+            className={`w-full text-lg p-4 rounded-[10px] cursor-pointer ${
+              !isAgreed 
+                ? 'opacity-50 cursor-not-allowed bg-gray-400 text-gray-600' 
+                : 'bg-[#405DE6] text-white hover:bg-[#3348C7] hover:text-white'
+            }`}
           >
             {finalPaymentText}
           </Button>

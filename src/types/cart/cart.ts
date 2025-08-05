@@ -7,6 +7,28 @@ export type Product = {
   showShippingInfo?: boolean;
 };
 
+export type CartItemType = {
+  id: number;
+  userId: number;
+  productId: number;
+  quantity: number;
+  product: {
+    id: number;
+    name: string;
+    price: string;
+    productCode: string;
+    thumbnailImageUrl: string | null;
+    detailDescription: string;
+    isSample: boolean;
+    samplePrice: string;
+    stockQuantity: number;
+    brand: {
+      id: number;
+      name: string;
+    };
+  };
+};
+
 export type CartPayProps = {
   totalPrice: number;
   shippingFee: number;

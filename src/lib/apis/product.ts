@@ -22,13 +22,30 @@ export interface ProductResponse {
   products: Product[];
 }
 
-export const axiosProducts = async (category?: string): Promise<Product[]> => {
+export const axiosProducts = async (
+  category?: string, 
+  menu?: string, 
+  limit?: number
+): Promise<Product[]> => {
   try {
-
-    const params = category && category !== 'all' ? `?category=${category}` : '';
-
-    const res = await axiosInstance.get(`/api/product${params}`);
-
+    const params = new URLSearchParams();
+    
+    if (category && category !== 'all') {
+      params.append('category', category);
+    }
+    
+    if (menu && menu !== 'all') {
+      params.append('menu', menu);
+    }
+    
+    if (limit) {
+      params.append('limit', limit.toString());
+    }
+    
+    const queryString = params.toString();
+    const url = queryString ? `/api/product?${queryString}` : '/api/product';
+    
+    const res = await axiosInstance.get(url);
     return res.data.products;
   } catch (error) {
     console.error("상품 목록 조회 실패", error);
