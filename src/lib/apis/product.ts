@@ -28,6 +28,7 @@ export const axiosProducts = async (category?: string): Promise<Product[]> => {
     const params = category && category !== 'all' ? `?category=${category}` : '';
 
     const res = await axiosInstance.get(`/api/product${params}`);
+
     return res.data.products;
   } catch (error) {
     console.error("상품 목록 조회 실패", error);
