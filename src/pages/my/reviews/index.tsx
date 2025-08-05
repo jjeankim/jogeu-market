@@ -7,6 +7,8 @@ import { fetchMyOrderList } from "@/lib/apis/order";
 import { Order, ReviewCardProps } from "@/types/my/order";
 import { useEffect, useState } from "react";
 import ReviewModal from "@/components/my/review/ReviewModal";
+import WrittenReviewCard from "@/components/my/review/WrittenReviewCard";
+
 
 const MyReviewPage = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
@@ -58,11 +60,11 @@ const MyReviewPage = () => {
       orderedAt: order.orderedAt,
     }))
   );
-  
+
   const writtenCount = allOrderItems.filter(
     (item) => !!item.review?.reviewText
   ).length;
-  
+
   const unwrittenCount = allOrderItems.filter(
     (item) => !item.review?.reviewText
   ).length;
@@ -79,28 +81,38 @@ const MyReviewPage = () => {
               {`작성 가능한 후기 (${unwrittenCount})`}
             </Button>
             <Button onClick={() => setFilter("written")} variant="outlined">
-            {`작성한 후기 (${writtenCount})`}
+              {`작성한 후기 (${writtenCount})`}
             </Button>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-8 border-t-2 py-10">
+        <div className="grid grid-cols-1 border-t-2">
           {filteredItems.length > 0 ? (
-            filteredItems.map((item) => (
-              <ReviewCard
-                key={item.id}
-                product={item.product}
-                review={item.review}
-                orderedAt={item.orderedAt}
-                onWriteReview={() =>
-                  openModal({
-                    product: item.product,
-                    review: item.review,
-                    orderedAt: item.orderedAt,
-                    id:item.id,
-                  })
-                }
-              />
-            ))
+            filteredItems.map((item) =>
+              filter === "written" ? (
+                <WrittenReviewCard
+                  key={item.id}
+                  product={item.product}
+                  review={item.review}
+                  orderedAt={item.orderedAt}
+                  id={item.id}
+                />
+              ) : (
+                <ReviewCard
+                  key={item.id}
+                  product={item.product}
+                  review={item.review}
+                  orderedAt={item.orderedAt}
+                  onWriteReview={() =>
+                    openModal({
+                      product: item.product,
+                      review: item.review,
+                      orderedAt: item.orderedAt,
+                      id: item.id,
+                    })
+                  }
+                />
+              )
+            )
           ) : (
             <p className="col-span-2 text-gray-500 text-center">
               {filter === "written"

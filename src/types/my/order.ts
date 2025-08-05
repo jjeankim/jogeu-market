@@ -18,10 +18,15 @@ export type Review = {
   createdAt: string;
 };
 
+type ProductBrand = {
+  name: string;
+}
+
 export type Product = {
   id: number;
   name: string;
   thumbnailImageUrl?: string;
+  brand:ProductBrand;
 };
 
 export type OrderItem = {
