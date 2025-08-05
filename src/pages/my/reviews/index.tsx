@@ -1,14 +1,44 @@
 import ReviewCard from "@/components/my/review/ReviewCard";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
-import Button from "@/components/ui/Button";
 import ModalLayout from "@/components/ui/ModalLayout";
 import { fetchMyOrderList } from "@/lib/apis/order";
 import { Order, ReviewCardProps } from "@/types/my/order";
 import { useEffect, useState } from "react";
 import ReviewModal from "@/components/my/review/ReviewModal";
 import WrittenReviewCard from "@/components/my/review/WrittenReviewCard";
+import Image from "next/image";
+import { formatKoreanDate } from "@/lib/utils/date";
 
+export const ReviewCardLayout = ({
+  product,
+  review,
+  orderedAt,
+  onWriteReview,
+  children,
+}: ReviewCardProps) => {
+  return (
+    <div className="flex items-center gap-10">
+      <Image
+        className="rounded-[10px]"
+        src={"/images/립.png"}
+        width={100}
+        height={100}
+        alt={`${product.name}사진`}
+      />
+      <div>
+        <p className="text-md mb-1 text-gray-500">{`[${product.brand.name}]`}</p>
+        <p className="text-xl mb-4">{product.name}</p>
+        <p className="text-sm text-gray-500">
+          {orderedAt ? `주문일: ${formatKoreanDate(orderedAt)}` : "\u00A0"}
+        </p>
+      </div>
+      {review && <div></div>}
+      {onWriteReview && <div></div>}
+      {children && <div></div>}
+    </div>
+  );
+};
 
 const MyReviewPage = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
@@ -77,15 +107,21 @@ const MyReviewPage = () => {
         <div className="flex justify-between">
           <SubTitle title="내 상품 후기" />
           <div className="flex gap-4 items-center">
-            <Button onClick={() => setFilter("unwritten")} variant="outlined">
+            <button
+              onClick={() => setFilter("unwritten")}
+              className="cursor-pointer"
+            >
               {`작성 가능한 후기 (${unwrittenCount})`}
-            </Button>
-            <Button onClick={() => setFilter("written")} variant="outlined">
+            </button>
+            <button
+              onClick={() => setFilter("written")}
+              className="cursor-pointer"
+            >
               {`작성한 후기 (${writtenCount})`}
-            </Button>
+            </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 border-t-2">
+        <div className="grid grid-cols-1 border-t-2 relative">
           {filteredItems.length > 0 ? (
             filteredItems.map((item) =>
               filter === "written" ? (
