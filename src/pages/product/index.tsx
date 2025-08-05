@@ -78,9 +78,6 @@ const ProductList = () => {
                 value={sortValue}
                 onChange={setSortValue}
               />
-              <div>
-                <PiSlidersDuotone className="text-lg" />
-              </div>
             </div>
           </div>
         </div>

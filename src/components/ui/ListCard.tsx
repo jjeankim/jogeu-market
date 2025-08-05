@@ -2,7 +2,7 @@ import Image from "next/image";
 import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
 import { FiStar } from "react-icons/fi";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/lib/axiosInstance";
 import { useToast } from "@/hooks/useToast";
 
 type Product = {
@@ -28,7 +28,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
   const handleWishClick = async () => {
     try {
       if (!wish) {
-        const res = await axios.post("/api/wishlist", {
+        const res = await axiosInstance.post("/api/wishlist", {
           productId: product.id,
         });
         showSuccess(res.data.message);
@@ -39,7 +39,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
           showError("삭제할 위시리스트 상품을 찾을 수 없습니다.");
           return;
         }
-        const res = await axios.delete(`/api/wishlist/${wishId}`);
+        const res = await axiosInstance.delete(`/api/wishlist/${wishId}`);
         showSuccess(res.data.message);
         setWish(false);
         setWishId(null);
@@ -59,7 +59,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
   // 장바구니 아이콘 클릭 시 장바구니 추가
   const handleAddCart = async () => {
     try {
-      const res = await axios.post("/api/cart", {
+      const res = await axiosInstance.post("/api/cart", {
         productId: product.id,
         quantity: 1,
       });
@@ -93,7 +93,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
           height={150}
           src={getImageUrl()}
           alt={name}
-          className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75"
+          className="aspect-square w-full rounded-lg bg-transparent object-cover group-hover:opacity-75"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = "/images/noImg.png";
