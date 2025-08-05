@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button";
+import { formatKoreanDate } from "@/lib/utils/date";
 import { ReviewCardProps } from "@/types/my/order";
 import Image from "next/image";
 
@@ -8,11 +9,7 @@ const ReviewCard = ({
   orderedAt,
   onWriteReview,
 }: ReviewCardProps) => {
-  const formmatedDate = new Date(orderedAt).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formmatedDate = formatKoreanDate(orderedAt)
   return (
     <div className="flex justify-between items-center border-2 p-6 rounded-2xl">
       <div className="flex items-center gap-10">

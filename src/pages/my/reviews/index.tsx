@@ -6,6 +6,7 @@ import ModalLayout from "@/components/ui/ModalLayout";
 import { fetchMyOrderList } from "@/lib/apis/order";
 import { Order, ReviewCardProps } from "@/types/my/order";
 import { useEffect, useState } from "react";
+import ReviewModal from "@/components/my/review/ReviewModal";
 
 const MyReviewPage = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
@@ -51,6 +52,21 @@ const MyReviewPage = () => {
       }))
   );
 
+  const allOrderItems = orderList.flatMap((order) =>
+    order.orderItems.map((item) => ({
+      ...item,
+      orderedAt: order.orderedAt,
+    }))
+  );
+  
+  const writtenCount = allOrderItems.filter(
+    (item) => !!item.review?.reviewText
+  ).length;
+  
+  const unwrittenCount = allOrderItems.filter(
+    (item) => !item.review?.reviewText
+  ).length;
+
   console.log(orderList);
 
   return (
@@ -60,10 +76,10 @@ const MyReviewPage = () => {
           <SubTitle title="내 상품 후기" />
           <div className="flex gap-4 items-center">
             <Button onClick={() => setFilter("unwritten")} variant="outlined">
-              작성 가능한 후기
+              {`작성 가능한 후기 (${unwrittenCount})`}
             </Button>
             <Button onClick={() => setFilter("written")} variant="outlined">
-              작성한 후기
+            {`작성한 후기 (${writtenCount})`}
             </Button>
           </div>
         </div>
@@ -80,6 +96,7 @@ const MyReviewPage = () => {
                     product: item.product,
                     review: item.review,
                     orderedAt: item.orderedAt,
+                    id:item.id,
                   })
                 }
               />
@@ -95,7 +112,7 @@ const MyReviewPage = () => {
       </div>
       {isModalOpen && selectedItem && (
         <ModalLayout onClose={closeModal}>
-          <div>모달 오픈</div>
+          <ReviewModal item={selectedItem} onClose={closeModal} />
         </ModalLayout>
       )}
     </MyPageLayoutWithWelcome>
