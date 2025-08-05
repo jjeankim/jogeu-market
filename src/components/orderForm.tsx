@@ -3,6 +3,9 @@ import Button from './ui/Button'
 import PayBox from './ui/PayBox'
 import { useRouter } from 'next/router'
 import { CartItem } from '@/lib/apis/cart'
+import useAuthStore from '@/store/AuthStore'
+import { fetchMyCouponList } from '@/lib/apis/coupon'
+import { fetchUser } from '@/lib/apis/user'
 
 // 카카오 주소 API 콜백 함수 타입 선언
 declare global {
@@ -17,6 +20,14 @@ interface OrderData {
   shippingFee: number;
 }
 
+interface Coupon {
+  id: number;
+  name: string;
+  discountAmount: number;
+  discountType: 'FIXED' | 'PERCENT';
+  minOrderAmount?: number;
+}
+
 const OrderForm = () => {
   const router = useRouter()
   const [addressData, setAddressData] = useState({
@@ -28,6 +39,33 @@ const OrderForm = () => {
   const [isAgreed, setIsAgreed] = useState(false)
   const [orderData, setOrderData] = useState<OrderData | null>(null)
   const [loading, setLoading] = useState(true)
+  
+  // 주문자 정보 상태
+  const [ordererInfo, setOrdererInfo] = useState({
+    name: '',
+    phone: '',
+    email: ''
+  })
+  
+  // 사용자 정보 로딩 상태
+  const [userLoading, setUserLoading] = useState(true)
+  
+  // 배송지 정보 상태
+  const [shippingInfo, setShippingInfo] = useState({
+    name: '',
+    phone: '',
+    useOrdererInfo: false
+  })
+  
+  // 배송메시지 상태
+  const [deliveryMessage, setDeliveryMessage] = useState('')
+  
+  // 쿠폰 관련 상태
+  const [coupons, setCoupons] = useState<Coupon[]>([])
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
+  const [discountAmount, setDiscountAmount] = useState(0)
+  
+  const { userName, isLoggedIn } = useAuthStore()
 
   // 세션 스토리지에서 주문 데이터 읽어오기
   useEffect(() => {
@@ -58,6 +96,103 @@ const OrderForm = () => {
     
     setLoading(false)
   }, [router])
+
+  // 쿠폰 목록 로딩
+  useEffect(() => {
+    const loadCoupons = async () => {
+      if (isLoggedIn) {
+        try {
+          const couponData = await fetchMyCouponList()
+          if (couponData) {
+            setCoupons(couponData)
+          }
+        } catch (error) {
+          console.error('쿠폰 로딩 실패:', error)
+        }
+      }
+    }
+    
+    loadCoupons()
+  }, [isLoggedIn])
+
+  // 사용자 정보 로딩
+  useEffect(() => {
+    const loadUserInfo = async () => {
+      if (isLoggedIn) {
+        try {
+          const userData = await fetchUser()
+          if (userData) {
+            setOrdererInfo({
+              name: userData.name,
+              phone: userData.phoneNumber || '',
+              email: userData.email
+            })
+          }
+        } catch (error) {
+          console.error('사용자 정보 로딩 실패:', error)
+        } finally {
+          setUserLoading(false)
+        }
+      } else {
+        setUserLoading(false)
+      }
+    }
+    
+    loadUserInfo()
+  }, [isLoggedIn])
+
+  // 배송지 정보를 주문자 정보와 동일하게 설정
+  const handleUseOrdererInfo = () => {
+    setShippingInfo(prev => ({
+      ...prev,
+      name: ordererInfo.name,
+      phone: ordererInfo.phone,
+      useOrdererInfo: true
+    }))
+  }
+
+  // 주문자 정보가 로드되면 배송지 정보도 자동으로 설정
+  useEffect(() => {
+    if (!userLoading && ordererInfo.name && ordererInfo.phone) {
+      setShippingInfo(prev => ({
+        ...prev,
+        name: ordererInfo.name,
+        phone: ordererInfo.phone,
+        useOrdererInfo: true
+      }))
+    }
+  }, [userLoading, ordererInfo.name, ordererInfo.phone])
+
+  // 쿠폰 선택 시 할인 금액 계산
+  const handleCouponChange = (couponId: string) => {
+    if (couponId === '') {
+      setSelectedCoupon(null)
+      setDiscountAmount(0)
+      return
+    }
+    
+    const coupon = coupons.find(c => c.id.toString() === couponId)
+    if (coupon && orderData) {
+      setSelectedCoupon(coupon)
+      
+      let discount = 0
+      if (coupon.discountType === 'FIXED') {
+        discount = coupon.discountAmount
+      } else if (coupon.discountType === 'PERCENT') {
+        discount = Math.floor(orderData.totalPrice * (coupon.discountAmount / 100))
+      }
+      
+      setDiscountAmount(discount)
+    }
+  }
+
+  // 필수 입력 검증
+  const isFormValid = () => {
+    return ordererInfo.name && ordererInfo.phone && 
+           shippingInfo.name && shippingInfo.phone &&
+           addressData.zipNo && addressData.roadAddrPart1 &&
+           isAgreed
+  }
 
 
 
@@ -154,40 +289,52 @@ const OrderForm = () => {
               <h2 className="text-xl font-semibold mb-4">주문자 정보</h2>
               <div className="border-b border-gray-200 mb-4"></div>
               
-              <div className="flex flex-col gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">주문자 명</label>
-                  <input 
-                    type="text" 
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="주문자 명을 입력하세요"
-                  />
+              {userLoading ? (
+                <div className="flex justify-center items-center h-32">
+                  <div className="text-lg">사용자 정보를 불러오는 중...</div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">연락처</label>
-                  <input 
-                    type="tel" 
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="연락처를 입력하세요"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">이메일</label>
-                  <div className="flex items-center space-x-2">
+              ) : (
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">주문자 명 *</label>
                     <input 
                       type="text" 
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="이메일"
+                      value={ordererInfo.name}
+                      onChange={(e) => setOrdererInfo(prev => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                      placeholder="주문자 명을 입력하세요"
+                      required
+                      readOnly
                     />
-                    <span className="text-gray-500">@</span>
+                    <p className="text-xs text-gray-500 mt-1">회원가입 시 입력한 정보입니다</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">연락처 *</label>
                     <input 
-                      type="text" 
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="도메인"
+                      type="tel" 
+                      value={ordererInfo.phone}
+                      onChange={(e) => setOrdererInfo(prev => ({ ...prev, phone: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                      placeholder="연락처를 입력하세요"
+                      required
+                      readOnly
                     />
+                    <p className="text-xs text-gray-500 mt-1">회원가입 시 입력한 정보입니다</p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">이메일</label>
+                    <input 
+                      type="email" 
+                      value={ordererInfo.email}
+                      onChange={(e) => setOrdererInfo(prev => ({ ...prev, email: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                      placeholder="이메일을 입력하세요"
+                      readOnly
+                    />
+                    <p className="text-xs text-gray-500 mt-1">회원가입 시 입력한 정보입니다</p>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
     
@@ -201,21 +348,37 @@ const OrderForm = () => {
               <div className="border-b border-gray-200 mb-4"></div>
               
               <div className="space-y-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium">배송 받으실 분</h3>
+                  <Button
+                    onClick={handleUseOrdererInfo}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition-colors"
+                  >
+                    주문자와 동일
+                  </Button>
+                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">받으실 분</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">받으실 분 *</label>
                     <input 
                       type="text" 
+                      value={shippingInfo.name}
+                      onChange={(e) => setShippingInfo(prev => ({ ...prev, name: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="받으실 분"
+                      required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">연락처</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">연락처 *</label>
                     <input 
                       type="tel" 
+                      value={shippingInfo.phone}
+                      onChange={(e) => setShippingInfo(prev => ({ ...prev, phone: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="연락처"
+                      required
                     />
                   </div>
                 </div>
@@ -265,11 +428,15 @@ const OrderForm = () => {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">배송 시 요청사항</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <select 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={deliveryMessage}
+                    onChange={(e) => setDeliveryMessage(e.target.value)}
+                  >
                     <option value="">배송 요청사항을 선택하세요</option>
-                    <option value="door">문 앞에 놓아주세요</option>
-                    <option value="security">경비실에 맡겨주세요</option>
-                    <option value="call">배송 전 연락주세요</option>
+                    <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+                    <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
+                    <option value="배송 전 연락주세요">배송 전 연락주세요</option>
                   </select>
                 </div>
               </div>
@@ -283,18 +450,26 @@ const OrderForm = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">할인/쿠폰</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="coupon1">1,000원 할인 쿠폰</option>
-                    <option value="welcome10">신규가입 10% 할인</option>
-                    <option value="summer20">여름특가 20% 할인</option>
-                    <option value="member15">회원전용 15% 할인</option>
+                  <select 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    onChange={(e) => handleCouponChange(e.target.value)}
+                    value={selectedCoupon?.id.toString() || ''}
+                  >
+                    <option value="">쿠폰을 선택하세요</option>
+                    {coupons.map((coupon) => (
+                      <option key={coupon.id} value={coupon.id.toString()}>
+                        {coupon.name} ({coupon.discountType === 'FIXED' ? `${coupon.discountAmount}원` : `${coupon.discountAmount}%`} 할인)
+                      </option>
+                    ))}
                   </select>
                 </div>
                 
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-sm font-medium text-gray-700">총 쿠폰 할인</span>
-                  <span className="text-sm font-semibold text-red-600">1,000원 할인</span>
-                </div>
+                {discountAmount > 0 && (
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-sm font-medium text-gray-700">총 쿠폰 할인</span>
+                    <span className="text-sm font-semibold text-red-600">-{discountAmount.toLocaleString()}원</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -302,23 +477,33 @@ const OrderForm = () => {
           <PayBox
             productAmount={orderData.totalPrice}
             shippingFee={orderData.shippingFee}
-            discountAmount={0}
-            totalAmount={orderData.totalPrice + orderData.shippingFee}
+            discountAmount={discountAmount}
+            totalAmount={orderData.totalPrice + orderData.shippingFee - discountAmount}
             isAgreed={isAgreed}
             onAgreedChange={setIsAgreed}
             onPaymentClick={() => {
+              if (!isFormValid()) {
+                alert('필수 입력 항목을 모두 입력해주세요.')
+                return
+              }
+              
               // 주문 정보를 결제 페이지로 전달
               if (typeof window !== 'undefined') {
                 sessionStorage.setItem('paymentData', JSON.stringify({
                   ...orderData,
                   orderInfo: {
+                    orderer: ordererInfo,
+                    shipping: shippingInfo,
                     address: addressData,
-                    // 추가 주문 정보들을 여기에 포함할 수 있음
+                    selectedCoupon: selectedCoupon,
+                    discountAmount: discountAmount,
+                    deliveryMessage: deliveryMessage
                   }
                 }))
               }
               router.push('/pay/checkout')
             }}
+            disabled={!isFormValid()}
           />
         </div>
       </div>
