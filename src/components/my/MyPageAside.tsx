@@ -16,7 +16,7 @@ const MyPageAside = () => {
       items: [
         { label: "내 상품 후기", href: "/my/reviews" },
         { label: "위시리스트", href: "/my/wishlist" },
-        { label: "상품 문의", href: "/my/qna" },
+        { label: "상품 문의", href: "/qna" },
       ],
     },
     {

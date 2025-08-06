@@ -65,7 +65,7 @@ const Header = () => {
             로그인 / 회원가입
           </Link>
         )}
-        <Link href="/support" className="hover:text-gray-800 transition-colors">
+        <Link href="/qna" className="hover:text-gray-800 transition-colors">
           고객센터
         </Link>
       </div>
