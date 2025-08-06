@@ -62,21 +62,29 @@ const MyReviewPage = () => {
     setSelectedItem(null);
   };
 
-  useEffect(() => {
-    const getMyOrderList = async () => {
-      const MyOrder = await fetchMyOrderList();
+const getMyOrderList = async() => {
+  const MyOrder = await fetchMyOrderList();
+  setOrderList(MyOrder)
+}
 
-      setOrderList(MyOrder);
-    };
+  // 나의 주문 목록을 가져옴
+  useEffect(() => {
+    
     getMyOrderList();
   }, []);
 
+  // 가져온 주문 목록에서 리뷰가 작성된 것과 작성할 것을 구분함
   const filteredItems = orderList.flatMap((order) =>
     order.orderItems
       .filter((item) => {
-        if (filter === "written") return !!item.review?.reviewText;
-        if (filter === "unwritten") return !item.review?.reviewText;
-        return true; // "all"
+        
+        // 리뷰가 존재하고, 삭제되지 않았고, 리뷰 텍스트가 있어야 하는 
+        const isWritten =
+          item.review && !item.review.isDeleted && item.review.reviewText;
+        if (filter === "written") return isWritten;
+        // isWritten 조건에 맞지 않으면서 소프트삭제 된 아이템만 노출
+        if (filter === "unwritten") return !isWritten && (!item.review?.isDeleted);
+        return true;
       })
       .map((item) => ({
         ...item,
@@ -84,20 +92,20 @@ const MyReviewPage = () => {
       }))
   );
 
-  const allOrderItems = orderList.flatMap((order) =>
-    order.orderItems.map((item) => ({
-      ...item,
-      orderedAt: order.orderedAt,
-    }))
-  );
+  // const allOrderItems = orderList.flatMap((order) =>
+  //   order.orderItems.map((item) => ({
+  //     ...item,
+  //     orderedAt: order.orderedAt,
+  //   }))
+  // );
 
-  const writtenCount = allOrderItems.filter(
-    (item) => !!item.review?.reviewText
-  ).length;
+  // const writtenCount = allOrderItems.filter(
+  //   (item) => !!item.review?.reviewText
+  // ).length;
 
-  const unwrittenCount = allOrderItems.filter(
-    (item) => !item.review?.reviewText
-  ).length;
+  // const unwrittenCount = allOrderItems.filter(
+  //   (item) => !item.review?.reviewText
+  // ).length;
 
   console.log(orderList);
 
@@ -111,13 +119,13 @@ const MyReviewPage = () => {
               onClick={() => setFilter("unwritten")}
               className="cursor-pointer"
             >
-              {`작성 가능한 후기 (${unwrittenCount})`}
+              {`작성 가능한 후기 `}
             </button>
             <button
               onClick={() => setFilter("written")}
               className="cursor-pointer"
             >
-              {`작성한 후기 (${writtenCount})`}
+              {`작성한 후기 `}
             </button>
           </div>
         </div>
@@ -131,6 +139,7 @@ const MyReviewPage = () => {
                   review={item.review}
                   orderedAt={item.orderedAt}
                   id={item.id}
+                  refreshOrderList = {getMyOrderList}
                 />
               ) : (
                 <ReviewCard
@@ -146,6 +155,7 @@ const MyReviewPage = () => {
                       id: item.id,
                     })
                   }
+
                 />
               )
             )
@@ -160,7 +170,14 @@ const MyReviewPage = () => {
       </div>
       {isModalOpen && selectedItem && (
         <ModalLayout onClose={closeModal}>
-          <ReviewModal item={selectedItem} onClose={closeModal} />
+          <ReviewModal
+            item={selectedItem}
+            onClose={() => {
+              closeModal()
+              
+            }}
+            refreshOrderList={getMyOrderList}
+          />
         </ModalLayout>
       )}
     </MyPageLayoutWithWelcome>

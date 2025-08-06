@@ -5,17 +5,24 @@ import Button from "@/components/ui/Button";
 import { ReviewCardProps } from "@/types/my/order";
 import { formatKoreanDate } from "@/lib/utils/date";
 import { postReview } from "@/lib/apis/review";
+import { useToast } from "@/hooks/useToast";
 
 const ReviewModal = ({
   item,
   onClose,
+  refreshOrderList,
 }: {
   item: ReviewCardProps;
   onClose: () => void;
+  refreshOrderList: () => void;
 }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
+
+  console.log(item);
+
+  const { showError, showSuccess } = useToast();
 
   const starArr = [1, 2, 3, 4, 5];
 
@@ -35,13 +42,13 @@ const ReviewModal = ({
     }
 
     try {
-      const res = await postReview(String(item.product.id), formData);
-
-      console.log(res);
-      console.log("리뷰 작성 성공");
+      await postReview(String(item.product.id), formData);
+      await refreshOrderList()
+      showSuccess("리뷰 작성에 성공했습니다");
       onClose();
     } catch (error) {
-      console.log("리뷰 작성 중 오류", error);
+      showError("리뷰 작성 중 에러가 발생했습니다. 다시 시도해주세요");
+      console.log("리뷰 작성 중 에러", error);
     }
   };
 
@@ -58,7 +65,9 @@ const ReviewModal = ({
         />
         <div className="flex flex-col justify-between py-2">
           <p className="font-bold">{item.product.name}</p>
-          <p className="text-sm text-gray-400">{`구매일 : ${formatKoreanDate(item.orderedAt)}`}</p>
+          {item.orderedAt && (
+            <p className="text-sm text-gray-400">{`구매일 : ${formatKoreanDate(item.orderedAt)}`}</p>
+          )}
         </div>
       </div>
       <div className="flex justify-center gap-2 mb-8">

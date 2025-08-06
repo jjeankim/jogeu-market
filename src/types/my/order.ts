@@ -16,6 +16,7 @@ export type Review = {
   reviewText: string;
   imageUrl: string | null;
   createdAt: string;
+  isDeleted: boolean;
 };
 
 type ProductBrand = {
