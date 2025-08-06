@@ -7,24 +7,28 @@ export function formatPriceInfo({
   locale = "ko-KR",
   currency = "KRW",
 }: PriceInfo) {
-  // price, originPrice가 undefined 혹은 null일 때 기본값 0 처리
-  const safePrice = typeof price === "number" ? price : 0;
-  const safeOriginPrice = typeof originPrice === "number" ? originPrice : 0;
+  // price, originPrice가 undefined 혹은 null일 때 기본값
+  const safePrice = typeof price === "number" ? price : null;
+  const safeOriginPrice = typeof originPrice === "number" ? originPrice : null;
 
-  const isDiscounted = safeOriginPrice > safePrice;
+  const isDiscounted =
+    safeOriginPrice !== null &&
+    safePrice !== null &&
+    safeOriginPrice > safePrice;
+  const formattedSale =
+    safePrice !== null
+      ? safePrice.toLocaleString(locale, { style: "currency", currency })
+      : "가격 정보 없음";
 
-  const formattedSale = safePrice.toLocaleString(locale, {
-    style: "currency",
-    currency,
-  });
+  const formattedOrigin =
+    isDiscounted && safeOriginPrice !== null
+      ? safeOriginPrice.toLocaleString(locale, { style: "currency", currency })
+      : null;
 
-  const formattedOrigin = isDiscounted
-    ? safeOriginPrice.toLocaleString(locale, { style: "currency", currency })
-    : null;
-
-  const discountRate = isDiscounted
-    ? ((1 - safePrice / safeOriginPrice) * 100).toFixed(0)
-    : null;
+  const discountRate =
+    isDiscounted && safePrice !== null && safeOriginPrice !== null
+      ? ((1 - safePrice / safeOriginPrice) * 100).toFixed(0)
+      : null;
 
   return { isDiscounted, formattedOrigin, formattedSale, discountRate };
 }
@@ -44,7 +48,7 @@ export function PriceDisplay(props: ReturnType<typeof formatPriceInfo>) {
       )}
       <p className="text-2xl mb-4">
         {discountRate && <strong className="mr-4">{discountRate}%</strong>}
-        <strong className="text-[#FF572D]">{formattedSale}</strong>
+        <span className="text-[#FF572D]">{formattedSale}</span>
       </p>
     </>
   );

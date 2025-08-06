@@ -21,7 +21,7 @@ export default function ProductImage({
 
   return (
     <div className="w-[50%] relative pr-15">
-      <div className="relative overflow-hidden border-2 border-gray-100 rounded-lg aspect-square">
+      <div className="relative overflow-hidden border-2 border-black rounded-lg aspect-square">
         <Image
           src={getImageUrl()}
           width={300}
