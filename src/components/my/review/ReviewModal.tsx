@@ -2,32 +2,35 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
-import { ReviewCardProps } from "@/types/my/order";
+import { ReviewModalProps } from "@/types/my/order";
 import { formatKoreanDate } from "@/lib/utils/date";
-import { postReview } from "@/lib/apis/review";
+import { postReview, updateReview } from "@/lib/apis/review";
 import { useToast } from "@/hooks/useToast";
 
 const ReviewModal = ({
+  mode,
   item,
   onClose,
   refreshOrderList,
-}: {
-  item: ReviewCardProps;
-  onClose: () => void;
-  refreshOrderList: () => void;
-}) => {
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
-
-  console.log(item);
+  initialRating = 0,
+  initialReviewText = "",
+  initialFile = null,
+}: ReviewModalProps) => {
+  const [rating, setRating] = useState(initialRating);
+  const [review, setReview] = useState(initialReviewText);
+  const [selectedFile, setSelectedFile] = useState<File | null>(initialFile);
 
   const { showError, showSuccess } = useToast();
-
   const starArr = [1, 2, 3, 4, 5];
 
   const handleClickStar = (star: number) => {
     setRating(star);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
   };
 
   const submitReview = async (e: React.FormEvent) => {
@@ -38,23 +41,33 @@ const ReviewModal = ({
     formData.append("orderItemId", String(item.id));
 
     if (selectedFile) {
-      formData.append("file", selectedFile);
+      formData.append("imageUrl", selectedFile);
     }
 
+
     try {
-      await postReview(String(item.product.id), formData);
-      await refreshOrderList()
-      showSuccess("리뷰 작성에 성공했습니다");
+      if (mode === "create") {
+        await postReview(item.product.id, formData);
+        showSuccess("리뷰 작성에 성공했습니다");
+      } else {
+        await updateReview(item.product.id, item.review!.id, formData);
+        showSuccess("리뷰가 수정되었습니다");
+      }
+
+      await refreshOrderList();
       onClose();
     } catch (error) {
-      showError("리뷰 작성 중 에러가 발생했습니다. 다시 시도해주세요");
-      console.log("리뷰 작성 중 에러", error);
+      showError("리뷰 저장 중 에러가 발생했습니다. 다시 시도해주세요");
+      console.error("리뷰 저장 중 에러", error);
     }
   };
 
   return (
     <div>
-      <h4 className="text-xl font-bold mb-8">후기 작성</h4>
+      <h4 className="text-xl font-bold mb-8">
+        {mode === "create" ? "후기 작성" : "후기 수정"}
+      </h4>
+
       <div className="flex gap-6 mb-8">
         <Image
           width={80}
@@ -66,10 +79,13 @@ const ReviewModal = ({
         <div className="flex flex-col justify-between py-2">
           <p className="font-bold">{item.product.name}</p>
           {item.orderedAt && (
-            <p className="text-sm text-gray-400">{`구매일 : ${formatKoreanDate(item.orderedAt)}`}</p>
+            <p className="text-sm text-gray-400">
+              {`구매일 : ${formatKoreanDate(item.orderedAt)}`}
+            </p>
           )}
         </div>
       </div>
+
       <div className="flex justify-center gap-2 mb-8">
         {starArr.map((star) => (
           <FaStar
@@ -82,6 +98,7 @@ const ReviewModal = ({
           />
         ))}
       </div>
+
       <form onSubmit={submitReview}>
         <textarea
           value={review}
@@ -90,11 +107,10 @@ const ReviewModal = ({
           className="border border-gray-400 resize-none w-full h-[100px] rounded-[10px] p-4 mb-2 focus:outline-logo"
         />
 
-        {/* 파일 인풋 추가하기 */}
-        {/* <input type="file" /> */}
+        <input type="file" onChange={handleFileChange} className="mb-4 block" />
 
         <Button type="submit" size="full" color="gold">
-          작성하기
+          {mode === "create" ? "작성하기" : "수정하기"}
         </Button>
       </form>
     </div>

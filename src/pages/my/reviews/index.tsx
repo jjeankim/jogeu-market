@@ -15,7 +15,6 @@ export const ReviewCardLayout = ({
   review,
   orderedAt,
   onWriteReview,
-  children,
 }: ReviewCardProps) => {
   return (
     <div className="flex items-center gap-10">
@@ -35,7 +34,7 @@ export const ReviewCardLayout = ({
       </div>
       {review && <div></div>}
       {onWriteReview && <div></div>}
-      {children && <div></div>}
+  
     </div>
   );
 };
@@ -62,35 +61,40 @@ const MyReviewPage = () => {
     setSelectedItem(null);
   };
 
-const getMyOrderList = async() => {
-  const MyOrder = await fetchMyOrderList();
-  setOrderList(MyOrder)
-}
+  const getMyOrderList = async () => {
+    const MyOrder = await fetchMyOrderList();
+    setOrderList(MyOrder);
+  };
 
   // 나의 주문 목록을 가져옴
   useEffect(() => {
-    
     getMyOrderList();
   }, []);
 
-  // 가져온 주문 목록에서 리뷰가 작성된 것과 작성할 것을 구분함
   const filteredItems = orderList.flatMap((order) =>
-    order.orderItems
-      .filter((item) => {
-        
-        // 리뷰가 존재하고, 삭제되지 않았고, 리뷰 텍스트가 있어야 하는 
-        const isWritten =
-          item.review && !item.review.isDeleted && item.review.reviewText;
-        if (filter === "written") return isWritten;
-        // isWritten 조건에 맞지 않으면서 소프트삭제 된 아이템만 노출
-        if (filter === "unwritten") return !isWritten && (!item.review?.isDeleted);
-        return true;
-      })
-      .map((item) => ({
-        ...item,
-        orderedAt: order.orderedAt,
-      }))
-  );
+  order.orderItems
+    .filter((item) => {
+      const hasReview = !!item.review;
+      const hasText = !!item.review?.reviewText;
+      const isDeleted = !!item.review?.isDeleted;
+
+      if (filter === "written") {
+        // 리뷰가 있고, 텍스트 있고, 삭제 안됨
+        return hasReview && hasText && !isDeleted;
+      }
+
+      if (filter === "unwritten") {
+        // 리뷰가 없거나, 리뷰는 있지만 텍스트 없음
+        return !hasReview || (hasReview && !hasText);
+      }
+
+      return true;
+    })
+    .map((item) => ({
+      ...item,
+      orderedAt: order.orderedAt,
+    }))
+);
 
   const allOrderItems = orderList.flatMap((order) =>
     order.orderItems.map((item) => ({
@@ -98,13 +102,13 @@ const getMyOrderList = async() => {
       orderedAt: order.orderedAt,
     }))
   );
-  
+
   const writtenCount = allOrderItems.filter(
     (item) => !!item.review?.reviewText && !item.review?.isDeleted
   ).length;
-  
+
   const unwrittenCount = allOrderItems.filter(
-    (item) => !item.review?.reviewText || item.review?.isDeleted
+    (item) => !item.review?.reviewText && !item.review?.isDeleted
   ).length;
 
   console.log(orderList);
@@ -139,7 +143,7 @@ const getMyOrderList = async() => {
                   review={item.review}
                   orderedAt={item.orderedAt}
                   id={item.id}
-                  refreshOrderList = {getMyOrderList}
+                  refreshOrderList={getMyOrderList}
                 />
               ) : (
                 <ReviewCard
@@ -155,7 +159,6 @@ const getMyOrderList = async() => {
                       id: item.id,
                     })
                   }
-
                 />
               )
             )
@@ -170,12 +173,18 @@ const getMyOrderList = async() => {
       </div>
       {isModalOpen && selectedItem && (
         <ModalLayout onClose={closeModal}>
-          <ReviewModal
+          {/* <ReviewModal
             item={selectedItem}
             onClose={() => {
               closeModal()
               
             }}
+            refreshOrderList={getMyOrderList}
+          /> */}
+          <ReviewModal
+            mode="create"
+            item={selectedItem}
+            onClose={closeModal}
             refreshOrderList={getMyOrderList}
           />
         </ModalLayout>
