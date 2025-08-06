@@ -92,20 +92,20 @@ const getMyOrderList = async() => {
       }))
   );
 
-  // const allOrderItems = orderList.flatMap((order) =>
-  //   order.orderItems.map((item) => ({
-  //     ...item,
-  //     orderedAt: order.orderedAt,
-  //   }))
-  // );
-
-  // const writtenCount = allOrderItems.filter(
-  //   (item) => !!item.review?.reviewText
-  // ).length;
-
-  // const unwrittenCount = allOrderItems.filter(
-  //   (item) => !item.review?.reviewText
-  // ).length;
+  const allOrderItems = orderList.flatMap((order) =>
+    order.orderItems.map((item) => ({
+      ...item,
+      orderedAt: order.orderedAt,
+    }))
+  );
+  
+  const writtenCount = allOrderItems.filter(
+    (item) => !!item.review?.reviewText && !item.review?.isDeleted
+  ).length;
+  
+  const unwrittenCount = allOrderItems.filter(
+    (item) => !item.review?.reviewText || item.review?.isDeleted
+  ).length;
 
   console.log(orderList);
 
@@ -119,13 +119,13 @@ const getMyOrderList = async() => {
               onClick={() => setFilter("unwritten")}
               className="cursor-pointer"
             >
-              {`작성 가능한 후기 `}
+              {`작성 가능한 후기 (${unwrittenCount})`}
             </button>
             <button
               onClick={() => setFilter("written")}
               className="cursor-pointer"
             >
-              {`작성한 후기 `}
+              {`작성한 후기 (${writtenCount}) `}
             </button>
           </div>
         </div>
