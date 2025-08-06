@@ -43,7 +43,7 @@ const MainForm = () => {
         const productData = await axiosProducts(
           category as string,
           menu as string,
-            10 );
+            6 );
         setProducts(productData);
       } catch (error) {
         console.error('상품 데이터 로딩 실패:', error);
