@@ -57,8 +57,8 @@ const ReviewModal = ({
           className="rounded-[10px]"
         />
         <div className="flex flex-col justify-between py-2">
-          <p className="font-bold">{`상품명 :${item.product.name} `}</p>
-          <p className="text-sm text-gray-400">{`구매 일자 :${formatKoreanDate(item.orderedAt)}`}</p>
+          <p className="font-bold">{item.product.name}</p>
+          <p className="text-sm text-gray-400">{`구매일 : ${formatKoreanDate(item.orderedAt)}`}</p>
         </div>
       </div>
       <div className="flex justify-center gap-2 mb-8">

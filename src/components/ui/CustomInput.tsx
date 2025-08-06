@@ -30,7 +30,7 @@ const CustomInput = ({
       <div className="relative">
         <input
           type={isVisible ? "text" : type}
-          className="w-full bg-gray-50 rounded-[10px] p-4 focus:outline-black "
+          className="w-full bg-gray-50 rounded-[10px] p-4 focus:outline-logo "
           {...register}
           {...rest}
           onChange={(e) => {
