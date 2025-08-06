@@ -18,16 +18,21 @@ export type Review = {
   createdAt: string;
 };
 
+type ProductBrand = {
+  name: string;
+};
+
 export type Product = {
   id: number;
   name: string;
   thumbnailImageUrl?: string;
+  brand: ProductBrand;
 };
 
 export type OrderItem = {
   id: number;
   product: Product;
-  review?: Review | null; // 리뷰가 없을 수도 있음
+  review?: Review | null;
 };
 
 export type Order = {
@@ -39,7 +44,8 @@ export type Order = {
 export interface ReviewCardProps {
   product: Product;
   review?: Review | null;
-  orderedAt: string;
-  onWriteReview?: () => void
+  orderedAt?: string;
+  id?: number;
+  onWriteReview?: () => void;
+  children?: ReactNode;
 }
-

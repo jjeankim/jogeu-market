@@ -216,7 +216,7 @@ const Header = () => {
             <input
               type="text"
               placeholder="검색어를 입력하세요"
-              className="bg-transparent outline-none text-sm w-60"
+              className="bg-transparent outline-none text-sm w-60 p-2"
             />
             <FiSearch className="text-gray-600" size={22} />
           </div>

@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Button from "@/components/ui/Button";
+import { useRouter } from "next/router";
+import { CartItem } from "@/lib/apis/cart";
 
 // TossPayments 타입 정의
 declare global {
@@ -9,8 +11,43 @@ declare global {
   }
 }
 
+interface PaymentData {
+  items: CartItem[];
+  totalPrice: number;
+  shippingFee: number;
+  orderInfo?: {
+    address: any;
+  };
+}
+
 const Checkout = () => {
+  const router = useRouter();
+  const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // 결제 데이터 로드
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedPaymentData = sessionStorage.getItem('paymentData');
+      if (savedPaymentData) {
+        try {
+          const parsedData = JSON.parse(savedPaymentData);
+          setPaymentData(parsedData);
+        } catch (error) {
+          console.error('결제 데이터 파싱 실패:', error);
+          router.push('/order');
+        }
+      } else {
+        router.push('/order');
+      }
+    }
+    setLoading(false);
+  }, [router]);
+  // 토스페이먼츠 위젯 초기화
+  useEffect(() => {
+    // 결제 데이터가 없으면 초기화하지 않음
+    if (!paymentData || loading) return;
+
     let widgets: any = null;
     let isInitialized = false;
 
@@ -56,9 +93,10 @@ const Checkout = () => {
           return;
         }
         
+        const totalAmount = paymentData.totalPrice + paymentData.shippingFee;
         const amount = {
           currency: "KRW",
-          value: 1000, // 1000원으로 증가
+          value: totalAmount,
         };
         
         const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 위젯 연동용 테스트 키 (문서용)
@@ -87,9 +125,14 @@ const Checkout = () => {
         if (button) {
           button.addEventListener("click", async function () {
             try {
+              // 상품명 생성 (첫 번째 상품명 + 외 n개)
+              const orderName = paymentData.items.length === 1 
+                ? paymentData.items[0].product.name
+                : `${paymentData.items[0].product.name} 외 ${paymentData.items.length - 1}개`;
+
               await widgets.requestPayment({
                 orderId: generateRandomString(),
-                orderName: "테스트 상품",
+                orderName: orderName,
                 successUrl: window.location.origin + "/pay/success",
                 failUrl: window.location.origin + "/pay/fail",
                 customerEmail: "test@example.com",
@@ -135,27 +178,49 @@ const Checkout = () => {
       
       isInitialized = false;
     };
-  }, []);
+  }, [paymentData, loading]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">결제 정보를 불러오는 중...</div>
+      </div>
+    );
+  }
+
+  if (!paymentData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg text-gray-600 mb-4">결제 정보를 찾을 수 없습니다</div>
+          <Button onClick={() => router.push('/order')}>주문 페이지로 돌아가기</Button>
+        </div>
+      </div>
+    );
+  }
+
+  const totalAmount = paymentData.totalPrice + paymentData.shippingFee;
 
   return (
     <>
       <Head>
-        <title>토스페이먼츠 샘플 프로젝트</title>
+        <title>결제하기 - 조은마켓</title>
         <link rel="icon" href="https://static.toss.im/icons/png/4x/icon-toss-logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       
       <div className="max-w-[1000px] mx-auto min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-4 sm:p-6 md:p-[40px] lg:p-[60px] mt-[20px] sm:mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap py-3 sm:py-4 md:py-[20px] px-3 sm:px-6 md:px-[40px] min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col justify-center w-full">
+  
+
           <div id="payment-method" className="w-full mb-4 sm:mb-6"></div>
           <div id="agreement" className="w-full mb-6 sm:mb-8"></div>
           <div className="mt-6 sm:mt-8 max-w-[800px] mx-auto">
             <Button
-             
               id="payment-button"
               className="text-lg sm:text-xl md:text-2xl py-4 sm:py-5 md:py-6 px-8 sm:px-10 md:px-12 font-semibold"
             >
-              결제하기
+              {totalAmount.toLocaleString()}원 결제하기
             </Button>
           </div>
         </div>
