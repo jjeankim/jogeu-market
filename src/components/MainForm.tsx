@@ -39,6 +39,7 @@ const MainForm = () => {
       setLoading(true);
       setError(null);
       try {
+
         const response = await axiosProducts({
           category: category as string,
         });
@@ -48,6 +49,8 @@ const MainForm = () => {
         } else {
           setProducts([]);
         }
+
+
       } catch (error) {
         console.error("상품 데이터 로딩 실패:", error);
         setError("상품을 불러오는데 실패했습니다.");
@@ -57,7 +60,7 @@ const MainForm = () => {
     };
 
     loadProducts();
-  }, [category]);
+  }, [category, menu]);
 
   // ListCard에 맞는 형식으로 데이터 변환
   const transformProductForListCard = (product: Product) => ({

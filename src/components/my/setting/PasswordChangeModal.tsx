@@ -102,7 +102,7 @@ const PasswordChangeModal = ({ onClose }: PasswordChangeModalProps) => {
             {errors.newPasswordConfirm.message}
           </p>
         )}
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" size="full" disabled={isSubmitting}>
           변경하기
         </Button>
       </form>

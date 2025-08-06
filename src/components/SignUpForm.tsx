@@ -2,7 +2,6 @@ import React from "react";
 import AuthFormLayout from "./ui/AuthFormLayout";
 import CustomInput from "./ui/CustomInput";
 import { useForm } from "react-hook-form";
-import { AuthValues } from "./LoginForm";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import axios from "axios";
@@ -11,6 +10,7 @@ import FormErrorText from "./FormErrorText";
 import Button from "./ui/Button";
 import AuthLink from "./ui/AuthLink";
 import SocialLoginLink from "./SocialLoginLink";
+import { AuthValues } from "@/types/auth";
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -120,7 +120,7 @@ const SignUpForm = () => {
           <FormErrorText>{errors.passwordConfirm?.message}</FormErrorText>
         )}
 
-        <Button type="submit" size="full" disabled={isSubmitting}>
+        <Button type="submit" size="full" color="gold" disabled={isSubmitting}>
           회원가입
         </Button>
       </form>

@@ -10,6 +10,7 @@ interface PayBoxProps {
   onPaymentClick: () => void;
   paymentButtonText?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 const PayBox = ({
@@ -21,7 +22,8 @@ const PayBox = ({
   onAgreedChange,
   onPaymentClick,
   paymentButtonText,
-  className = "lg:w-80"
+  className = "lg:w-80",
+  disabled = false
 }: PayBoxProps) => {
   const formatPrice = (price: number) => {
     return price.toLocaleString() + '원';
@@ -72,7 +74,12 @@ const PayBox = ({
           
           <Button 
             onClick={onPaymentClick}
-            disabled={!isAgreed}
+            disabled={!isAgreed || disabled}
+            className={`w-full text-lg p-4 rounded-[10px] cursor-pointer ${
+              !isAgreed || disabled
+                ? 'opacity-50 cursor-not-allowed bg-gray-400 text-gray-600' 
+                : 'bg-[#405DE6] text-white hover:bg-[#3348C7] hover:text-white'
+            }`}
           >
             {finalPaymentText}
           </Button>

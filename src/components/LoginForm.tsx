@@ -9,13 +9,9 @@ import axios from "axios";
 import SocialLoginLink from "./SocialLoginLink";
 import AuthFormLayout from "./ui/AuthFormLayout";
 import FormErrorText from "./FormErrorText";
+import { AuthValues } from "@/types/auth";
 
-export interface AuthValues {
-  email: string;
-  name?: string;
-  password: string;
-  passwordConfirm?: string;
-}
+
 
 const LoginForm = () => {
   const router = useRouter();
@@ -80,7 +76,7 @@ const LoginForm = () => {
         {errors.password && (
           <FormErrorText>{errors.password.message}</FormErrorText>
         )}
-        <Button type="submit" size="full" disabled={isSubmitting}>
+        <Button type="submit" size="full" color="gold" disabled={isSubmitting}>
           로그인
         </Button>
       </form>

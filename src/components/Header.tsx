@@ -43,11 +43,7 @@ const Header = () => {
     router.push("/");
   };
 
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // const toggleMenu = () => {
-  //   setIsMenuOpen((prev) => !prev);
-  // };
 
   return (
     <header className="relative w-full shrink-0 mt-6">
@@ -83,7 +79,9 @@ const Header = () => {
             />
           </Link>
 
+
           <Navigator />
+
         </div>
 
         <div className="flex items-center gap-6 mt-24">
@@ -91,7 +89,7 @@ const Header = () => {
             <input
               type="text"
               placeholder="검색어를 입력하세요"
-              className="bg-transparent outline-none text-sm w-60"
+              className="bg-transparent outline-none text-sm w-60 p-2"
             />
             <FiSearch className="text-gray-600" size={22} />
           </div>

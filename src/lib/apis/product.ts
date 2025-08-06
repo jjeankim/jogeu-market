@@ -48,6 +48,7 @@ export interface ProductResponse {
   totalCount: number;
 }
 
+
 export interface ProductDetailResponse {
   message: string;
   product: Product;
@@ -61,6 +62,7 @@ export const axiosProducts = async (
       params,
     });
     return res.data;
+
   } catch (error) {
     console.error("상품 목록 조회 실패", error);
     return null;
