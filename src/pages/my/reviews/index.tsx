@@ -150,7 +150,7 @@ const MyReviewPage = () => {
               )
             )
           ) : (
-            <p className="col-span-2 text-gray-500 text-center">
+            <p className="col-span-2 text-gray-500 text-center py-10">
               {filter === "written"
                 ? "작성한 리뷰가 없습니다."
                 : "작성할 리뷰가 없습니다."}
