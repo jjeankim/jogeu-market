@@ -117,7 +117,7 @@ const ProductList = () => {
           </button>
         ))}
       </div>
-      {/* 👉 브랜드 슬라이더 삽입 */}
+      {/* 브랜드 슬라이더 */}
       <BrandSlider
         category={currentCategory}
         subCategory={currentSubCategory}
