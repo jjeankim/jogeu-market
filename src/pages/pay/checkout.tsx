@@ -17,6 +17,8 @@ interface PaymentData {
   shippingFee: number;
   orderInfo?: {
     address: any;
+    selectedCoupon: any;
+    discountAmount: number;
   };
 }
 
@@ -93,7 +95,8 @@ const Checkout = () => {
           return;
         }
         
-        const totalAmount = paymentData!.totalPrice + paymentData!.shippingFee;
+        const discountAmount = paymentData!.orderInfo?.discountAmount || 0;
+        const totalAmount = paymentData!.totalPrice + paymentData!.shippingFee - discountAmount;
         const amount = {
           currency: "KRW",
           value: totalAmount,
@@ -202,7 +205,8 @@ const Checkout = () => {
     );
   }
 
-  const totalAmount = paymentData.totalPrice + paymentData.shippingFee;
+  const discountAmount = paymentData.orderInfo?.discountAmount || 0;
+  const totalAmount = paymentData.totalPrice + paymentData.shippingFee - discountAmount;
 
   return (
     <>

@@ -6,6 +6,7 @@ import { CartItem } from '@/lib/apis/cart'
 import useAuthStore from '@/store/AuthStore'
 import { fetchMyCouponList } from '@/lib/apis/coupon'
 import { fetchUser } from '@/lib/apis/user'
+import { CouponData } from '@/types/my/coupon'
 
 // 카카오 주소 API 콜백 함수 타입 선언
 declare global {
@@ -20,13 +21,7 @@ interface OrderData {
   shippingFee: number;
 }
 
-interface Coupon {
-  id: number;
-  name: string;
-  discountAmount: number;
-  discountType: 'FIXED' | 'PERCENT';
-  minOrderAmount?: number;
-}
+
 
 const OrderForm = () => {
   const router = useRouter()
@@ -61,8 +56,8 @@ const OrderForm = () => {
   const [deliveryMessage, setDeliveryMessage] = useState('')
   
   // 쿠폰 관련 상태
-  const [coupons, setCoupons] = useState<Coupon[]>([])
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
+  const [coupons, setCoupons] = useState<CouponData[]>([])
+  const [selectedCoupon, setSelectedCoupon] = useState<CouponData | null>(null)
   const [discountAmount, setDiscountAmount] = useState(0)
   
   const { userName, isLoggedIn } = useAuthStore()
@@ -176,10 +171,10 @@ const OrderForm = () => {
       setSelectedCoupon(coupon)
       
       let discount = 0
-      if (coupon.discountType === 'FIXED') {
-        discount = coupon.discountAmount
-      } else if (coupon.discountType === 'PERCENT') {
-        discount = Math.floor(orderData.totalPrice * (coupon.discountAmount / 100))
+      if (coupon.coupon.discountType === 'fixed') {
+        discount = coupon.coupon.discountValue
+      } else if (coupon.coupon.discountType === 'percentage') {
+        discount = Math.floor(orderData.totalPrice * (coupon.coupon.discountValue / 100))
       }
       
       setDiscountAmount(discount)
@@ -456,9 +451,9 @@ const OrderForm = () => {
                     value={selectedCoupon?.id.toString() || ''}
                   >
                     <option value="">쿠폰을 선택하세요</option>
-                    {coupons.map((coupon) => (
-                      <option key={coupon.id} value={coupon.id.toString()}>
-                        {coupon.name} ({coupon.discountType === 'FIXED' ? `${coupon.discountAmount}원` : `${coupon.discountAmount}%`} 할인)
+                    {coupons.map((couponData) => (
+                      <option key={couponData.id} value={couponData.id.toString()}>
+                        {couponData.coupon.name} ({couponData.coupon.discountType === 'fixed' ? `${couponData.coupon.discountValue}원` : `${couponData.coupon.discountValue}%`} 할인)
                       </option>
                     ))}
                   </select>
