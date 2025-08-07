@@ -7,36 +7,6 @@ import { Order, ReviewCardProps } from "@/types/my/order";
 import { useEffect, useState } from "react";
 import ReviewModal from "@/components/my/review/ReviewModal";
 import WrittenReviewCard from "@/components/my/review/WrittenReviewCard";
-import Image from "next/image";
-import { formatKoreanDate } from "@/lib/utils/date";
-
-export const ReviewCardLayout = ({
-  product,
-  review,
-  orderedAt,
-  onWriteReview,
-}: ReviewCardProps) => {
-  return (
-    <div className="flex items-center gap-10">
-      <Image
-        className="rounded-[10px]"
-        src={"/images/립.png"}
-        width={100}
-        height={100}
-        alt={`${product.name}사진`}
-      />
-      <div>
-        <p className="text-md mb-1 text-gray-500">{`[${product.brand.name}]`}</p>
-        <p className="text-xl mb-4">{product.name}</p>
-        <p className="text-sm text-gray-500">
-          {orderedAt ? `주문일: ${formatKoreanDate(orderedAt)}` : "\u00A0"}
-        </p>
-      </div>
-      {review && <div></div>}
-      {onWriteReview && <div></div>}
-    </div>
-  );
-};
 
 const MyReviewPage = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
@@ -61,8 +31,8 @@ const MyReviewPage = () => {
   };
 
   const getMyOrderList = async () => {
-    const MyOrder = await fetchMyOrderList();
-    setOrderList(MyOrder);
+    const myOrder = await fetchMyOrderList();
+    setOrderList(myOrder);
   };
 
   // 나의 주문 목록을 가져옴
@@ -95,7 +65,7 @@ const MyReviewPage = () => {
         orderedAt: order.orderedAt,
       }))
   );
-  console.log(filteredItems);
+  // orderList[] > orderItem[] > review[]를 가져오는 구조로
 
   const allOrderItems = orderList.flatMap((order) =>
     order.orderItems.map((item) => ({
@@ -178,7 +148,7 @@ const MyReviewPage = () => {
             mode="create"
             item={selectedItem}
             onClose={closeModal}
-            refreshOrderList={getMyOrderList}
+            refreshOrderList={() => getMyOrderList()}
           />
         </ModalLayout>
       )}

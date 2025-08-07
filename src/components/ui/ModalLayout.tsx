@@ -21,7 +21,7 @@ const ModalLayout = ({ children, onClose }: ModalLayoutProps) => {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div
         ref={modalRef}
         className="relative bg-white shadow-2xl rounded-xl p-8 w-full max-w-sm"

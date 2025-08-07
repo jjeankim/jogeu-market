@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button";
-import { ReviewCardLayout } from "@/pages/my/reviews";
 import { ReviewCardProps } from "@/types/my/order";
+import ReviewCardLayout from "./ReviewCardLayout";
 
 const ReviewCard = ({
   product,
