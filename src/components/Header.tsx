@@ -43,6 +43,15 @@ const Header = () => {
     router.push("/");
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = () =>{
+    if (searchTerm.trim()) {
+      router.push(`/search?q=${searchTerm}`);
+    }
+  };
+
 
 
   return (
@@ -90,8 +99,11 @@ const Header = () => {
               type="text"
               placeholder="검색어를 입력하세요"
               className="bg-transparent outline-none text-sm w-60 p-2"
+              value={searchTerm}
+              onChange={(e)=> setSearchTerm(e.target.value)}
+              onKeyDown={(e)=> e.key === 'Enter' && handleSearch()} 
             />
-            <FiSearch className="text-gray-600" size={22} />
+            <FiSearch className="text-gray-600" size={22}  onClick={handleSearch}/>
           </div>
 
           <button
