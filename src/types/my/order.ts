@@ -23,7 +23,7 @@ export type Product = {
 export type OrderItem = {
   id: number;
   product: Product;
-  review?: Review | null;
+  review?: Review[]
 };
 
 export type Order = {
