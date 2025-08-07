@@ -23,12 +23,26 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
   const swiperRef = useRef<any>(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [navReady, setNavReady] = useState(false);
 
   useEffect(() => {
-    if (swiperRef.current) {
-      setIsBeginning(swiperRef.current.isBeginning);
-      setIsEnd(swiperRef.current.isEnd);
+    setNavReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (navReady && swiperRef.current && prevRef.current && nextRef.current) {
+      swiperRef.current.params.navigation.prevEl = prevRef.current;
+      swiperRef.current.params.navigation.nextEl = nextRef.current;
+
+      swiperRef.current.navigation.destroy(); // 기존 내비게이션 초기화
+      swiperRef.current.navigation.init(); // 새로 초기화
+      swiperRef.current.navigation.update(); // 업데이트
     }
+  }, [navReady]);
+
+  useEffect(() => {
+    console.log("prevRef.current:", prevRef.current);
+    console.log("nextRef.current:", nextRef.current);
   }, []);
 
   return (
@@ -45,9 +59,11 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
           setIsEnd(swiper.isEnd);
         }}
         onSlideChange={(swiper) => {
+          console.log("isBeginning:", swiper.isBeginning);
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
+        // navigation={true}
         navigation={{
           prevEl: prevRef.current,
           nextEl: nextRef.current,

@@ -11,7 +11,7 @@ const AuthFormLayout = ({
 }) => {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-xl -mt-20">
+      <div className="w-full max-w-xl">
         <div className="flex justify-center mb-24">
 
         <Link href={"/"} >

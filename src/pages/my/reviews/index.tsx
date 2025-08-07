@@ -15,7 +15,6 @@ export const ReviewCardLayout = ({
   review,
   orderedAt,
   onWriteReview,
-  children,
 }: ReviewCardProps) => {
   return (
     <div className="flex items-center gap-10">
@@ -35,7 +34,7 @@ export const ReviewCardLayout = ({
       </div>
       {review && <div></div>}
       {onWriteReview && <div></div>}
-      {children && <div></div>}
+  
     </div>
   );
 };
@@ -62,27 +61,40 @@ const MyReviewPage = () => {
     setSelectedItem(null);
   };
 
-  useEffect(() => {
-    const getMyOrderList = async () => {
-      const MyOrder = await fetchMyOrderList();
+  const getMyOrderList = async () => {
+    const MyOrder = await fetchMyOrderList();
+    setOrderList(MyOrder);
+  };
 
-      setOrderList(MyOrder);
-    };
+  // 나의 주문 목록을 가져옴
+  useEffect(() => {
     getMyOrderList();
   }, []);
 
   const filteredItems = orderList.flatMap((order) =>
-    order.orderItems
-      .filter((item) => {
-        if (filter === "written") return !!item.review?.reviewText;
-        if (filter === "unwritten") return !item.review?.reviewText;
-        return true; // "all"
-      })
-      .map((item) => ({
-        ...item,
-        orderedAt: order.orderedAt,
-      }))
-  );
+  order.orderItems
+    .filter((item) => {
+      const hasReview = !!item.review;
+      const hasText = !!item.review?.reviewText;
+      const isDeleted = !!item.review?.isDeleted;
+
+      if (filter === "written") {
+        // 리뷰가 있고, 텍스트 있고, 삭제 안됨
+        return hasReview && hasText && !isDeleted;
+      }
+
+      if (filter === "unwritten") {
+        // 리뷰가 없거나, 리뷰는 있지만 텍스트 없음
+        return !hasReview || (hasReview && !hasText);
+      }
+
+      return true;
+    })
+    .map((item) => ({
+      ...item,
+      orderedAt: order.orderedAt,
+    }))
+);
 
   const allOrderItems = orderList.flatMap((order) =>
     order.orderItems.map((item) => ({
@@ -92,11 +104,11 @@ const MyReviewPage = () => {
   );
 
   const writtenCount = allOrderItems.filter(
-    (item) => !!item.review?.reviewText
+    (item) => !!item.review?.reviewText && !item.review?.isDeleted
   ).length;
 
   const unwrittenCount = allOrderItems.filter(
-    (item) => !item.review?.reviewText
+    (item) => !item.review?.reviewText && !item.review?.isDeleted
   ).length;
 
   console.log(orderList);
@@ -117,7 +129,7 @@ const MyReviewPage = () => {
               onClick={() => setFilter("written")}
               className="cursor-pointer"
             >
-              {`작성한 후기 (${writtenCount})`}
+              {`작성한 후기 (${writtenCount}) `}
             </button>
           </div>
         </div>
@@ -131,6 +143,7 @@ const MyReviewPage = () => {
                   review={item.review}
                   orderedAt={item.orderedAt}
                   id={item.id}
+                  refreshOrderList={getMyOrderList}
                 />
               ) : (
                 <ReviewCard
@@ -150,7 +163,7 @@ const MyReviewPage = () => {
               )
             )
           ) : (
-            <p className="col-span-2 text-gray-500 text-center">
+            <p className="col-span-2 text-gray-500 text-center py-10">
               {filter === "written"
                 ? "작성한 리뷰가 없습니다."
                 : "작성할 리뷰가 없습니다."}
@@ -160,7 +173,20 @@ const MyReviewPage = () => {
       </div>
       {isModalOpen && selectedItem && (
         <ModalLayout onClose={closeModal}>
-          <ReviewModal item={selectedItem} onClose={closeModal} />
+          {/* <ReviewModal
+            item={selectedItem}
+            onClose={() => {
+              closeModal()
+              
+            }}
+            refreshOrderList={getMyOrderList}
+          /> */}
+          <ReviewModal
+            mode="create"
+            item={selectedItem}
+            onClose={closeModal}
+            refreshOrderList={getMyOrderList}
+          />
         </ModalLayout>
       )}
     </MyPageLayoutWithWelcome>
