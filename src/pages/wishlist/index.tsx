@@ -23,26 +23,26 @@ const Index = () => {
     setLoading(true);
 
     // 테스트용: UI 작업용 찜한 상품 없을때
-    setWishlist([]);
-    setTotalPages(1);
-    setLoading(false);
+    // setWishlist([]);
+    // setTotalPages(1);
+    // setLoading(false);
 
-    // axiosWishlist(currentPage, PAGE_SIZE)
-    //   .then((data) => {
-    //     if (data) {
-    //       setWishlist(data.wishlist || []);
-    //       setTotalPages(data.totalPages || 1);
-    //     } else {
-    //       setWishlist([]);
-    //       setTotalPages(1);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     setWishlist([]);
-    //     setTotalPages(1);
-    //   })
-    //   .finally(() => setLoading(false));
+    axiosWishlist(currentPage, PAGE_SIZE)
+      .then((data) => {
+        if (data) {
+          setWishlist(data.wishlist || []);
+          setTotalPages(data.totalPages || 1);
+        } else {
+          setWishlist([]);
+          setTotalPages(1);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setWishlist([]);
+        setTotalPages(1);
+      })
+      .finally(() => setLoading(false));
   }, [currentPage]);
 
   return (
