@@ -9,6 +9,7 @@ export const useToast = () => {
       borderRadius: "0.8rem",
       marginTop: "15rem",
       fontSize: "1rem",
+      textAlign:"center" as const,
     },
   };
 

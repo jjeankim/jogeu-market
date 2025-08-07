@@ -1,13 +1,13 @@
 import Button from "@/components/ui/Button";
-import { ReviewCardLayout } from "@/pages/my/reviews";
 import { ReviewCardProps } from "@/types/my/order";
+import ReviewCardLayout from "./ReviewCardLayout";
 
 const ReviewCard = ({
   product,
   review,
   orderedAt,
   onWriteReview,
-}: ReviewCardProps ) => {
+}: ReviewCardProps) => {
   return (
     <div className="flex justify-between items-center border-b border-b-gray-300 p-6">
       <ReviewCardLayout product={product} orderedAt={orderedAt} />

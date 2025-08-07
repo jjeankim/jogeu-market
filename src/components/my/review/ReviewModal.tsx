@@ -6,6 +6,7 @@ import { ReviewModalProps } from "@/types/my/order";
 import { formatKoreanDate } from "@/lib/utils/date";
 import { postReview, updateReview } from "@/lib/apis/review";
 import { useToast } from "@/hooks/useToast";
+import CustomFileInput from "./CustomFileInput";
 
 const ReviewModal = ({
   mode,
@@ -19,6 +20,7 @@ const ReviewModal = ({
   const [rating, setRating] = useState(initialRating);
   const [review, setReview] = useState(initialReviewText);
   const [selectedFile, setSelectedFile] = useState<File | null>(initialFile);
+  const [fileName, setFileName] = useState<string>("");
 
   const { showError, showSuccess } = useToast();
   const starArr = [1, 2, 3, 4, 5];
@@ -27,10 +29,9 @@ const ReviewModal = ({
     setRating(star);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-    }
+  const handleFileSelect = (file: File | null) => {
+    setSelectedFile(file);
+    setFileName(file?.name ?? "");
   };
 
   const submitReview = async (e: React.FormEvent) => {
@@ -44,7 +45,6 @@ const ReviewModal = ({
       formData.append("imageUrl", selectedFile);
     }
 
-
     try {
       if (mode === "create") {
         await postReview(item.product.id, formData);
@@ -53,7 +53,6 @@ const ReviewModal = ({
         await updateReview(item.product.id, item.review!.id, formData);
         showSuccess("리뷰가 수정되었습니다");
       }
-
       await refreshOrderList();
       onClose();
     } catch (error) {
@@ -106,10 +105,13 @@ const ReviewModal = ({
           placeholder="후기를 작성해주세요."
           className="border border-gray-400 resize-none w-full h-[100px] rounded-[10px] p-4 mb-2 focus:outline-logo"
         />
-
-        <input type="file" onChange={handleFileChange} className="mb-4 block" />
-
-        <Button type="submit" size="full" color="gold">
+        <CustomFileInput onFileSelect={handleFileSelect} fileName={fileName} />
+        <Button
+          type="submit"
+          size="full"
+          color="gold"
+          disabled={rating === 0 || review.trim() === ""}
+        >
           {mode === "create" ? "작성하기" : "수정하기"}
         </Button>
       </form>
