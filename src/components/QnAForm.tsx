@@ -319,7 +319,7 @@ const QnAForm = () => {
                         자주 묻는 질문
                     </h1>
                     <p className="text-gray-600 text-lg">궁금한 점이 있으시면 아래에서 찾아보세요</p>
-                    <div className="w-32 h-1 bg-gradient-to-r from-primary via-logo to-primary mx-auto mt-4 rounded-full"></div>
+                    <div className="w-32 h-1 bg-gradient-to-r from-primary via-black to-primary mx-auto mt-4 rounded-full"></div>
                 </div>
                 {/* 카테고리 버튼들 */}
                 <div className='flex gap-6 justify-center mb-12 flex-wrap'>

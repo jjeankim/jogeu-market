@@ -11,6 +11,7 @@ interface OrderData {
       name: string;
       phone: string;
       email: string;
+      orderNumber: string;
     };
     shipping: {
       name: string;
@@ -41,12 +42,16 @@ const PayCompleteFrom = () => {
       if (savedOrderData) {
         try {
           const parsedData = JSON.parse(savedOrderData);
+          // 주문번호를 우선순위로 찾기
+          const orderNum = parsedData.orderNumber || 
+                          parsedData.orderInfo?.orderer?.orderNumber || 
+                          '주문번호 미발급';
+          setOrderNumber(orderNum);
           setOrderData(parsedData);
           
-          // 주문번호 생성 (현재 시간 기반)
-          const now = new Date();
-          const orderNum = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-          setOrderNumber(orderNum);
+          console.log('주문번호 설정:', orderNum);
+          console.log('전체 paymentData:', parsedData);
+          
           
           // 주문 완료 후 세션스토리지 정리 (페이지 로드 후 약간의 지연을 두고 정리)
           setTimeout(() => {
