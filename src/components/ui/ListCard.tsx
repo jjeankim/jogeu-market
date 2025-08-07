@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 
 type Product = {
   id: number;
-  brand: string;
+  brand: string | { id: number; name: string; logoImageUrl?: string };
   name: string;
   price: number;
   review: number;
@@ -120,7 +120,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
       </div>
       <div className="flex justify-center">
         <div className="flex flex-col items-center">
-          <span className="text-sm font-light text-black">{brand}</span>
+          <span className="text-sm font-light text-black">{typeof brand === 'string' ? brand : brand?.name || '브랜드명'}</span>
           <h3 className="text-lg text-center text-gray-700">{name}</h3>
           <span className="flex flex-raw items-center text-lg font-medium text-[#FF572D]">
             {price}

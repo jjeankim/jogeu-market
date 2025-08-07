@@ -62,3 +62,24 @@ export const axiosProductById = async (id: number): Promise<Product | null> => {
     return null;
   }
 };
+
+
+export const axiosSearchProducts = async (
+  query: string,
+  page : number =1,
+  limit : number = 10
+): Promise<Product[]> => {
+  try {
+    const params = new URLSearchParams();
+    params.append('query', query);
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+
+    
+    const res = await axiosInstance.get(`/api/product/search?${params.toString()}`);
+    return res.data.products;
+  } catch (error) {
+    console.error("검색 상품 조회 실패", error);
+    return [];
+  }
+};
