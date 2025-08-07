@@ -11,8 +11,6 @@ import AuthFormLayout from "./ui/AuthFormLayout";
 import FormErrorText from "./FormErrorText";
 import { AuthValues } from "@/types/auth";
 
-
-
 const LoginForm = () => {
   const router = useRouter();
   const { showSuccess, showError } = useToast();

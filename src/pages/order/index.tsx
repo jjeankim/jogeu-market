@@ -1,9 +1,9 @@
-import OrderForm from "@/components/OrderForm";
+import OrderForm from "@/components/orderForm";
 
 const Order = () => {
   return (
   <OrderForm />
-);
+);  
 };
 
 export default Order;

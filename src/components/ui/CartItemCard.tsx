@@ -9,6 +9,7 @@ interface CartItemCardProps {
   onCheck: () => void;
   onQuantityChange: (cartItemId: number, quantity: number) => void;
   onRemove: (cartItemId: number) => void;
+  onOrderClick: (cartItemId: CartItem) => void;
 }
 
 const CartItemCard = ({
@@ -17,6 +18,7 @@ const CartItemCard = ({
   onCheck,
   onQuantityChange,
   onRemove,
+  onOrderClick,
 }: CartItemCardProps) => {
   const { product, quantity } = cartItem;
   const price = parseInt(product.price);
@@ -105,7 +107,7 @@ const CartItemCard = ({
       </div>
 
       <div className="flex w-full space-x-3">
-        <Button color='gold' className="w-full">주문하기</Button>
+        <Button color='gold' className="w-full" onClick={()=> onOrderClick(cartItem)}>주문하기</Button>
       </div>
     </div>
   );
