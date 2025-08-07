@@ -93,7 +93,7 @@ const Checkout = () => {
           return;
         }
         
-        const totalAmount = paymentData.totalPrice + paymentData.shippingFee;
+        const totalAmount = paymentData!.totalPrice + paymentData!.shippingFee;
         const amount = {
           currency: "KRW",
           value: totalAmount,
@@ -126,14 +126,17 @@ const Checkout = () => {
           button.addEventListener("click", async function () {
             try {
               // 상품명 생성 (첫 번째 상품명 + 외 n개)
-              const orderName = paymentData.items.length === 1 
-                ? paymentData.items[0].product.name
-                : `${paymentData.items[0].product.name} 외 ${paymentData.items.length - 1}개`;
+              const orderName = paymentData!.items.length === 1 
+                ? paymentData!.items[0].product.name
+                : `${paymentData!.items[0].product.name} 외 ${paymentData!.items.length - 1}개`;
 
+              // 주문번호 생성 (현재 시간 기반)
+              const orderNumber = `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`;
+              
               await widgets.requestPayment({
                 orderId: generateRandomString(),
                 orderName: orderName,
-                successUrl: window.location.origin + "/pay/success",
+                successUrl: `${window.location.origin}/pay/success?orderNumber=${orderNumber}`,
                 failUrl: window.location.origin + "/pay/fail",
                 customerEmail: "test@example.com",
                 customerName: "테스트 고객",
