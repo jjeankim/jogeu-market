@@ -94,7 +94,7 @@ const Success = () => {
         ordererName: orderInfo.orderer.name,
         ordererPhone: orderInfo.orderer.phone,
         ordererEmail: orderInfo.orderer.email,
-        couponId: orderInfo.selectedCoupon?.id,
+        userCouponId: orderInfo.selectedCoupon?.id,
         discountAmount: orderInfo.discountAmount,
         deliveryMessage: orderInfo.deliveryMessage || ''
       };

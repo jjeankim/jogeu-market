@@ -20,7 +20,7 @@ export interface OrderData {
   ordererName: string;
   ordererPhone: string;
   ordererEmail?: string;
-  couponId?: number;
+  userCouponId?: number;
   discountAmount?: number;
   deliveryMessage?: string;
 }
