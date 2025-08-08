@@ -7,8 +7,6 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { PiHeartBold } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
-import { HiMenu } from "react-icons/hi";
-import { IoMdClose } from "react-icons/io";
 import useAuthStore from "@/store/AuthStore";
 // import HamburgerNavigator from "./ui/HamburgerNavigator";
 import Navigator from "../components/ui/Navigator";
@@ -43,6 +41,15 @@ const Header = () => {
     router.push("/");
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = () =>{
+    if (searchTerm.trim()) {
+      router.push(`/search?q=${searchTerm}`);
+    }
+  };
+
 
 
   return (
@@ -63,7 +70,7 @@ const Header = () => {
             로그인 / 회원가입
           </Link>
         )}
-        <Link href="/support" className="hover:text-gray-800 transition-colors">
+        <Link href="/qna" className="hover:text-gray-800 transition-colors">
           고객센터
         </Link>
       </div>
@@ -90,8 +97,11 @@ const Header = () => {
               type="text"
               placeholder="검색어를 입력하세요"
               className="bg-transparent outline-none text-sm w-60 p-2"
+              value={searchTerm}
+              onChange={(e)=> setSearchTerm(e.target.value)}
+              onKeyDown={(e)=> e.key === 'Enter' && handleSearch()} 
             />
-            <FiSearch className="text-gray-600" size={22} />
+            <FiSearch className="text-gray-600" size={22}  onClick={handleSearch}/>
           </div>
 
           <button

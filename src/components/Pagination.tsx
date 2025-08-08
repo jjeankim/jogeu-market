@@ -15,7 +15,7 @@ const Pagination = ({
   const getPageNumbers = (): number[] => {
     const maxToShow = 5;
     let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, startPage + maxToShow - 1);
+    const endPage = Math.min(totalPages, startPage + maxToShow - 1);
 
     startPage = Math.max(1, endPage - maxToShow + 1);
     const pages: number[] = [];

@@ -115,20 +115,21 @@ const CartForm = () => {
     }
   };
 
-  // 수동 중복 정리
-  const handleMergeDuplicates = async () => {
-    try {
-      const result = await mergeDuplicateCartItems();
-      alert(result.message);
-      if (result.mergedCount > 0) {
-        // 중복이 정리되었으면 데이터를 다시 불러옴
-        await fetchCartItems();
-      }
-    } catch (error) {
-      console.error('중복 정리 실패:', error);
-      alert('중복 정리에 실패했습니다.');
-    }
+  //개별주문
+  const handleIndividualOrder = (cartItem: CartItem) => {
+   const orderData = {
+    items: [cartItem],
+    totalPrice : parseInt(cartItem.product.price) * cartItem.quantity,
+    shippingFee : parseInt(cartItem.product.price) * cartItem.quantity > 50000 ? 0 : 3000,
+   };
+
+   if (typeof window !== 'undefined') {
+    sessionStorage.setItem('orderData', JSON.stringify(orderData));
+    console.log('세션스토리지에 저장된 데이터:', sessionStorage.getItem('orderData'));
+   }
+   router.push('/order');
   };
+
 
   // 계산 (함수들보다 먼저 정의)
   const selectedItems = cartItems.filter(item => checkedItems[item.id]);
@@ -224,6 +225,7 @@ const CartForm = () => {
                   onCheck={() => handleItemCheck(cartItem.id)}
                   onQuantityChange={handleQuantityChange}
                   onRemove={handleRemoveItem}
+                  onOrderClick={handleIndividualOrder}
                 />
               ))}
             </div>

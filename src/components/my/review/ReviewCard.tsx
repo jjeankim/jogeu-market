@@ -1,7 +1,6 @@
 import Button from "@/components/ui/Button";
-import { ReviewCardLayout } from "@/pages/my/reviews";
 import { ReviewCardProps } from "@/types/my/order";
-
+import ReviewCardLayout from "./ReviewCardLayout";
 
 const ReviewCard = ({
   product,
@@ -9,7 +8,6 @@ const ReviewCard = ({
   orderedAt,
   onWriteReview,
 }: ReviewCardProps) => {
-  
   return (
     <div className="flex justify-between items-center border-b border-b-gray-300 p-6">
       <ReviewCardLayout product={product} orderedAt={orderedAt} />
@@ -19,10 +17,10 @@ const ReviewCard = ({
         color="gold"
         disabled={!!review?.reviewText}
       >
-         후기 작성
+        후기 작성
       </Button>
     </div>
   );
 };
 
-export default ReviewCard
+export default ReviewCard;

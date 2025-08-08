@@ -1,14 +1,3 @@
-import { ReactNode } from "react";
-
-export interface OrderStatusCount {
-  count: number;
-  status: string;
-}
-
-export interface MyPageOrderStatusCardProps {
-  children: ReactNode;
-}
-
 // 내 상품 후기 페이지
 export type Review = {
   id: number;
@@ -16,9 +5,11 @@ export type Review = {
   reviewText: string;
   imageUrl: string | null;
   createdAt: string;
+  isDeleted: boolean;
+  orderItemId: number;
 };
 
-type ProductBrand = {
+export type ProductBrand = {
   name: string;
 };
 
@@ -32,7 +23,7 @@ export type Product = {
 export type OrderItem = {
   id: number;
   product: Product;
-  review?: Review | null;
+  review?: Review[]
 };
 
 export type Order = {
@@ -45,7 +36,16 @@ export interface ReviewCardProps {
   product: Product;
   review?: Review | null;
   orderedAt?: string;
-  id?: number;
+  id?: number; // orderItemId
   onWriteReview?: () => void;
-  children?: ReactNode;
+}
+
+export interface ReviewModalProps {
+  mode: "create" | "edit";
+  item: ReviewCardProps;
+  onClose: () => void;
+  refreshOrderList: () => void;
+  initialRating?: number;
+  initialReviewText?: string;
+  initialFile?: File | null;
 }
