@@ -32,6 +32,52 @@ export interface Product {
   brand: Brand;
   category: Category;
   purchaseCount?: string;
+  isPick: boolean;
+}
+
+// BrandSection
+export interface BrandSectionProps {
+  id: string;
+  brands: Product[];
+}
+
+// LandingProductCard
+export interface LandingProductCardProps {
+  imageUrl: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  badgeLabel?: string; // BEST, Pick
+  tags?: string[]; // 세일, 샘플증정, MD's Pick
+  className?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+}
+
+// LandingProductSection
+export interface LandingProductSectionProps {
+  id: string;
+  title: string;
+  subtitle?: string;
+  products: Product[];
+  showMoreLink?: string;
+  badgeType?: string;
+}
+
+// PickProductCard
+export interface PickProductCardProps {
+  product: Product;
+  imageSize?: { width: number; height: number };
+}
+
+export interface Props {
+  id: string;
+  products: Product[];
+}
+
+// PickRankingSwitcher
+export interface PickRankingSwitcherProps {
+  onSelect: (rank: number) => void;
 }
 
 export interface ProductParams {
@@ -48,11 +94,32 @@ export interface ProductResponse {
   totalCount: number;
 }
 
-
 export interface ProductDetailResponse {
   message: string;
   product: Product;
 }
+
+export interface LandingProductResponse {
+  message: string;
+  best: Product[];
+  brand: Product[];
+  pick: Product[];
+  new: Product[];
+}
+
+export const axiosProductsForLanding =
+  async (): Promise<LandingProductResponse | null> => {
+    try {
+      const res = await axiosInstance.get<LandingProductResponse>(
+        "/api/product/landing"
+      );
+
+      return res.data;
+    } catch (error) {
+      console.error("랜딩페이지 상품 조회 실패", error);
+      return null;
+    }
+  };
 
 export const axiosProducts = async (
   params: ProductParams = {}
@@ -62,7 +129,6 @@ export const axiosProducts = async (
       params,
     });
     return res.data;
-
   } catch (error) {
     console.error("상품 목록 조회 실패", error);
     return null;

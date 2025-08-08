@@ -5,6 +5,7 @@ import { useState } from "react";
 import axiosInstance from "@/lib/axiosInstance";
 import { useToast } from "@/hooks/useToast";
 
+
 type Product = {
   id: number;
   brand: string | { id: number; name: string; logoImageUrl?: string };
@@ -15,8 +16,12 @@ type Product = {
   imgUrl?: string;
 };
 
+
 interface ListCardProps {
-  product: Product;
+  product: Product & {
+    review: number;
+    imgUrl?: string;
+  };
   onClick?: () => void;
 }
 
@@ -45,7 +50,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
         setWish(false);
         setWishId(null);
       }
-    } catch (error: any) {
+    } catch {
       if (error.response?.status === 409) {
         showError("이미 위시리스트에 추가된 상품입니다.");
       } else if (error.response?.status === 401) {
@@ -65,7 +70,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
         quantity: 1,
       });
       showSuccess(res.data.message);
-    } catch (error: any) {
+    } catch {
       if (error.response?.status === 401) {
         showError("유효하지 않은 사용자입니다.");
       } else {

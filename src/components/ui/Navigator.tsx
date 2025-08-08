@@ -14,17 +14,6 @@ const Navigator = () => {
     console.log(isMenuOpen);
   };
 
-  const handleMenuClick = (path: string) => {
-    if (isMenuOpen) {
-      setIsMenuOpen(false);
-      setTimeout(() => {
-        router.push(`/${path}`);
-      }, 300);
-    } else {
-      router.push(`/${path}`);
-    }
-  };
-
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch(
@@ -41,6 +30,19 @@ const Navigator = () => {
 
     fetchCategories();
   }, []);
+
+  const handleHashScroll = (hash: string) => {
+    const el = document.querySelector(hash);
+    if (el) {
+      const yOffset = -160; // 헤더 높이에 따라 조절 (px)
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: "smooth" });
+    } else {
+      // 요소가 없으면 URL 해시만 바꾸고 나중에 useEffect가 처리
+      window.location.hash = hash;
+    }
+  };
 
   return (
     <>
@@ -71,30 +73,57 @@ const Navigator = () => {
         </div>
 
         <nav className="flex gap-30 text-2xl font-medium">
-          <button
-            onClick={() => handleMenuClick("best")}
-            className="hover:text-yellow-500 transition-colors ml-10"
-          >
-            Best
-          </button>
-          <button
-            onClick={() => handleMenuClick("brand")}
-            className="hover:text-yellow-500 transition-colors"
-          >
-            Brand
-          </button>
-          <button
-            onClick={() => handleMenuClick("pick")}
-            className="hover:text-yellow-500 transition-colors"
-          >
-            Pick
-          </button>
-          <button
-            onClick={() => handleMenuClick("new")}
-            className="hover:text-yellow-500 transition-colors"
-          >
-            New
-          </button>
+          <ul className="grid grid-cols-4 gap-15 ">
+            <li>
+              <a
+                href="#best"
+                className="hover:text-yellow-500 transition-colors ml-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleHashScroll("#best");
+                }}
+              >
+                Best
+              </a>
+            </li>
+            <li>
+              <a
+                href="#pick"
+                className="hover:text-yellow-500 transition-colors ml-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleHashScroll("#pick");
+                }}
+              >
+                Pick
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#brand"
+                className="hover:text-yellow-500 transition-colors ml-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleHashScroll("#brand");
+                }}
+              >
+                Brand
+              </a>
+            </li>
+            <li>
+              <a
+                href="#new"
+                className="hover:text-yellow-500 transition-colors ml-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleHashScroll("#new");
+                }}
+              >
+                New
+              </a>
+            </li>
+          </ul>
         </nav>
       </div>
     </>
