@@ -7,6 +7,7 @@ export type Review = {
   createdAt: string;
   isDeleted: boolean;
   orderItemId: number;
+  likesCount: number;
 };
 
 export type ProductBrand = {
