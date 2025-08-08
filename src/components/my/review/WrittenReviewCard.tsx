@@ -2,13 +2,14 @@ import Button from "@/components/ui/Button";
 import ModalLayout from "@/components/ui/ModalLayout";
 import { useToast } from "@/hooks/useToast";
 import { deleteReview } from "@/lib/apis/review";
-import { ReviewCardLayout } from "@/pages/my/reviews";
 import { ReviewCardProps } from "@/types/my/order";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 import ReviewModal from "./ReviewModal";
+import ReviewCardLayout from "./ReviewCardLayout";
+import { FiThumbsUp } from "react-icons/fi";
 
 const WrittenReviewCard = ({
   product,
@@ -35,23 +36,30 @@ const WrittenReviewCard = ({
     }
   };
 
+  console.log(review);
+
   return (
     <div className="border-b border-b-gray-300 p-6 relative">
       <ReviewCardLayout product={product} />
 
       <div className="relative">
-        <div className="flex mt-4">
+        <div className="flex mt-4 items-center">
           {Array.from({ length: 5 }).map((_, index) => (
             <FaStar
               key={index}
               className={index < rating ? "text-yellow-400" : "text-gray-300"}
             />
           ))}
-          <span className="ml-2 text-sm">{rating}</span>
+          <span className="ml-2 mr-4 text-sm">({rating})</span>
         </div>
         <p className="mt-6">{review?.reviewText}</p>
+        {(review?.likesCount ?? 0) > 0 && (
+          <div className="flex items-center gap-1 mt-2 text-sm text-gray-500">
+            <FiThumbsUp className="text-red-500" />
+            <span>{review?.likesCount}명에게 도움이 되었습니다.</span>
+          </div>
+        )}
 
-        {/* 수정 버튼 */}
         <Button
           size="sm"
           variant="outlined"
@@ -63,7 +71,6 @@ const WrittenReviewCard = ({
         </Button>
       </div>
 
-      {/* 삭제 버튼 */}
       <button
         className="absolute right-6 top-6 text-gray-300"
         onClick={() => setOpenDeleteModal(true)}
@@ -71,7 +78,6 @@ const WrittenReviewCard = ({
         <FiX className="cursor-pointer" />
       </button>
 
-      {/* 삭제 확인 모달 */}
       {openDeleteModal && (
         <ModalLayout onClose={() => setOpenDeleteModal(false)}>
           <div className="flex flex-col gap-4 items-center">
@@ -87,7 +93,6 @@ const WrittenReviewCard = ({
         </ModalLayout>
       )}
 
-      {/* 수정 모달 */}
       {openUpdateModal && review && (
         <ModalLayout onClose={() => setOpenUpdateModal(false)}>
           <ReviewModal
@@ -97,7 +102,7 @@ const WrittenReviewCard = ({
             refreshOrderList={refreshOrderList}
             initialRating={review.rating}
             initialReviewText={review.reviewText}
-            initialFile={null} // 서버 이미지 있으면 초기 세팅 가능
+            initialFile={null}
           />
         </ModalLayout>
       )}

@@ -110,9 +110,13 @@ const ReviewModal = ({
           type="submit"
           size="full"
           color="gold"
-          disabled={rating === 0 || review.trim() === ""}
+          disabled={rating === 0 || review.trim() === ""
+          
+          }
+    
         >
           {mode === "create" ? "작성하기" : "수정하기"}
+          
         </Button>
       </form>
     </div>
