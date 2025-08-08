@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import QnATest from "@/components/QnA";
 import Footer from "@/components/ui/Footer";
 import useAuthStore from "@/store/AuthStore";
 import "@/styles/globals.css";
@@ -43,6 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </div>
           {showHeaderFooter && <Footer />}
         </div>
+         <QnATest />
       </div>
     </ToastProvider>
   );
