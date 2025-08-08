@@ -8,7 +8,6 @@ import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { PiHeartBold } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import useAuthStore from "@/store/AuthStore";
-// import HamburgerNavigator from "./ui/HamburgerNavigator";
 import Navigator from "../components/ui/Navigator";
 
 const Header = () => {
