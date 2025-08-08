@@ -8,6 +8,7 @@ import { formatPriceInfo } from "@/components/product/PriceDisplay";
 import axios, { AxiosError } from "axios";
 import type { ProductDetail } from "@/types/product/detail";
 import DetailInfo from "@/components/product/DetailInfo";
+import QnABox from "@/components/ui/QnABox";
 
 export default function ProductDetailPage() {
   const [product, setProduct] = useState<ProductDetail | null>(null);
@@ -158,8 +159,8 @@ export default function ProductDetailPage() {
           <div key="review" className="flex pt-4 pb-10 justify-center">
             작성된 제품 후기가 없습니다.
           </div>,
-          <div key="qna" className="flex pt-4 pb-10 justify-center">
-            상품 문의 내용 연결
+          <div key="qna" className="flex pt-4 pb-10 ">
+            <QnABox />
           </div>,
         ]}
       />
