@@ -9,7 +9,13 @@ const QnABox = () => {
         </div>
         <h1 className="text-2xl font-bold mt-10 p-4">상품문의</h1>
         <span className="block w-full border-b-2 border-black mt-4"></span>
+
+
+        <div>
+            
+        </div>
     </div>
+    
 
 );
 };
