@@ -3,22 +3,37 @@ import MyCoupon from "@/components/my/coupon/MyCoupon";
 import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayout from "@/components/my/MyPageLayout";
+import { useToast } from "@/hooks/useToast";
 import { fetchMyCouponList } from "@/lib/apis/coupon";
 import { isExpiringThisMonth } from "@/lib/utils/expiringSoonCount";
 import { CouponData } from "@/types/my/coupon";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 
 const MyCouponPage = () => {
   const [couponList, setCouponList] = useState<CouponData[]>([]);
-  //coupon은 객체 배열로 들어옴
+  const [loading, setLoading] = useState(false);
+  const { showError } = useToast();
 
-  useEffect(() => {
-    const getMyCouponList = async () => {
+  const loadCouponList = useCallback(async () => {
+    setLoading(true);
+    try {
       const myCoupon = await fetchMyCouponList();
       setCouponList(myCoupon);
-    };
-    getMyCouponList();
-  }, []);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        showError("쿠폰 목록을 불러오는데 실패했습니다.");
+      } else {
+        showError("네트워크 오류가 발생했습니다.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [showError]);
+
+  useEffect(() => {
+    loadCouponList();
+  }, [loadCouponList]);
 
   return (
     <MyPageLayout>
@@ -30,21 +45,25 @@ const MyCouponPage = () => {
           ).length
         }
       />
-      {/* {쿠폰 등록 api 없음} */}
-      <RegisterCoupon />
+
+      <RegisterCoupon onSuccess={loadCouponList} />
       <div>
         <SubTitle title="보유 쿠폰" />
-        <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
-          {couponList.length > 0 ? (
-            couponList.map((item) => (
-              <CouponCard key={item.couponId} userCoupon={item} />
-            ))
-          ) : (
-            <p className="col-span-2 text-gray-500 text-center">
-              보유한 쿠폰이 없습니다.
-            </p>
-          )}
-        </div>
+        {loading && couponList.length === 0 ? (
+          <p className="py-10 text-center text-gray-500">로딩 중...</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
+            {couponList.length > 0 ? (
+              couponList.map((item) => (
+                <CouponCard key={item.couponId} userCoupon={item} />
+              ))
+            ) : (
+              <p className="col-span-2 text-gray-500 text-center">
+                보유한 쿠폰이 없습니다.
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </MyPageLayout>
   );

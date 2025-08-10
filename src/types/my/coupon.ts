@@ -10,10 +10,18 @@ export type Coupon = {
 
 export interface CouponData {
   id: number;
-  couponId: number; 
+  couponId: number;
   isUsed: boolean;
   orderId: number | null;
   usedAt: string | null;
   userId: number;
   coupon: Coupon;
+}
+
+export interface RegisterCouponProps {
+  onSuccess: () => void;
+}
+
+export interface CouponErrorResponse {
+  error: string;
 }

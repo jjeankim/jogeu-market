@@ -1,10 +1,12 @@
 import axiosInstance from "../axiosInstance";
 
+//요청-응답만 처리
 export const fetchMyCouponList = async () => {
-  try {
-    const res = await axiosInstance.get("/api/coupon/me");
-    return res.data.userCoupon;
-  } catch (error) {
-    console.error("내 쿠폰 조회 실패", error);
-  }
+  const res = await axiosInstance.get("/api/coupon/me");
+  return res.data.userCoupon ?? [];
+};
+
+export const registerCoupon = async (code: string) => {
+  const res = await axiosInstance.post("/api/coupon/me", { code });
+  return res.data;
 };
