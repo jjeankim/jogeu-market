@@ -25,3 +25,20 @@ export interface RegisterCouponProps {
 export interface CouponErrorResponse {
   error: string;
 }
+
+export interface CouponCardProps {
+  userCoupon: {
+    id: number;
+    isUsed: boolean;
+    usedAt: string | null;
+    coupon: {
+      name: string;
+      discountType: "PERCENTAGE" | "FIXED";
+      discountValue: number;
+      validFrom: string;
+      validUntil: string;
+      isActive: boolean;
+      usageLimit: number;
+    };
+  };
+}
