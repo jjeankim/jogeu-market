@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'yourcdn.com', '127.0.0.1', 'static.toss.im'],
+    domains: ['localhost', 'yourcdn.com', '127.0.0.1', 'static.toss.im', "jogeumarket.blob.core.windows.net"],
     remotePatterns: [
       {
         protocol: 'http',
@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'yourcdn.com',
         pathname: '/images/**',
+      },
+      {
+        protocol: "https",
+        hostname: "jogeumarket.blob.core.windows.net",
+        pathname: "/**", 
       },
     ],
   },

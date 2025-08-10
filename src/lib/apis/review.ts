@@ -1,16 +1,10 @@
 import axiosInstance from "../axiosInstance";
 
-// 매개변수로 넘어가는 타입 정리해야함(찐)
 export const postReview = async (productsId: number, formData: FormData) => {
   try {
     const res = await axiosInstance.post(
       `/api/products/${productsId}/reviews`,
       formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
     );
     return res.data;
   } catch (error) {

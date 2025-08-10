@@ -35,13 +35,11 @@ const WrittenReviewCard = ({
       showError("후기 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-
-  console.log(review);
+  
 
   return (
     <div className="border-b border-b-gray-300 p-6 relative">
-      <ReviewCardLayout product={product} />
-
+      <ReviewCardLayout product={product} review={review} />
       <div className="relative">
         <div className="flex mt-4 items-center">
           {Array.from({ length: 5 }).map((_, index) => (

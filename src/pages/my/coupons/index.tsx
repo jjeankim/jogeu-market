@@ -1,6 +1,6 @@
 import CouponCard from "@/components/my/coupon/CouponCard";
 import MyCoupon from "@/components/my/coupon/MyCoupon";
-// import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
+import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayout from "@/components/my/MyPageLayout";
 import { fetchMyCouponList } from "@/lib/apis/coupon";
@@ -31,7 +31,7 @@ const MyCouponPage = () => {
         }
       />
       {/* {쿠폰 등록 api 없음} */}
-      {/* <RegisterCoupon /> */}
+      <RegisterCoupon />
       <div>
         <SubTitle title="보유 쿠폰" />
         <div className="grid grid-cols-2 gap-8 border-t-2 py-10">

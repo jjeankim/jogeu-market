@@ -71,7 +71,11 @@ const ReviewModal = ({
         <Image
           width={80}
           height={80}
-          src={"/images/립.png"}
+          src={
+            item.review?.imageUrl?.trim() ||
+            item.product.thumbnailImageUrl?.trim() ||
+            "/images/립.png"
+          }
           alt="제품 사진"
           className="rounded-[10px]"
         />
@@ -110,13 +114,9 @@ const ReviewModal = ({
           type="submit"
           size="full"
           color="gold"
-          disabled={rating === 0 || review.trim() === ""
-          
-          }
-    
+          disabled={rating === 0 || review.trim() === ""}
         >
           {mode === "create" ? "작성하기" : "수정하기"}
-          
         </Button>
       </form>
     </div>
