@@ -8,7 +8,7 @@ export interface SEOProps {
 export const defaultSEO: Required<SEOProps> = {
   title: "Jogeu-Market",
   description: "똑똑한 소비의 시작",
-  image: "",
+  image: "/images/logo_jogeuMarket.svg",
   url: "",
 };
 
