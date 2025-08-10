@@ -3,6 +3,7 @@ import MyCoupon from "@/components/my/coupon/MyCoupon";
 import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayout from "@/components/my/MyPageLayout";
+import Spinner from "@/components/ui/Spinner";
 import { useToast } from "@/hooks/useToast";
 import { fetchMyCouponList } from "@/lib/apis/coupon";
 import { isExpiringThisMonth } from "@/lib/utils/expiringSoonCount";
@@ -50,7 +51,7 @@ const MyCouponPage = () => {
       <div>
         <SubTitle title="보유 쿠폰" />
         {loading && couponList.length === 0 ? (
-          <p className="py-10 text-center text-gray-500">로딩 중...</p>
+          <Spinner />
         ) : (
           <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
             {couponList.length > 0 ? (
