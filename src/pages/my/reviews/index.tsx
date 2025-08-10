@@ -9,6 +9,7 @@ import ReviewModal from "@/components/my/review/ReviewModal";
 import WrittenReviewCard from "@/components/my/review/WrittenReviewCard";
 import { useToast } from "@/hooks/useToast";
 import axios from "axios";
+import SEO from "@/components/SEO";
 
 const MyReviewPage = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
@@ -101,82 +102,85 @@ const MyReviewPage = () => {
   }).length;
 
   return (
-    <MyPageLayoutWithWelcome>
-      <div>
-        <div className="flex justify-between">
-          <SubTitle title="내 상품 후기" />
-          <div className="flex gap-4 items-center">
-            <button
-              onClick={() => setFilter("unwritten")}
-              className="cursor-pointer"
-            >
-              {`작성 가능한 후기 (${unwrittenCount})`}
-            </button>
-            <button
-              onClick={() => setFilter("written")}
-              className="cursor-pointer"
-            >
-              {`작성한 후기 (${writtenCount})`}
-            </button>
+    <>
+      <SEO title="마이쇼핑" />
+      <MyPageLayoutWithWelcome>
+        <div>
+          <div className="flex justify-between">
+            <SubTitle title="내 상품 후기" />
+            <div className="flex gap-4 items-center">
+              <button
+                onClick={() => setFilter("unwritten")}
+                className="cursor-pointer"
+              >
+                {`작성 가능한 후기 (${unwrittenCount})`}
+              </button>
+              <button
+                onClick={() => setFilter("written")}
+                className="cursor-pointer"
+              >
+                {`작성한 후기 (${writtenCount})`}
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 border-t-2 relative">
+            {loading && orderList.length === 0 ? (
+              // 처음 로딩에만 스피너 표시 (깜빡임 방지)
+              <div className="py-10 flex justify-center">
+                {/* <LoadingSpinner /> */}
+                <p className="text-gray-500">로딩 중...</p>
+              </div>
+            ) : filteredItems.length > 0 ? (
+              filteredItems.map((item) =>
+                filter === "written" ? (
+                  <WrittenReviewCard
+                    key={item.id}
+                    product={item.product}
+                    review={item.review?.[0]}
+                    orderedAt={item.orderedAt}
+                    id={item.id}
+                    refreshOrderList={() => loadOrders({ silent: true })}
+                  />
+                ) : (
+                  <ReviewCard
+                    key={item.id}
+                    product={item.product}
+                    review={item.review?.[0]}
+                    orderedAt={item.orderedAt}
+                    onWriteReview={() =>
+                      openModal({
+                        product: item.product,
+                        review: item.review?.[0],
+                        orderedAt: item.orderedAt,
+                        id: item.id,
+                      })
+                    }
+                  />
+                )
+              )
+            ) : (
+              <p className="col-span-2 text-gray-500 text-center py-10">
+                {filter === "written"
+                  ? "작성한 리뷰가 없습니다."
+                  : "작성할 리뷰가 없습니다."}
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 border-t-2 relative">
-          {loading && orderList.length === 0 ? (
-            // 처음 로딩에만 스피너 표시 (깜빡임 방지)
-            <div className="py-10 flex justify-center">
-              {/* <LoadingSpinner /> */}
-              <p className="text-gray-500">로딩 중...</p>
-            </div>
-          ) : filteredItems.length > 0 ? (
-            filteredItems.map((item) =>
-              filter === "written" ? (
-                <WrittenReviewCard
-                  key={item.id}
-                  product={item.product}
-                  review={item.review?.[0]}
-                  orderedAt={item.orderedAt}
-                  id={item.id}
-                  refreshOrderList={() => loadOrders({ silent: true })}
-                />
-              ) : (
-                <ReviewCard
-                  key={item.id}
-                  product={item.product}
-                  review={item.review?.[0]}
-                  orderedAt={item.orderedAt}
-                  onWriteReview={() =>
-                    openModal({
-                      product: item.product,
-                      review: item.review?.[0],
-                      orderedAt: item.orderedAt,
-                      id: item.id,
-                    })
-                  }
-                />
-              )
-            )
-          ) : (
-            <p className="col-span-2 text-gray-500 text-center py-10">
-              {filter === "written"
-                ? "작성한 리뷰가 없습니다."
-                : "작성할 리뷰가 없습니다."}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {isModalOpen && selectedItem && (
-        <ModalLayout onClose={closeModal}>
-          <ReviewModal
-            mode="create"
-            item={selectedItem}
-            onClose={closeModal}
-            refreshOrderList={() => loadOrders({ silent: true })}
-          />
-        </ModalLayout>
-      )}
-    </MyPageLayoutWithWelcome>
+        {isModalOpen && selectedItem && (
+          <ModalLayout onClose={closeModal}>
+            <ReviewModal
+              mode="create"
+              item={selectedItem}
+              onClose={closeModal}
+              refreshOrderList={() => loadOrders({ silent: true })}
+            />
+          </ModalLayout>
+        )}
+      </MyPageLayoutWithWelcome>
+    </>
   );
 };
 

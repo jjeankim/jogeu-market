@@ -4,6 +4,7 @@ import Footer from "@/components/ui/Footer";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import OrderTable from "@/components/my/OrderTable";
 import ProductCard from "@/components/ui/ProductCard";
+import SEO from "@/components/SEO";
 
 interface Brand {
   id: number;
@@ -108,6 +109,7 @@ const MyOrderPage = () => {
 
   return (
     <>
+    <SEO title="마이쇼핑"/>
       <MyPageLayoutWithWelcome>
         <div className="w-full min-w-[42rem] mx-auto p-4">
           <OrderTable orders={orders} />

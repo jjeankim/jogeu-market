@@ -5,6 +5,7 @@ import SortBar from "@/components/product/SortBar";
 import ProductGrid from "@/components/product/ProductGrid";
 import PaginationBar from "@/components/product/PaginationBar";
 import BrandSlider from "@/components/product/BrandSlider";
+import SEO from "@/components/SEO";
 
 const mainToSubMap = {
   beauty: [
@@ -92,6 +93,8 @@ const ProductList = () => {
   };
 
   return (
+    <>
+  <SEO title="상품" />
     <div className="mx-10">
       {/* 상단 제목 */}
       <div className="text-center mt-20 text-3xl font-bold capitalize">
@@ -140,6 +143,7 @@ const ProductList = () => {
         onPageChange={(page) => updateQuery({ page: page.toString() })}
       />
     </div>
+      </>
   );
 };
 

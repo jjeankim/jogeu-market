@@ -3,6 +3,7 @@ import MyCoupon from "@/components/my/coupon/MyCoupon";
 import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
 import MyPageLayout from "@/components/my/MyPageLayout";
+import SEO from "@/components/SEO";
 import Spinner from "@/components/ui/Spinner";
 import { useToast } from "@/hooks/useToast";
 import { fetchMyCouponList } from "@/lib/apis/coupon";
@@ -37,36 +38,39 @@ const MyCouponPage = () => {
   }, [loadCouponList]);
 
   return (
-    <MyPageLayout>
-      <MyCoupon
-        totalCount={couponList.length}
-        expiringSoonCount={
-          couponList.filter((item) =>
-            isExpiringThisMonth(item.coupon.validUntil)
-          ).length
-        }
-      />
+    <>
+      <SEO title="마이쇼핑" />
+      <MyPageLayout>
+        <MyCoupon
+          totalCount={couponList.length}
+          expiringSoonCount={
+            couponList.filter((item) =>
+              isExpiringThisMonth(item.coupon.validUntil)
+            ).length
+          }
+        />
 
-      <RegisterCoupon onSuccess={loadCouponList} />
-      <div>
-        <SubTitle title="보유 쿠폰" />
-        {loading && couponList.length === 0 ? (
-          <Spinner />
-        ) : (
-          <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
-            {couponList.length > 0 ? (
-              couponList.map((item) => (
-                <CouponCard key={item.couponId} userCoupon={item} />
-              ))
-            ) : (
-              <p className="col-span-2 text-gray-500 text-center">
-                보유한 쿠폰이 없습니다.
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-    </MyPageLayout>
+        <RegisterCoupon onSuccess={loadCouponList} />
+        <div>
+          <SubTitle title="보유 쿠폰" />
+          {loading && couponList.length === 0 ? (
+            <Spinner />
+          ) : (
+            <div className="grid grid-cols-2 gap-8 border-t-2 py-10">
+              {couponList.length > 0 ? (
+                couponList.map((item) => (
+                  <CouponCard key={item.couponId} userCoupon={item} />
+                ))
+              ) : (
+                <p className="col-span-2 text-gray-500 text-center">
+                  보유한 쿠폰이 없습니다.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      </MyPageLayout>
+    </>
   );
 };
 

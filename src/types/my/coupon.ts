@@ -1,6 +1,6 @@
 export type Coupon = {
   name: string;
-  discountType: "fixed" | "percentage";
+  discountType: "FIXED" | "PERCENTAGE";
   discountValue: number;
   validFrom: string;
   validUntil: string;
