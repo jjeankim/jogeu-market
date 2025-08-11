@@ -356,7 +356,7 @@ export default function ProductDetailPage() {
                 </div>
               </div>,
               <div key="qna" className="flex pt-4 pb-10 justify-center">
-                상품 문의 내용 연결
+                <QnABox productId={product.id} />
               </div>,
             ]}
           />

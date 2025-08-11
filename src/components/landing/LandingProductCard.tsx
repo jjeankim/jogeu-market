@@ -31,6 +31,7 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
       className={`flex flex-col w-1/2 items-center ${className}`}
       onClick={onClick}
     >
+
       <div className="">
         <div className="relative  w-[230px] h-[230px] ">
           <Image

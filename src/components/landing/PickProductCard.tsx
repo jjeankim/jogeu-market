@@ -23,7 +23,7 @@ interface PickProductCardProps {
 
 const PickProductCard: React.FC<PickProductCardProps> = ({
   product,
-  imageSize = { width: 300, height: 300 },
+  imageSize = { width: 230, height: 230 },
   onClick,
   fill,
 }) => {
