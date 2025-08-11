@@ -1,9 +1,8 @@
-
 import axiosInstance from "@/lib/axiosInstance";
 
 import { API_BASE_URL } from "@/lib/constants";
 import { AuthValues } from "@/types/auth";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { create } from "zustand";
 
 interface AuthStore {
@@ -50,7 +49,6 @@ const useAuthStore = create<AuthStore>((set) => ({
       email,
       password,
       name,
-    
     });
   },
   initializeAuth: async () => {
@@ -72,22 +70,37 @@ const useAuthStore = create<AuthStore>((set) => ({
         console.log("재발급 성공", accessToken);
       }
 
-      const profileRes = await axiosInstance.get(`${API_BASE_URL}/api/users/me`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const profileRes = await axiosInstance.get(
+        `${API_BASE_URL}/api/users/me`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
       const userName = profileRes.data.name;
       set({ userName });
-      console.log(userName)
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        console.log("refresh token이 없거나 만료됨 - 로그인이 필요합니다");
-        set({ accessToken: null, isLoggedIn: false, userName: "" });
-      } else if (err.code === 'ECONNREFUSED' || err.message === 'Network Error') {
-        console.log("백엔드 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.");
-        set({ accessToken: null, isLoggedIn: false, userName: "" });
+      console.log(userName);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const axiosError = err as AxiosError;
+
+        if (axiosError.response?.status === 401) {
+          console.log("refresh token이 없거나 만료됨 - 로그인이 필요합니다");
+          set({ accessToken: null, isLoggedIn: false, userName: "" });
+        } else if (
+          axiosError.code === "ECONNREFUSED" ||
+          axiosError.message === "Network Error"
+        ) {
+          console.log(
+            "백엔드 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요."
+          );
+          set({ accessToken: null, isLoggedIn: false, userName: "" });
+        } else {
+          console.error("refresh 요청 실패", axiosError);
+          set({ accessToken: null, isLoggedIn: false, userName: "" });
+        }
       } else {
-        console.error("refresh 요청 실패", err);
+        console.error("알 수 없는 오류", err);
         set({ accessToken: null, isLoggedIn: false, userName: "" });
       }
     }
