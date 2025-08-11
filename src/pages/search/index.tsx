@@ -1,12 +1,15 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SearchForm from "@/components/SearchForm";
+import SEO from "@/components/SEO";
 
 const SearchPage = () => {
   const router = useRouter();
   const { q } = router.query; // URL에서 ?q=검색어 가져오기
 
   return (
+    <>
+    <SEO title="검색"/>
     <div className="container mx-auto mt-20">
       {/* 검색어 표시 */}
       <div className="text-center py-8">
@@ -18,6 +21,7 @@ const SearchPage = () => {
     
       <SearchForm searchQuery={q as string} />
     </div>
+    </>
   );
 };
 

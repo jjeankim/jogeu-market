@@ -10,10 +10,12 @@ import SocialLoginLink from "./SocialLoginLink";
 import AuthFormLayout from "./ui/AuthFormLayout";
 import FormErrorText from "./FormErrorText";
 import { AuthValues } from "@/types/auth";
+import { useEffect } from "react";
 
 const LoginForm = () => {
   const router = useRouter();
   const { showSuccess, showError } = useToast();
+  const { isLoggedIn } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -38,6 +40,10 @@ const LoginForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) router.push("/");
+  }, [isLoggedIn, router]);
 
   return (
     <AuthFormLayout title="로그인">

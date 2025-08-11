@@ -41,6 +41,7 @@ const CustomFileInput = ({ onFileSelect, fileName }: CustomFileInputProps) => {
         onClick={handleClick}
         variant="outlined"
         color="gold"
+        className="shrink-0"
       >
         파일찾기
       </Button>

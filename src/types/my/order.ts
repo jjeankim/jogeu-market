@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // 내 상품 후기 페이지
 export type Review = {
   id: number;
@@ -7,6 +9,7 @@ export type Review = {
   createdAt: string;
   isDeleted: boolean;
   orderItemId: number;
+  likesCount: number;
 };
 
 export type ProductBrand = {
@@ -48,4 +51,13 @@ export interface ReviewModalProps {
   initialRating?: number;
   initialReviewText?: string;
   initialFile?: File | null;
+}
+
+export interface MyPageOrderStatusCardProps {
+  children: ReactNode;
+}
+
+export interface OrderStatusCount {
+  count: number;
+  status: string;
 }
