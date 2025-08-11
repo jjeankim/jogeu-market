@@ -265,7 +265,7 @@ const OrderForm = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900">{item.product.name}</h3>
-                      <p className="text-lg font-semibold text-blue-600 mt-1">
+                      <p className="text-lg font-semibold text-logo mt-1">
                         {parseInt(item.product.price).toLocaleString()}원
                       </p>
                       <p className="text-sm text-gray-600 mt-1">배송: [무료] / 기본배송</p>
@@ -347,7 +347,7 @@ const OrderForm = () => {
                   <h3 className="text-lg font-medium">배송 받으실 분</h3>
                   <Button
                     onClick={handleUseOrdererInfo}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 bg-logo text-white rounded-md text-sm hover:bg-blue-700 transition-colors"
                   >
                     주문자와 동일
                   </Button>

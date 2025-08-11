@@ -8,6 +8,7 @@ import { formatPriceInfo } from "@/components/product/PriceDisplay";
 import axios, { AxiosError } from "axios";
 import type { ProductDetail } from "@/types/product/detail";
 import DetailInfo from "@/components/product/DetailInfo";
+import QnABox from "@/components/ui/QnABox";
 
 // 추가 - 나중에 컴포넌트 갈라 낼것들 (rs)
 import Image from "next/image";

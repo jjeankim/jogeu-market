@@ -71,7 +71,11 @@ const ReviewModal = ({
         <Image
           width={80}
           height={80}
-          src={"/images/립.png"}
+          src={
+            item.review?.imageUrl?.trim() ||
+            item.product.thumbnailImageUrl?.trim() ||
+            "/images/립.png"
+          }
           alt="제품 사진"
           className="rounded-[10px]"
         />

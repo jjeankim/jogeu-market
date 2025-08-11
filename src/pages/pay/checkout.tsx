@@ -3,6 +3,7 @@ import Head from "next/head";
 import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
 import { CartItem } from "@/lib/apis/cart";
+import { useToast } from "@/hooks/useToast";
 
 // TossPayments 타입 정의
 declare global {
@@ -26,6 +27,7 @@ const Checkout = () => {
   const router = useRouter();
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { showError } = useToast();
 
   // 결제 데이터 로드
   useEffect(() => {
@@ -106,6 +108,8 @@ const Checkout = () => {
         const TossPayments = window.TossPayments;
         if (!TossPayments) {
           console.error("TossPayments SDK를 로드할 수 없습니다.");
+          showError("결제 모듈 로드에 실패했어요. 잠시 후 다시 시도해주세요.");
+          router.replace('/order');
           return;
         }
         
@@ -146,14 +150,21 @@ const Checkout = () => {
                 customerMobilePhone: "01012345678",
                 windowTarget: "iframe", // iframe 모드로 변경
               });
-            } catch (error) {
+            } catch (error: any) {
               console.error("결제 요청 중 오류 발생:", error);
-              alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
+              const message =
+                (typeof error?.message === 'string' && error.message.includes('취소'))
+                  ? '결제가 취소되었어요. 주문 페이지로 이동합니다.'
+                  : '결제 중 오류가 발생했어요. 주문 페이지로 이동합니다.';
+              showError(message);
+              router.replace('/order');
             }
           });
         }
       } catch (error) {
         console.error("위젯 초기화 중 오류 발생:", error);
+        showError("결제 페이지 초기화 중 문제가 발생했어요. 주문 페이지로 이동합니다.");
+        router.replace('/order');
       }
     }
     

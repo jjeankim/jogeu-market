@@ -1,6 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
+import SEO from "@/components/SEO";
 
 type Category = {
   id: number;
@@ -64,176 +65,179 @@ const ProductRegistration = () => {
   };
 
   return (
-    <div className="">
-      <h1 className="text-4xl font-bold text-center border-b-2 border-gray-200 py-4 mb-3">
-        상품 등록
-      </h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="container mx-auto h-screen space-y-4"
-      >
-        {/* 카테고리 선택 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            카테고리
-          </label>
-          <select
-            {...register("category", { required: true })}
-            className="w-full border p-2 rounded"
-          >
-            <option value="">선택</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          {errors.category && (
-            <p className="text-red-400 mt-1">카테고리를 선택하세요.</p>
-          )}
-        </div>
-
-        {/* 브랜드 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            브랜드
-          </label>
-          <input
-            {...register("brand", { required: true })}
-            className="w-full border p-2 rounded"
-            type="text"
-          />
-          {errors.brand && (
-            <p className="text-red-400 mt-1">브랜드를 작성하세요.</p>
-          )}
-        </div>
-
-        {/* 샘플여부 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            <span className="mr-4">샘플 여부</span>
-            <input
-              type="checkbox"
-              {...register("isSample")}
-              className="mr-4 w-6 h-6 align-middle"
-            />
-          </label>
-        </div>
-
-        {/* 샘플 가격 */}
-        {isSample && (
+    <>
+      <SEO title="상품 등록" />
+      <div className="">
+        <h1 className="text-4xl font-bold text-center border-b-2 border-gray-200 py-4 mb-3">
+          상품 등록
+        </h1>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="container mx-auto h-screen space-y-4"
+        >
+          {/* 카테고리 선택 */}
           <div>
             <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-              샘플 가격
+              카테고리
+            </label>
+            <select
+              {...register("category", { required: true })}
+              className="w-full border p-2 rounded"
+            >
+              <option value="">선택</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            {errors.category && (
+              <p className="text-red-400 mt-1">카테고리를 선택하세요.</p>
+            )}
+          </div>
+
+          {/* 브랜드 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              브랜드
+            </label>
+            <input
+              {...register("brand", { required: true })}
+              className="w-full border p-2 rounded"
+              type="text"
+            />
+            {errors.brand && (
+              <p className="text-red-400 mt-1">브랜드를 작성하세요.</p>
+            )}
+          </div>
+
+          {/* 샘플여부 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              <span className="mr-4">샘플 여부</span>
+              <input
+                type="checkbox"
+                {...register("isSample")}
+                className="mr-4 w-6 h-6 align-middle"
+              />
+            </label>
+          </div>
+
+          {/* 샘플 가격 */}
+          {isSample && (
+            <div>
+              <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+                샘플 가격
+              </label>
+              <input
+                type="number"
+                {...register("samplePrice", { min: 0, valueAsNumber: true })}
+                className="w-full border p-2 rounded"
+              />
+              {errors.samplePrice && (
+                <p className="text-red-400 mt-1">샘플 가격을 작성하세요.</p>
+              )}
+            </div>
+          )}
+
+          {/* 상품명 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              상품명
+            </label>
+            <input
+              type="text"
+              {...register("productName", { required: true })}
+              className="w-full border p-2 rounded"
+            />
+            {errors.productName && (
+              <p className="text-red-400 mt-1">제품 명을 작성하세요.</p>
+            )}
+          </div>
+
+          {/* 상품 가격 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              상품가격
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                {...register("productPrice", {
+                  required: true,
+                  valueAsNumber: true,
+                })}
+                className="w-full border p-2 rounded"
+              />
+              <span className="absolute right-3 top-1/2 text-lg -translate-y-1/2 text-gray-500 t">
+                원
+              </span>
+            </div>
+            {errors.productPrice && (
+              <p className="text-red-400 mt-1">제품 가격을 작성하세요.</p>
+            )}
+          </div>
+
+          {/* 수량 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              수량
             </label>
             <input
               type="number"
-              {...register("samplePrice", { min: 0, valueAsNumber: true })}
+              {...register("quantity", { required: true, valueAsNumber: true })}
               className="w-full border p-2 rounded"
             />
-            {errors.samplePrice && (
-              <p className="text-red-400 mt-1">샘플 가격을 작성하세요.</p>
+            {errors.quantity && (
+              <p className="text-red-400 mt-1">상품 수량을 작성하세요.</p>
             )}
           </div>
-        )}
 
-        {/* 상품명 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            상품명
-          </label>
-          <input
-            type="text"
-            {...register("productName", { required: true })}
-            className="w-full border p-2 rounded"
-          />
-          {errors.productName && (
-            <p className="text-red-400 mt-1">제품 명을 작성하세요.</p>
-          )}
-        </div>
-
-        {/* 상품 가격 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            상품가격
-          </label>
-          <div className="relative">
+          {/* 썸네일 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              썸네일 이미지
+            </label>
             <input
-              type="number"
-              {...register("productPrice", {
-                required: true,
-                valueAsNumber: true,
-              })}
+              type="file"
+              accept="image/*"
+              {...register("thumbnail", { required: true })}
               className="w-full border p-2 rounded"
             />
-            <span className="absolute right-3 top-1/2 text-lg -translate-y-1/2 text-gray-500 t">
-              원
-            </span>
           </div>
-          {errors.productPrice && (
-            <p className="text-red-400 mt-1">제품 가격을 작성하세요.</p>
-          )}
-        </div>
 
-        {/* 수량 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            수량
-          </label>
-          <input
-            type="number"
-            {...register("quantity", { required: true, valueAsNumber: true })}
-            className="w-full border p-2 rounded"
-          />
-          {errors.quantity && (
-            <p className="text-red-400 mt-1">상품 수량을 작성하세요.</p>
-          )}
-        </div>
+          {/* 기타 이미지 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              기타 이미지
+            </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              {...register("images", { required: true })}
+              className="w-full border p-2 rounded"
+            />
+          </div>
 
-        {/* 썸네일 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            썸네일 이미지
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            {...register("thumbnail", { required: true })}
-            className="w-full border p-2 rounded"
-          />
-        </div>
+          {/* 상세 이미지 */}
+          <div>
+            <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
+              기타 이미지
+            </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              {...register("detailImages", { required: true })}
+              className="w-full border p-2 rounded"
+            />
+          </div>
 
-        {/* 기타 이미지 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            기타 이미지
-          </label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            {...register("images", { required: true })}
-            className="w-full border p-2 rounded"
-          />
-        </div>
-
-        {/* 상세 이미지 */}
-        <div>
-          <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
-            기타 이미지
-          </label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            {...register("detailImages", { required: true })}
-            className="w-full border p-2 rounded"
-          />
-        </div>
-
-        <Button type="submit">등록하기</Button>
-      </form>
-    </div>
+          <Button type="submit">등록하기</Button>
+        </form>
+      </div>
+    </>
   );
 };
 

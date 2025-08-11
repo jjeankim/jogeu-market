@@ -1,35 +1,12 @@
-import Link from "next/link";
-
-interface CouponCardProps {
-  userCoupon: {
-    id: number;
-    isUsed: boolean;
-    usedAt: string | null;
-    coupon: {
-      name: string;
-      discountType: "percentage" | "fixed";
-      discountValue: number;
-      validFrom: string;
-      validUntil: string;
-      isActive: boolean;
-      usageLimit: number;
-    };
-  };
-}
+import { CouponCardProps } from "@/types/my/coupon";
 
 const CouponCard = ({ userCoupon }: CouponCardProps) => {
   const { isUsed, coupon } = userCoupon;
-  const {
-    name,
-    discountType,
-    discountValue,
-    validFrom,
-    validUntil,
-    isActive,
-  } = coupon;
+  const { name, discountType, discountValue, validFrom, validUntil, isActive } =
+    coupon;
 
   const discountText =
-    discountType === "percentage"
+    discountType === "PERCENTAGE"
       ? `${discountValue}% 할인`
       : `${discountValue.toLocaleString()}원 할인`;
 
@@ -59,16 +36,22 @@ const CouponCard = ({ userCoupon }: CouponCardProps) => {
         </Link> */}
       </div>
       {isUsed && (
-        <span className="text-xs text-red-500 absolute top-2 right-2">사용 완료</span>
+        <span className="text-xs text-red-500 absolute top-2 right-2">
+          사용 완료
+        </span>
       )}
       {!isUsed && isExpired && (
-        <span className="text-xs text-gray-500 absolute top-2 right-2">기간 만료</span>
+        <span className="text-xs text-gray-500 absolute top-2 right-2">
+          기간 만료
+        </span>
       )}
       {!isUsed && !isActive && (
-        <span className="text-xs text-gray-500 absolute top-2 right-2">비활성화</span>
+        <span className="text-xs text-gray-500 absolute top-2 right-2">
+          비활성화
+        </span>
       )}
     </div>
   );
 };
 
-export default CouponCard
+export default CouponCard;

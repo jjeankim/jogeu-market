@@ -5,6 +5,8 @@ import { useState } from "react";
 import Pagination from "./Pagination";
 import { axiosSearchProducts , Product} from "@/lib/apis/product";
 import { useEffect } from "react";
+import Image from "next/image";
+import Spinner from "@/components/ui/Spinner";
 
 interface SearchFormProps {
     searchQuery?: string;
@@ -61,16 +63,33 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* 상품 목록 카드 영역 */}
-        <ul className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-15">
-          {productList.map((product, index) => (
-            <li key={index}>
-              <Link href={`/product/${product.id}`} className="group">
-                <ListCard product={product} />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* 상품 목록/빈 상태 */}
+        {loading ? (
+          <div className="w-full flex justify-center items-center py-20">
+            <Spinner />
+          </div>
+        ) : productList.length === 0 && searchQuery ? (
+          <div className="w-full flex flex-col justify-center items-center py-20">
+            <Image
+              src="/images/logo_bw_jogeuMarket_2.png"
+              alt="검색 결과 없음"
+              width={500}
+              height={180}
+              priority={false}
+            />
+            <p className="mt-6 text-4xl text-center font-medium text-gray-400">[검색 결과가 없습니다]</p>
+          </div>
+        ) : (
+          <ul className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-15">
+            {productList.map((product, index) => (
+              <li key={index}>
+                <Link href={`/product/${product.id}`} className="group">
+                  <ListCard product={product} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* 페이지네이션 */}
