@@ -54,7 +54,7 @@ const PayBox = ({
           <div className="border-t border-gray-200 pt-3 mt-4">
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">총 결제금액</span>
-              <span className="text-xl font-bold text-blue-600">{formatPrice(totalAmount)}</span>
+              <span className="text-xl font-bold text-logo">{formatPrice(totalAmount)}</span>
             </div>
           </div>
         </div>
