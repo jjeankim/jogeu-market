@@ -1,7 +1,8 @@
-import { AuthValues } from "@/components/LoginForm";
+
 import axiosInstance from "@/lib/axiosInstance";
 
 import { API_BASE_URL } from "@/lib/constants";
+import { AuthValues } from "@/types/auth";
 import axios from "axios";
 import { create } from "zustand";
 
