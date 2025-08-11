@@ -101,7 +101,7 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
           {sampleProductCards.map((product) => (
             <div className="w-full mx-auto" key={product.id}>
               <PickProductCard
-                imageSize={{ width: 200, height: 200 }}
+                imageSize={{ width: 230, height: 230 }}
                 product={{
                   ...product,
                   originalPrice:

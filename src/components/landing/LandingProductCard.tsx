@@ -37,6 +37,7 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
           alt={name}
           width={imageWidth || 230}
           height={imageHeight || 230}
+          className="w-[230px] h-[230px] object-contain"
         />
         {badgeLabel && (
           <span className="bg-white absolute border-[3px]  border-red-300  top-1 left-1 w-15 h-15 flex items-center justify-center rounded-full font-semibold text-md">
