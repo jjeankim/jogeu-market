@@ -92,11 +92,11 @@ const MainForm = () => {
   }
 
   return (
-    <main className="mt-5 flex flex-col space-y-12">
+    <main className="mt-5 flex flex-col space-y-3">
       <MainSwiper />
 
       <div className="w-full flex flex-col mx-auto bg-white">
-        <div className="flex p-3 space-x-20">
+        <div className="flex flex-col items-center justify-center p-3 space-y-3   ">
           <LandingProductSection
             id="best"
             title="BEST"

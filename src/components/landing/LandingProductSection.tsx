@@ -23,7 +23,7 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   const router = useRouter();
 
   const [currentPage, setCurrentPage] = useState(0);
-  const ITEMS_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 4;
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
   const handleNext = () => {
@@ -41,25 +41,27 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   );
 
   return (
-    <section id={id} className="w-1/2 space-y-2">
-      <h2 className="text-2xl font-bold mb-2">
+    <section id={id} className="flex flex-col w-full">
+      <h2 className="text-3xl font-bold mb-8 mt-10">
         {title}
-        <span className="pl-2 text-xl font-medium mb-2 align-middle  ">
+        <span className="pl-2 text-xl font-medium mb-2 align-middle">
           {subtitle}
         </span>
       </h2>
-      <nav className="flex justify-end ">
+      {/* <nav className="flex justify-end ">
         <a href={showMoreLink} className="underline">
           더보기
         </a>
-      </nav>
+      </nav> */}
 
-      <div className=" flex-col space-y-5">
-        <div className="flex mx-auto">
+      <div className="flex-col ">
+        <div className="flex mx-auto mb-15">
           {currentProducts.map((product) => (
             <LandingProductCard
               key={product.id}
               imageUrl={product.thumbnailImageUrl}
+              // fill
+              // sizes="230px"
               name={product.name}
               price={product.price}
               originalPrice={product.price * 1.1}
@@ -75,10 +77,10 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
         </div>
 
         <div
-          className=" w-[90%] mx-auto text-center py-3 border-2 space-x-3 cursor-pointer"
+          className="w-[30%] min-w-sm mx-auto text-center py-3 border-2 space-x-3 cursor-pointer mt-10 mb-10"
           onClick={handleNext}
         >
-          <span>다른 상품 더보기</span>
+          <span className="">다른 상품 더보기</span>
           <span>{currentPage + 1}</span>
           <span className="text-gray-300">|</span>
           <span className="text-gray-300">{totalPages}</span>
