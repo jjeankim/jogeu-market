@@ -7,6 +7,7 @@ import {
   Category,
   BrandSectionProps,
 } from "@/lib/apis/product";
+import { useRouter } from "next/router";
 
 // export interface Brand {
 //   id: number;
@@ -41,11 +42,16 @@ import {
 // }
 
 const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
+  const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0);
   if (!brands || brands.length === 0) return null;
 
   const selectedBrand = brands[selectedIndex];
   const sampleProductCards = selectedBrand.products.slice(0, 2);
+
+  const onItemClick = (productId: string) => {
+    router.push(`/product/${productId}`);
+  };
 
   return (
     <section id={id} className="bg-white space-y-6 py-6">
@@ -105,6 +111,7 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
                     product.isPick ? "MD's Pick" : null,
                   ].filter(Boolean),
                 }}
+                onClick={() => onItemClick(product.id)}
               />
             </div>
           ))}
