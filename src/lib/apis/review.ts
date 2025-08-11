@@ -4,7 +4,7 @@ export const postReview = async (productsId: number, formData: FormData) => {
   try {
     const res = await axiosInstance.post(
       `/api/products/${productsId}/reviews`,
-      formData,
+      formData
     );
     return res.data;
   } catch (error) {

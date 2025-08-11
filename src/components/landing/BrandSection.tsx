@@ -84,7 +84,7 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
           <Image
             src={
               selectedBrand.products[0]?.brand?.logoImageUrl ||
-              "/images/lip.png"
+              "/images/noImg.png"
             }
             alt="브랜드 이미지"
             fill

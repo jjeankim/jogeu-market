@@ -150,6 +150,8 @@ export default function ProductDetailPage() {
     router.push("/order");
   };
 
+  console.log("====thumbnail", product?.thumbnailImageUrl);
+
   return (
     <>
       {!product ? (
@@ -209,9 +211,9 @@ export default function ProductDetailPage() {
                       </div>
                     </div>
                     {/* 분포도 */}
-                    <div className="w-1/2 ">
-                      <ul>
-                        <li className="flex items-center space-x-3">
+                    <div className="w-2/3  pl-15 bg-orange">
+                      <ul className=" ">
+                        <li className="flex items-center space-x-3 w-full ">
                           <span className="align-super  w-9 text-center">
                             5점
                           </span>

@@ -50,7 +50,7 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
       </div>
       {/* 사진 , 좋아요 */}
       <div className=" min-w-56 flex justify-around ">
-        <div className="flex items-center justify-center border rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-center  rounded-2xl overflow-hidden">
           {imageUrl ? (
             <Image
               width={150}
@@ -59,7 +59,11 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
               alt=""
               className="object-cover"
             />
-          ) : null}
+          ) : (
+            <>
+              <div className=" w-35 h-[100%]"></div>
+            </>
+          )}
         </div>
         <div className="flex flex-col">
           <div className=" flex justify-center  ">

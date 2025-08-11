@@ -16,6 +16,7 @@ import { Product, PickProductCardProps } from "@/lib/apis/product";
 
 interface PickProductCardProps {
   product: Product;
+  fill?: boolean;
   imageSize?: { width: number; height: number };
   onClick?: (productId: string) => void;
 }
@@ -24,6 +25,7 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
   product,
   imageSize = { width: 300, height: 300 },
   onClick,
+  fill,
 }) => {
   if (!product) return null;
 
@@ -47,14 +49,27 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
   //   const badgeLabel = isSample ? "샘플 증정" : isPick ? "MD's Pick" : "세일";
 
   return (
-    <div className="bg-white p-6 flex" onClick={onClick}>
-      <Image
-        src={thumbnailImageUrl || "/images/lip.png"}
-        alt={name}
-        width={imageSize.width}
-        height={imageSize.height}
-        className="border-2"
-      />
+    <div className=" p-6 flex justify-between items-center " onClick={onClick}>
+      {fill ? (
+        <div className="relative flex-1 aspect-square max-w-[300px] ">
+          <Image
+            src={thumbnailImageUrl || "/images/noImg.png"}
+            alt={name}
+            fill
+            className="border-2 object-cover"
+          />
+        </div>
+      ) : (
+        <div className=" flex justify-center items-center ">
+          <Image
+            src={thumbnailImageUrl || "/images/noImg.png"}
+            alt={name}
+            width={230}
+            height={230}
+            className="border-2 object-cover "
+          />
+        </div>
+      )}
       <div className="flex flex-col justify-center space-y-1.5 p-5">
         <div className="text-gray-400 font-semibold">{brand.name}</div>
         <div className="font-semibold">{name}</div>
