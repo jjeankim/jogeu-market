@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LandingProductCard from "./LandingProductCard";
 import { Product, LandingProductSectionProps } from "@/lib/apis/product";
+import { useRouter } from "next/router";
 
 // interface LandingProductSectionProps {
 //   id: string;
@@ -19,12 +20,19 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   showMoreLink = "#",
   badgeType,
 }) => {
+  const router = useRouter();
+
   const [currentPage, setCurrentPage] = useState(0);
   const ITEMS_PER_PAGE = 2;
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
   const handleNext = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const onItemClick = (productId: string) => {
+    console.log("===product clicked");
+    router.push(`/product/${productId}`);
   };
 
   const currentProducts = products.slice(
@@ -61,6 +69,7 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
                 product.isPick ? "MD's Pick" : "",
                 "세일",
               ].filter(Boolean)}
+              onClick={() => onItemClick(product.id)}
             />
           ))}
         </div>

@@ -15,7 +15,7 @@ const MyPageAside = () => {
       title: "활동 정보",
       items: [
         { label: "내 상품 후기", href: "/my/reviews" },
-        { label: "위시리스트", href: "/my/wishlist" },
+        { label: "위시리스트", href: "/wishlist" },
         { label: "상품 문의", href: "/qna" },
       ],
     },
