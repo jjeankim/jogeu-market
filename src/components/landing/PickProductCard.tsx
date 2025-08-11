@@ -22,7 +22,7 @@ interface PickProductCardProps {
 
 const PickProductCard: React.FC<PickProductCardProps> = ({
   product,
-  imageSize = { width: 300, height: 300 },
+  imageSize = { width: 230, height: 230 },
   onClick,
 }) => {
   if (!product) return null;
@@ -53,7 +53,7 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
         alt={name}
         width={imageSize.width}
         height={imageSize.height}
-        className="border-2"
+        className="w-[230px] h-[230px] object-contain border-2"
       />
       <div className="flex flex-col justify-center space-y-1.5 p-5">
         <div className="text-gray-400 font-semibold">{brand.name}</div>
