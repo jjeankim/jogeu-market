@@ -17,6 +17,7 @@ const MainCard = ({ item }: MainCardProps) => {
 
   return (
     <div className="w-full">
+      {/* min 760px */}
       <div className="relative h-[240px] border rounded-2xl overflow-hidden">
         <Image
           fill

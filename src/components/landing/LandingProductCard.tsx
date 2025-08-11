@@ -24,9 +24,13 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
   className = "",
   imageWidth,
   imageHeight,
+  onClick,
 }) => {
   return (
-    <div className={`flex flex-col w-1/2 items-center ${className}`}>
+    <div
+      className={`flex flex-col w-1/2 items-center ${className}`}
+      onClick={onClick}
+    >
       <div className="relative">
         <Image
           src={imageUrl || "/images/lip.png"}

@@ -14,14 +14,16 @@ import { Product, PickProductCardProps } from "@/lib/apis/product";
 //   isPick?: boolean;
 // }
 
-// interface PickProductCardProps {
-//   product: Product;
-//   imageSize?: { width: number; height: number };
-// }
+interface PickProductCardProps {
+  product: Product;
+  imageSize?: { width: number; height: number };
+  onClick?: (productId: string) => void;
+}
 
 const PickProductCard: React.FC<PickProductCardProps> = ({
   product,
   imageSize = { width: 300, height: 300 },
+  onClick,
 }) => {
   if (!product) return null;
 
@@ -42,8 +44,10 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
     !isSample && !isPick ? "세일" : null,
   ].filter(Boolean);
 
+  //   const badgeLabel = isSample ? "샘플 증정" : isPick ? "MD's Pick" : "세일";
+
   return (
-    <div className="bg-white p-6 flex">
+    <div className="bg-white p-6 flex" onClick={onClick}>
       <Image
         src={thumbnailImageUrl || "/images/lip.png"}
         alt={name}
