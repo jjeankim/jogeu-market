@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PickProductCard from "./PickProductCard";
 import { Product, Props } from "@/lib/apis/product";
+import { useRouter } from "next/router";
 
 // interface Product {
 //   id: number;
@@ -18,10 +19,16 @@ import { Product, Props } from "@/lib/apis/product";
 // }
 
 const PickProductSection: React.FC<Props> = ({ id, products }) => {
+  const router = useRouter();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const total = products.length;
+
+  const onItemClick = (productId: string) => {
+    router.push(`/product/${productId}`);
+  };
 
   useEffect(() => {
     if (products.length === 0) return;
@@ -68,7 +75,10 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
               isAnimating ? "animate-slideInUp" : ""
             }`}
           >
-            <PickProductCard product={products[currentIndex]} />
+            <PickProductCard
+              product={products[currentIndex]}
+              onClick={() => onItemClick(products[currentIndex].id.toString())}
+            />
           </div>
         </div>
 
