@@ -160,7 +160,7 @@ export default function ProductDetailPage() {
             작성된 제품 후기가 없습니다.
           </div>,
           <div key="qna" className="flex pt-4 pb-10 ">
-            <QnABox />
+            <QnABox productId={product.id} />
           </div>,
         ]}
       />
