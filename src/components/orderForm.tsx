@@ -171,9 +171,9 @@ const OrderForm = () => {
       setSelectedCoupon(coupon)
       
       let discount = 0
-      if (coupon.coupon.discountType === 'fixed') {
+      if (coupon.coupon.discountType === 'FIXED') {
         discount = coupon.coupon.discountValue
-      } else if (coupon.coupon.discountType === 'percentage') {
+      } else if (coupon.coupon.discountType === 'PERCENTAGE') {
         discount = Math.floor(orderData.totalPrice * (coupon.coupon.discountValue / 100))
       }
       
