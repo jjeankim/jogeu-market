@@ -38,15 +38,7 @@ export const updateReview = async (
   }
 };
 
-interface Pagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  hasMore: boolean;
-}
 
-// 선우 수정 작업영역
 export interface ReviewsParams {
   productId: number;
   page?: number;

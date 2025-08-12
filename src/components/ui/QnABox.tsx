@@ -16,28 +16,24 @@ const QnABox = ({ productId }: QnABoxProps) => {
   const [isPublic, setIsPublic] = useState(true);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState<ProductQnA[]>([]);
-  // 단건 상세 조회가 필요하면 아래 상태/로더를 활성화하고 적절한 qnaId를 전달하여 사용하세요.
-  // const [qna, setQnA] = useState<ProductQnA | null>(null);
 
   const loadList = async () => {
     try {
       const qnas = await fetchProductQnAs(productId);
       setList(qnas);
-    } catch (e) {
-      showError("상품 문의를 불러오지 못했습니다.");
+    } catch (error) {
+      showError("상품 문의를 불러오지 못했습니다.")
+      console.error(error);
     }
   };
 
-  // const loadQnA = async (qnaId: number) => {
-  //   const qna = await getProductQnA(productId, qnaId);
-  //   setQnA(qna);
-  // };
+
 
   useEffect(() => {
     if (productId) {
       loadList();
     }
-  }, [productId]);
+  }, [productId, loadList]);
 
   const handleSubmit = async () => {
     if (!question.trim()) {

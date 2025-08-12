@@ -1,9 +1,7 @@
 // app/my/page.tsx (또는 적절한 위치)
 import { useEffect, useState } from "react";
-import Footer from "@/components/ui/Footer";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import OrderTable from "@/components/my/OrderTable";
-import ProductCard from "@/components/ui/ProductCard";
 import SEO from "@/components/SEO";
 
 interface Brand {
@@ -73,7 +71,7 @@ interface Order {
   updatedAt: string;
   user: User;
   address: Address;
-  coupon: null | any; // coupon 구조에 맞게 정의하세요
+  coupon: null | number; // coupon 구조에 맞게 정의하세요
   orderItems: OrderItem[];
 }
 

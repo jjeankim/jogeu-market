@@ -12,7 +12,7 @@ function PayError({ statusCode }: Props) {
     showError("결제 진행 중 문제가 발생했어요. 주문 페이지로 이동합니다.");
     const t = setTimeout(() => router.replace("/order"), 2000);
     return () => clearTimeout(t);
-  }, [router]);
+  }, [router, showError]);
 
   return (
     <div style={{ textAlign: "center", marginTop: 100 }}>

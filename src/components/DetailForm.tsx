@@ -5,7 +5,7 @@ import TabContents from "@/components/ui/TabContents";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/lib/axiosInstance";
 import { formatPriceInfo } from "@/components/product/PriceDisplay";
-import axios, { AxiosError } from "axios";
+import  { AxiosError } from "axios";
 import type { ProductDetail } from "@/types/product/detail";
 import DetailInfo from "@/components/product/DetailInfo";
 import QnABox from "@/components/ui/QnABox";
@@ -31,12 +31,13 @@ export default function ProductDetailPage() {
         const res = await axiosInstance.get(`/api/product/${id}`);
         setProduct(res.data.products);
       } catch (error) {
-        showError("상품 정보를 불러오지 못했습니다.");
+        showError("상품 정보를 불러오지 못했습니다.")
+        console.error(error);
       }
     };
 
     if (id) fetchProduct();
-  }, [id]);
+  }, [id, showError]);
 
   useEffect(() => {
     if (!product?.id) return;
@@ -102,7 +103,8 @@ export default function ProductDetailPage() {
       await navigator.clipboard.writeText(currentUrl);
       showSuccess("상품 URL이 클립보드에 복사되었습니다.");
     } catch (error) {
-      showError("상품 URL 복사에 실패했습니다.");
+      showError("상품 URL 복사에 실패했습니다.")
+      console.error(error);
     }
   };
   const quantityInc = () => setQuantity((prev) => prev + 1);

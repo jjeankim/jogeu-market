@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LandingProductCard from "./LandingProductCard";
-import { Product, LandingProductSectionProps } from "@/lib/apis/product";
+import { LandingProductSectionProps } from "@/lib/apis/product";
 import { useRouter } from "next/router";
 
 // interface LandingProductSectionProps {
@@ -17,7 +17,6 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   title,
   subtitle,
   products,
-  showMoreLink = "#",
   badgeType,
 }) => {
   const router = useRouter();
@@ -71,7 +70,7 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
                 product.isPick ? "MD's Pick" : "",
                 "세일",
               ].filter(Boolean)}
-              onClick={() => onItemClick(product.id)}
+              onClick={() => onItemClick(product.id.toString())}
             />
           ))}
         </div>

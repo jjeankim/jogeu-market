@@ -7,7 +7,7 @@ interface StarRatingProps {
 const StarRating: React.FC<StarRatingProps> = ({ rating = 0 }) => {
   const stars = [];
 
-  const roundedRating = Math.round(rating * 2) / 2;
+
 
   // rating - i <= 0.5  기준으로 별 상태 반영
   for (let i = 1; i <= 5; i++) {
