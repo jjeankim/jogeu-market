@@ -48,7 +48,6 @@ const QnATest = () => {
     }
   };
 
-
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       setMessages([
@@ -60,7 +59,6 @@ const QnATest = () => {
     }
   }, [isOpen, messages.length]);
 
-
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -69,16 +67,14 @@ const QnATest = () => {
 
   return (
     <>
-      
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-logo text-white text-2xl shadow-lg flex items-center justify-center hover:bg-logo hover:opacity-35 z-50"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-logo text-white text-2xl shadow-lg flex items-center justify-center hover:bg-[#9A8466]"
         aria-label="QnA 열기"
       >
         ?
       </button>
 
-   
       <div
         className={`fixed bottom-24 right-6 w-[384px] h-[500px] min-h-[300px] max-h-[80vh] bg-white rounded-xl shadow-xl transition-all duration-300 z-40 flex flex-col ${
           isOpen
@@ -86,7 +82,6 @@ const QnATest = () => {
             : "opacity-0 translate-y-10 pointer-events-none"
         }`}
       >
-    
         <div className="p-4 border-b bg-logo text-white rounded-t-xl flex justify-between items-center">
           <h2 className="text-lg font-semibold">무엇을 도와드릴까요?</h2>
           <button

@@ -66,18 +66,17 @@ const ReviewModal = ({
       <h4 className="text-xl font-bold mb-8">
         {mode === "create" ? "후기 작성" : "후기 수정"}
       </h4>
-
       <div className="flex gap-6 mb-8">
         <Image
-          width={80}
-          height={80}
           src={
             item.review?.imageUrl?.trim() ||
             item.product.thumbnailImageUrl?.trim() ||
-            "/images/립.png"
+            "/images/noImg.png"
           }
           alt="제품 사진"
-          className="rounded-[10px]"
+          width={80}
+          height={80}
+          className="rounded-[10px] w-20 h-20 object-cover"
         />
         <div className="flex flex-col justify-between py-2">
           <p className="font-bold">{item.product.name}</p>
@@ -88,7 +87,6 @@ const ReviewModal = ({
           )}
         </div>
       </div>
-
       <div className="flex justify-center gap-2 mb-8">
         {starArr.map((star) => (
           <FaStar
@@ -101,7 +99,6 @@ const ReviewModal = ({
           />
         ))}
       </div>
-
       <form onSubmit={submitReview}>
         <textarea
           value={review}

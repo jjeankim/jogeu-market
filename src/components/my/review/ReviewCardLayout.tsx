@@ -6,16 +6,16 @@ const ReviewCardLayout = ({ product, review, orderedAt }: ReviewCardProps) => {
   const imgSrc =
     review?.imageUrl?.trim() ||
     product.thumbnailImageUrl?.trim() ||
-    "/images/립.png";
+    "/images/noImg.png";
 
   return (
     <div className="flex items-center gap-10">
       <Image
-        className="rounded-[10px]"
         src={imgSrc}
-        width={100}
-        height={100}
+        width={80}
+        height={80}
         alt={`${product.name}사진`}
+        className="rounded-[10px] w-20 h-20 object-cover"
       />
       <div>
         <p className="text-md mb-1 text-gray-500">{`[${product.brand.name}]`}</p>
