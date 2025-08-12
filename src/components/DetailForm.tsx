@@ -9,17 +9,9 @@ import axios, { AxiosError } from "axios";
 import type { ProductDetail } from "@/types/product/detail";
 import DetailInfo from "@/components/product/DetailInfo";
 import QnABox from "@/components/ui/QnABox";
-
-// 추가 - 나중에 컴포넌트 갈라 낼것들 (rs)
-import Image from "next/image";
-import { FaRegStar } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
-import { FaStarHalfAlt } from "react-icons/fa";
-import { FiThumbsUp } from "react-icons/fi";
-
-//  컴포넌트 호출
-import ReviewCardWithStars from "./my/review/ReviewCardWithStars";
 import { getAllReviews, ReviewItem } from "@/lib/apis/review";
+import { getReviewStats, ReviewStats } from "@/lib/apis/review";
+import ReviewTabContent from "./review/ReviewTabContent";
 
 export default function ProductDetailPage() {
   const [product, setProduct] = useState<ProductDetail | null>(null);
@@ -30,6 +22,7 @@ export default function ProductDetailPage() {
   const { showSuccess, showError } = useToast();
   const router = useRouter();
   const { id } = router.query;
+  const [reviewStats, setReviewStats] = useState<ReviewStats | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -46,14 +39,19 @@ export default function ProductDetailPage() {
   }, [id]);
 
   useEffect(() => {
-    if (product?.id) {
-      if (!product) return <div>로딩 중...</div>;
-      getAllReviews(product.id, { page: 1, limit: 10 }).then((res) => {
-        if (res?.data) {
-          setReviews(res.data);
-        }
-      });
-    }
+    if (!product?.id) return;
+
+    // 리뷰 데이터
+    getAllReviews(product.id, { page: 1, limit: 10 }).then((res) => {
+      if (res?.data) {
+        setReviews(res.data);
+      }
+    });
+
+    // 리뷰 통계 가져오기
+    getReviewStats(product.id).then((stats) => {
+      if (stats) setReviewStats(stats);
+    });
   }, [product?.id]);
 
   if (!product) {
@@ -150,6 +148,8 @@ export default function ProductDetailPage() {
     router.push("/order");
   };
 
+  console.log("====thumbnail", product?.thumbnailImageUrl);
+
   return (
     <>
       {!product ? (
@@ -185,174 +185,13 @@ export default function ProductDetailPage() {
               <div key="info" className="flex pt-4 pb-10 justify-center ">
                 {product.detailDescription}
               </div>,
-              <div
+              <ReviewTabContent
                 key="review"
-                className="flex flex-col space-y-3 pt-4 pb-10 justify-center"
-              >
-                <div className="flex flex-col ">
-                  {/* <h1>작성된 제품 후기가 없습니다.</h1> */}
-                  {/* 상품 후기 rating 평균 section */}
-                  <div className="flex justify-start space-x-3 ">
-                    <span className="text-md font-semibold">상품후기</span>
-                    <span className="text-md text-gray-500">752</span>
-                  </div>
-                  <div className=" w-full border-2 rounded-md  p-10 grid grid-cols-2 gap-3justify-items-center">
-                    {/* 별점  */}
-                    <div className=" w-full border-r-2 border-black flex flex-col space-y-3 justify-center items-center text-xl ">
-                      <span className="font-bold text-2xl">4.9</span>
-                      <div className="flex">
-                        <FaRegStar />
-                        <FaRegStar />
-                        <FaRegStar />
-                        <FaRegStar />
-                        <FaRegStar />
-                      </div>
-                    </div>
-                    {/* 분포도 */}
-                    <div className="w-1/2 ">
-                      <ul>
-                        <li className="flex items-center space-x-3">
-                          <span className="align-super  w-9 text-center">
-                            5점
-                          </span>
-                          {/* Progress */}
-                          <div
-                            className="flex w-[90%] h-4 bg-gray-200 rounded-full overflow-hidden items-center "
-                            role="progressbar"
-                            aria-valuenow="25"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          >
-                            <div
-                              className="flex flex-col justify-center rounded-full overflow-hidden bg-[#b29977] text-xs text-white text-center whitespace-nowrap transition duration-500"
-                              style={{ width: `25%` }}
-                            >
-                              25%
-                            </div>
-                          </div>
-                          {/* End Progress */}
-                        </li>
-                        <li className="flex items-center space-x-3">
-                          <span className="align-super  w-9 text-center">
-                            5점
-                          </span>
-                          {/* Progress */}
-                          <div
-                            className="flex w-[90%] h-4 bg-gray-200 rounded-full overflow-hidden items-center "
-                            role="progressbar"
-                            aria-valuenow={25}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            <div
-                              className="flex flex-col justify-center rounded-full overflow-hidden bg-[#b29977] text-xs text-white text-center whitespace-nowrap transition duration-500"
-                              style={{ width: `25%` }}
-                            >
-                              25%
-                            </div>
-                          </div>
-                          {/* End Progress */}
-                        </li>
-                        <li className="flex items-center space-x-3">
-                          <span className="align-super  w-9 text-center">
-                            5점
-                          </span>
-                          {/* Progress */}
-                          <div
-                            className="flex w-[90%] h-4 bg-gray-200 rounded-full overflow-hidden items-center "
-                            role="progressbar"
-                            aria-valuenow="25"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          >
-                            <div
-                              className="flex flex-col justify-center rounded-full overflow-hidden bg-[#b29977] text-xs text-white text-center whitespace-nowrap transition duration-500"
-                              style={{ width: `25%` }}
-                            >
-                              25%
-                            </div>
-                          </div>
-                          {/* End Progress */}
-                        </li>
-                        <li className="flex items-center space-x-3">
-                          <span className="align-super  w-9 text-center">
-                            5점
-                          </span>
-                          {/* Progress */}
-                          <div
-                            className="flex w-[90%] h-4 bg-gray-200 rounded-full overflow-hidden items-center "
-                            role="progressbar"
-                            aria-valuenow="25"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          >
-                            <div
-                              className="flex flex-col justify-center rounded-full overflow-hidden bg-[#b29977] text-xs text-white text-center whitespace-nowrap transition duration-500"
-                              style={{ width: `25%` }}
-                            >
-                              25%
-                            </div>
-                          </div>
-                          {/* End Progress */}
-                        </li>
-                        <li className="flex items-center space-x-3">
-                          <span className="align-super  w-9 text-center">
-                            5점
-                          </span>
-                          {/* Progress */}
-                          <div
-                            className="flex w-[90%] h-4 bg-gray-200 rounded-full overflow-hidden items-center "
-                            role="progressbar"
-                            aria-valuenow="25"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          >
-                            <div
-                              className="flex flex-col justify-center rounded-full overflow-hidden bg-[#b29977] text-xs text-white text-center whitespace-nowrap transition duration-500"
-                              style={{ width: `25%` }}
-                            >
-                              25%
-                            </div>
-                          </div>
-                          {/* End Progress */}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                reviews={reviews}
+                reviewStats={reviewStats}
+                productId={product.id}
+              />,
 
-                {/* 상품후기 list */}
-                <div className="flex flex-col ">
-                  <div className="flex justify-between">
-                    {/* checkbox */}
-                    <div className="flex border-b-2 w-full p-3">
-                      <input
-                        type="checkbox"
-                        // checked={checked}
-                        // onChange={onCheck}
-                        className="mr-4 w-5 h-5 align-middle"
-                      />
-                      <span className="text-gray-600">
-                        포토 후기만 모아보기
-                      </span>
-                    </div>
-                    {/* sort */}
-
-                    <span className="w-20 border-b-2 flex items-center justify-center">
-                      정렬자리
-                    </span>
-                  </div>
-                  {/* 상품후기 card - min-h-200px */}
-                  {/* list 자리  */}
-                  {reviews.length === 0 ? (
-                    <h1>작성된 제품 후기가 없습니다.</h1>
-                  ) : (
-                    reviews.map((review) => (
-                      <ReviewCardWithStars key={review.id} review={review} />
-                    ))
-                  )}
-                </div>
-              </div>,
               <div key="qna" className="flex pt-4 pb-10 justify-center">
                 <QnABox productId={product.id} />
               </div>,

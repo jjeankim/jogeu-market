@@ -4,18 +4,13 @@ export default function ProductImage({
   imgUrl,
   name,
 }: {
+  thumbnailImageUrl?: string;
   imgUrl?: string;
   name: string;
 }) {
   const getImageUrl = () => {
     if (!imgUrl) return "/images/noImg.png";
-    if (
-      imgUrl.startsWith("http") &&
-      !imgUrl.includes("localhost") &&
-      !imgUrl.includes("yourcdn.com")
-    ) {
-      return "/images/noImg.png";
-    }
+
     return imgUrl;
   };
 

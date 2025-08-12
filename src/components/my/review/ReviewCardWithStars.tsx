@@ -1,5 +1,5 @@
 // empty star
-
+import React, { useState } from "react";
 import Image from "next/image";
 import { FiThumbsUp } from "react-icons/fi";
 import StarRating from "./StarRating";
@@ -14,21 +14,29 @@ interface ReviewCardWithStarsProps {
     createdAt: string;
     imageUrl?: string | null;
     likesCount: number;
+    likedByUser?: boolean;
   };
+  productId: number;
 }
 
 const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
   review,
+  productId,
 }) => {
   const {
+    id,
     maskedLocalPart,
     rating,
     reviewText,
     createdAt,
     imageUrl,
-    likesCount,
+    likesCount: initialLikesCount,
+    likedByUser: initialLikedByUser = false,
   } = review;
 
+  const [likesCount, setLikesCount] = useState(initialLikesCount);
+  const [liked, setLiked] = useState(initialLikedByUser);
+  const [loading, setLoading] = useState(false);
   // 날짜 가공
   const formattedDate = (() => {
     if (!createdAt) return "";
@@ -36,6 +44,28 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
     if (isNaN(date.getTime())) return "";
     return date.toISOString().split("T")[0].replace(/-/g, ".");
   })();
+
+  const handleLikeToggle = async () => {
+    if (loading) return;
+    setLoading(true);
+
+    try {
+      const url = liked
+        ? `/api/products/${productId}/reviews/${id}/unlike`
+        : `/api/products/${productId}/reviews/${id}/like`;
+
+      const res = await fetch(url, { method: "POST" });
+      if (!res.ok) throw new Error("좋아요 요청 실패");
+
+      setLiked(!liked);
+      setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
+    } catch (error) {
+      alert("좋아요 요청 중 오류가 발생했습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex justify-between px-3 py-3 border-b-2 ">
@@ -50,7 +80,7 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
       </div>
       {/* 사진 , 좋아요 */}
       <div className=" min-w-56 flex justify-around ">
-        <div className="flex items-center justify-center border rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-center  rounded-2xl overflow-hidden">
           {imageUrl ? (
             <Image
               width={150}
@@ -59,13 +89,22 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
               alt=""
               className="object-cover"
             />
-          ) : null}
+          ) : (
+            <>
+              <div className=" w-35 h-[100%]"></div>
+            </>
+          )}
         </div>
-        <div className="flex flex-col">
-          <div className=" flex justify-center  ">
-            <FiThumbsUp size={25} />
-          </div>
-          <h4 className=" text-center">({likesCount})</h4>
+        <div
+          className="flex flex-col items-center cursor-pointer select-none"
+          onClick={handleLikeToggle}
+        >
+          <FiThumbsUp
+            size={25}
+            color={liked ? "#2563EB" : "#999"}
+            style={{ transition: "color 0.3s" }}
+          />
+          <h4 className="text-center">({likesCount})</h4>
         </div>
       </div>
     </div>

@@ -58,14 +58,18 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
 
       <div className="grid grid-cols-2 gap-6 h-96 px-6 relative overflow-hidden">
         {/* 왼쪽 카드 - 애니메이션 */}
-        <div className="relative h-full overflow-hidden">
+        <div className="relative h-full overflow-hidden ">
           {/* 이전 카드 */}
           {isAnimating && (
             <div
               key={`prev-${products[prevIndex].id}`}
-              className="absolute w-full h-full z-0 animate-slideOutUp"
+              className="absolute w-full h-full z-0 animate-slideOutUp  flex items-center justify-center "
             >
-              <PickProductCard product={products[prevIndex]} />
+              <PickProductCard
+                product={products[prevIndex]}
+                sizes="230px"
+                className="object-contain"
+              />
             </div>
           )}
           {/* 현재 카드 */}
@@ -73,17 +77,20 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
             key={`current-${products[currentIndex].id}`}
             className={`absolute w-full h-full z-10 ${
               isAnimating ? "animate-slideInUp" : ""
-            }`}
+            } `}
           >
             <PickProductCard
               product={products[currentIndex]}
               onClick={() => onItemClick(products[currentIndex].id.toString())}
+              fill
+              // sizes="230px"
+              className="object-cover"
             />
           </div>
         </div>
 
         {/* 오른쪽 리스트 */}
-        <ul className="flex flex-col justify-center h-full space-y-1 relative overflow-hidden">
+        <ul className="flex flex-col justify-center h-full space-y-1 relative overflow-hidden  ">
           {products.map((product, i) => (
             <li
               key={product.id}
