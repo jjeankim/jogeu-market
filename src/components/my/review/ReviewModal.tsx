@@ -74,10 +74,11 @@ const ReviewModal = ({
           src={
             item.review?.imageUrl?.trim() ||
             item.product.thumbnailImageUrl?.trim() ||
-            "/images/립.png"
+            "/images/1_no_bg.png"
           }
           alt="제품 사진"
           className="rounded-[10px]"
+         
         />
         <div className="flex flex-col justify-between py-2">
           <p className="font-bold">{item.product.name}</p>

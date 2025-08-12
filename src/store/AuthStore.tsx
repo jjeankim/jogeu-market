@@ -21,8 +21,6 @@ const useAuthStore = create<AuthStore>((set) => ({
   isLoggedIn: false,
   userName: "",
   login: async ({ email, password }: AuthValues) => {
-    // console.log("로그인 시도", email, password);
-
     const res = await axios.post(
       `${API_BASE_URL}/api/auth/login`,
       {
@@ -37,9 +35,6 @@ const useAuthStore = create<AuthStore>((set) => ({
     const { accessToken: token, data: userName } = res.data;
 
     if (token && userName) {
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("userName", userName); // 로컬스토리지에 유저 이름 저장
-
       set({ isLoggedIn: true, userName });
     }
     return token;
