@@ -5,11 +5,8 @@ import OrderTable from "@/components/my/OrderTable";
 import SEO from "@/components/SEO";
 import { Coupon } from "@/lib/apis/coupon";
 import axiosInstance from "@/lib/axiosInstance";
-import { AxiosError } from "axios";
-
-
-
-
+import { isAxiosError } from "axios";
+import { useToast } from "@/hooks/useToast";
 
 interface Brand {
   id: number;
@@ -84,6 +81,7 @@ interface Order {
 
 const MyOrderPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const { showError } = useToast();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -108,7 +106,7 @@ const MyOrderPage = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [showError]);
 
   return (
     <>
