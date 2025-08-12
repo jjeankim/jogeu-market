@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import OrderTable from "@/components/my/OrderTable";
 import SEO from "@/components/SEO";
+import { Coupon } from "@/lib/apis/coupon";
 import axiosInstance from "@/lib/axiosInstance";
 import { AxiosError } from "axios";
+
 
 interface Brand {
   id: number;
@@ -73,7 +75,7 @@ interface Order {
   updatedAt: string;
   user: User;
   address: Address;
-  coupon: null | number; // coupon 구조에 맞게 정의하세요
+  coupon: Coupon;
   orderItems: OrderItem[];
 }
 
@@ -110,7 +112,7 @@ const MyOrderPage = () => {
       <SEO title="마이쇼핑" />
       <MyPageLayoutWithWelcome>
         <div className="w-full min-w-[42rem] mx-auto p-4">
-          <OrderTable orders={orders} />
+          <OrderTable orders={orders as Order[]} />
         </div>
       </MyPageLayoutWithWelcome>
     </>
