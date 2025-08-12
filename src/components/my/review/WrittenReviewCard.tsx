@@ -35,7 +35,6 @@ const WrittenReviewCard = ({
       showError("후기 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-  
 
   return (
     <div className="border-b border-b-gray-300 p-6 relative">
