@@ -96,7 +96,7 @@ const MainForm = () => {
       <MainSwiper />
 
       <div className="w-full flex flex-col mx-auto bg-white">
-        <div className="flex flex-col items-center justify-center p-3 space-y-3   ">
+        <div className="flex flex-col items-center justify-center p-3 space-y-10">
           <LandingProductSection
             id="best"
             title="BEST"
