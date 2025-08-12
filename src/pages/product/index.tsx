@@ -53,7 +53,7 @@ const ProductList = () => {
     typeof subCategory === "string" ? subCategory : "all";
   const currentPage = Number(page) || 1;
   const currentSort = typeof sort === "string" ? sort : "latest";
-  const subCategories = mainToSubMap[currentCategory] || [];
+  const subCategories = mainToSubMap[currentCategory as keyof typeof mainToSubMap] || [];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -103,7 +103,7 @@ const ProductList = () => {
 
       {/* 서브카테고리 탭만 노출 */}
       <div className="my-3 mt-10 flex justify-center">
-        {subCategories.map(({ label, value }) => (
+        {subCategories.map(({ label, value }: { label: string, value: string }) => (
           <button
             key={value}
             onClick={() => updateQuery({ subCategory: value, page: "1" })}

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import HamburgerNavigator from "./HamburgerNavigator";
 import { IoMdClose } from "react-icons/io";
 import { HiMenu } from "react-icons/hi";
+import { Category } from "@/lib/apis/category";
+
 
 const Navigator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,7 +67,7 @@ const Navigator = () => {
         >
           <HamburgerNavigator
             isMenuOpen={isMenuOpen}
-            categoriesFromApi={categories}
+            categoriesFromApi={categories as Category[]}
             onClose={() => setIsMenuOpen(false)}
           />
         </div>
