@@ -100,3 +100,30 @@ export const getAllReviews = async (
     return null;
   }
 };
+
+// 리뷰 통계 데이터 인터페이스
+export interface ReviewDistributionItem {
+  star: number;
+  count: number;
+}
+
+export interface ReviewStats {
+  total: number;
+  average: number;
+  distribution: ReviewDistributionItem[];
+}
+
+// 라뷰 api
+export async function getReviewStats(
+  productId: number
+): Promise<ReviewStats | null> {
+  try {
+    const res = await axiosInstance.get(
+      `/api/products/${productId}/reviews/stats`
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Failed to fetch review stats:", error);
+    return null;
+  }
+}
