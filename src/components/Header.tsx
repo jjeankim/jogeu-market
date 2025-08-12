@@ -1,82 +1,130 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
-type User = {
-  id: number;
-  email: string;
-};
+import { useRouter } from "next/router";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { PiShoppingCartSimpleBold } from "react-icons/pi";
+import { PiHeartBold } from "react-icons/pi";
+import { FiSearch } from "react-icons/fi";
+import useAuthStore from "@/store/AuthStore";
+import Navigator from "../components/ui/Navigator";
 
 const Header = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const { isLoggedIn, userName, initializeAuth } = useAuthStore();
+  const router = useRouter();
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleMenuClick = (menu: string) => {
+    router.push(`/?menu=${menu}`);
+  };
+
+  const handleRedirect = (path: string) => {
+    if (isLoggedIn) router.push(path);
+    else router.push("/login");
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const fetchUser = async () => {
-        try {
-          const token = localStorage.getItem("token"); // 또는 쿠키에서 가져오기
-          if (!token) return;
-
-          const res = await axios.get("http://localhost:4000/api/users/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          setUser(res.data); // { id, email, nickname }
-        } catch (err) {
-          console.error("유저 정보 가져오기 실패", err);
-          setUser(null);
-        }
-      };
-
-      fetchUser();
+      initializeAuth();
     }
-  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
+  }, [initializeAuth]);
 
-  const logout = () => {
-    // window 객체가 존재하는지 확인하여 클라이언트 환경인지 확인
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      setUser(null);
-      window.location.href = "/"; // 또는 router.push("/")
+  const handleLogout = async () => {
+    // if (typeof window !== "undefined") {
+    //   localStorage.removeItem("accessToken");
+    //   localStorage.removeItem("userName");
+    //   window.location.href = "/";
+    // }
+    await logout();
+    router.push("/");
+  };
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = () =>{
+    if (searchTerm.trim()) {
+      router.push(`/search?q=${searchTerm}`);
     }
   };
 
+
+
   return (
-    <header className="relative">
-      {/* 상단 오른쪽 링크들 */}
-      <div className="absolute top-4 right-4 flex gap-4 text-sm">
-        {user ? (
-          <div>
-            <span>{user.email}님 환영합니다!</span>
-            <button onClick={logout} className="logout">
+    <header className="relative w-full shrink-0 mt-6">
+      <div className="absolute top-2 right-4 flex gap-4 text-sm text-gray-600 z-10">
+        {isLoggedIn ? (
+          <div className="flex gap-2 items-center">
+            <span className="text-gray-800">{userName}님 환영합니다!</span>
+            <button
+              onClick={handleLogout}
+              className="hover:text-gray-800 hover:underline transition"
+            >
               로그아웃
             </button>
           </div>
         ) : (
-          <Link href="/login" className="text-gray-600 hover:text-gray-800 transition-colors">
-            로그인/회원가입
+          <Link href="/login" className="hover:text-gray-800 transition-colors">
+            로그인 / 회원가입
           </Link>
         )}
-        <Link href="/" className="text-gray-600 hover:text-gray-800 transition-colors">
+        <Link href="/qna" className="hover:text-gray-800 transition-colors">
           고객센터
         </Link>
       </div>
 
-      {/* 메인 헤더 내용 */}
-      <div className="m-10 flex justify-center items-center flex-col">
-        <div className="flex justify-center items-center">
-          <Image width={150} height={1} src="/images/logo_jogeuMarket.svg" alt="로고" />
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col">
+          <Link href="/" className="w-50">
+            <Image
+              src="/images/logo_s_jogeuMarket.svg"
+              alt="조그마켓 로고"
+              width={100}
+              height={40}
+            />
+          </Link>
+
+
+          <Navigator />
+
         </div>
-        <nav className="text-center m-5">
-          <Link href="/"> Best |</Link>
-          <Link href="/"> Brands |</Link>
-          <Link href="/"> Products |</Link>
-          <Link href="/"> Review</Link>
-        </nav>
+
+        <div className="flex items-center gap-6 mt-24">
+          <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
+              className="bg-transparent outline-none text-sm w-60 p-2"
+              value={searchTerm}
+              onChange={(e)=> setSearchTerm(e.target.value)}
+              onKeyDown={(e)=> e.key === 'Enter' && handleSearch()} 
+            />
+            <FiSearch className="text-gray-600" size={22}  onClick={handleSearch}/>
+          </div>
+
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => handleRedirect("/cart")}
+          >
+            <PiShoppingCartSimpleBold size={22} />
+          </button>
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => handleRedirect("/wishlist")}
+          >
+            <PiHeartBold size={22} />
+          </button>
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => handleRedirect("/my")}
+          >
+            <FaRegCircleUser size={22} />
+          </button>
+        </div>
       </div>
     </header>
   );

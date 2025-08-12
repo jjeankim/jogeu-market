@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="w-full h-72 bg-black px-10 py-4 flex justify-center items-center">
+      <footer className="shrink-0 w-full h-72 bg-black px-10 py-4 flex justify-center items-center mx-auto">
         <div className=" w-full h-full grid grid-cols-6 gap-5 text-white ">
           <div className="w-full col-span-2 companyInfo flex flex-col justify-between  space-y-1  text-xs ">
             <h4 className="font-bold text-lg mb-3">COMPANY.조그 마켓</h4>
@@ -21,7 +21,7 @@ const Footer = () => {
             <span>대량주문/협력문의 hohi1215@naver.com</span>
             <span>저작권침해/사진도용 제보 hohi1215@naver.com</span>
             <span>
-              copyright © 조구마켓 all rights reserved / published by sz
+              copyright © 조그마켓 all rights reserved / published by sz
             </span>
           </div>
           <div className="flex flex-col space-y-1">
@@ -39,7 +39,7 @@ const Footer = () => {
           <div className="flex flex-col space-y-1">
             <h4 className="font-bold text-lg mb-3">교환/반품 주소</h4>
             <span className="text-xs leading-relaxed">
-              [08563] 서울특빌시 금천구 독산로50길 23 학습관2층 202호
+              [08563] 서울특별시 금천구 독산로50길 23 학습관2층 202호
             </span>
             <span className="text-xs leading-relaxed">
               * 반품 및 교환 제품은 공지사항을 참고하여 CJ대한통운으로 반품요청

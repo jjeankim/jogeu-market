@@ -1,38 +1,124 @@
-import Header from "@/components/Header";
+import React, { useEffect, useState } from "react";
+import MainSwiper from "./MainSwiper";
+import { axiosProductsForLanding, Product } from "@/lib/apis/product";
+import LandingProductSection from "./landing/LandingProductSection";
+import PickProductSection from "./landing/PickProductSection";
+import BrandSection from "./landing/BrandSection";
 
+const MainForm = () => {
+  const [error, setError] = useState<string | null>(null);
 
-const Main = () => {
+  const [landingProductLoading, setLandingProductLoading] = useState(true);
+  const [brandProducts, setBrandProducts] = useState<Product[]>([]);
+  const [pickProducts, setPickProducts] = useState<Product[]>([]);
+  const [newProducts, setNewProducts] = useState<Product[]>([]);
+  const [bestProducts, setBestProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const scrollToHash = () => {
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    if (!landingProductLoading) {
+      setTimeout(scrollToHash, 100);
+    }
+  }, [landingProductLoading]);
+
+  useEffect(() => {
+    const loadLandingProduct = async () => {
+      setLandingProductLoading(true);
+      setError(null);
+      try {
+        const response = await axiosProductsForLanding();
+
+        if (response) {
+          setBestProducts(response.best);
+          setBrandProducts(response.brand);
+          setPickProducts(response.pick);
+          setNewProducts(response.new);
+        } else {
+          setBestProducts([]);
+          setBrandProducts([]);
+          setPickProducts([]);
+          setNewProducts([]);
+        }
+      } catch (error) {
+        console.error("상품 데이터 로딩 실패:", error);
+        setError("상품을 불러오는데 실패했습니다.");
+      } finally {
+        setLandingProductLoading(false);
+      }
+    };
+
+    loadLandingProduct();
+  }, []);
+
+  if (landingProductLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="text-gray-500 text-lg">
+          상품을 불러오는 중입니다...
+        </span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="text-red-500 text-lg">{error}</span>
+      </div>
+    );
+  }
+
+  const isAllEmpty =
+    bestProducts.length === 0 &&
+    newProducts.length === 0 &&
+    brandProducts.length === 0 &&
+    pickProducts.length === 0;
+
+  if (isAllEmpty) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="text-gray-400 text-lg">표시할 상품이 없습니다.</span>
+      </div>
+    );
+  }
+
   return (
-    <>
-    <Header />
-    <main className="m-15 mt-5 flex flex-col">
-    <p className="h-[15rem] w-full mb-30 bg-lime-50">여기가 배너이미지~~</p>
+    <main className="mt-5 flex flex-col space-y-3">
+      <MainSwiper />
 
-      <div className="mb-20">
-        <h2 className="text-2xl font-bold mb-5">BEST MD PICK!!</h2>
-        <div className="flex flex-row gap-5 ">
-        <div className="bg-yellow-50 w-[20rem] h-[20rem]">1번 제품 카드</div>
-        <div className="bg-yellow-50 w-[20rem] h-[20rem]">2번 제품 카드</div>
-        <div className="bg-yellow-50 w-[20rem] h-[20rem]">3번 제품 카드</div>
-        <div className="bg-yellow-50 w-[20rem] h-[20rem]">4번 제품 카드</div>
+      <div className="w-full flex flex-col mx-auto bg-white">
+        <div className="flex flex-col items-center justify-center p-3 space-y-3   ">
+          <LandingProductSection
+            id="best"
+            title="BEST"
+            subtitle="인기상품"
+            products={bestProducts}
+            badgeType="BEST"
+          />
+
+          <LandingProductSection
+            id="new"
+            title="New"
+            subtitle="핫한 신상"
+            products={newProducts}
+            badgeType="New"
+          />
         </div>
       </div>
 
-
-      <div className="mb-15">
-    <h2 className="text-2xl font-bold mb-5">NEW ARRIVAL</h2>
-    <div className="flex flex-row gap-5 ">
-        <div className="bg-blue-50 w-[20rem] h-[20rem]">1번 제품 카드</div>
-        <div className="bg-blue-50 w-[20rem] h-[20rem]">2번 제품 카드</div>
-        <div className="bg-blue-50 w-[20rem] h-[20rem]">3번 제품 카드</div>
-        <div className="bg-blue-50 w-[20rem] h-[20rem]">4번 제품 카드</div>
-        </div>
-       
-      </div>
+      <BrandSection id="brand" brands={brandProducts} />
+      <PickProductSection id="pick" products={pickProducts} />
     </main>
-    </>
-
   );
 };
 
-export default Main;
+export default MainForm;

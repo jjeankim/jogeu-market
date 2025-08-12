@@ -1,14 +1,13 @@
-import DynamicBreadcrumb from "@/components/ui/autoBreadcrumb";
-import Footer from "@/components/ui/Footer";
-import Main from "./main";
-import MyPageAside from "@/components/ui/MyPageAside";
+// import DynamicBreadcrumb from "@/components/ui/autoBreadcrumb";
+import MainForm from "@/components/MainForm";
+import SEO from "@/components/SEO";
+
 export default function Home() {
   return (
     <>
-      <Main />
-      <MyPageAside />
-      <DynamicBreadcrumb />
-      <Footer />
+      <SEO />
+      <MainForm />
+      {/* <DynamicBreadcrumb /> */}
     </>
   );
 }

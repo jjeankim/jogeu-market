@@ -1,0 +1,27 @@
+@import "swiper/components/pagination/pagination.min.css";
+@import "swiper/swiper-bundle.min.css";
+
+.brand-slider {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-btn {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.swiper-wrapper {
+  width: 100%;
+  margin: 0;
+}
+.swiper-container {
+  width: 80%;
+  /* margin: 0 3.2rem; */
+}
+.swiper-button-disabled {
+  visibility: hidden;
+}

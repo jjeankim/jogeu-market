@@ -9,17 +9,13 @@ import axios from "axios";
 import SocialLoginLink from "./SocialLoginLink";
 import AuthFormLayout from "./ui/AuthFormLayout";
 import FormErrorText from "./FormErrorText";
-
-export interface AuthValues {
-  email: string;
-  password: string;
-  name?: string;
-  phoneNumber?: string;
-}
+import { AuthValues } from "@/types/auth";
+import { useEffect } from "react";
 
 const LoginForm = () => {
   const router = useRouter();
   const { showSuccess, showError } = useToast();
+  const { isLoggedIn } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -33,7 +29,7 @@ const LoginForm = () => {
 
   const onSubmit = async ({ email, password }: AuthValues) => {
     try {
-      const token = await login({ email, password });
+      await login({ email, password });
       router.push("/");
       showSuccess("로그인에 성공했습니다.");
     } catch (error) {
@@ -44,6 +40,10 @@ const LoginForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) router.push("/");
+  }, [isLoggedIn, router]);
 
   return (
     <AuthFormLayout title="로그인">
@@ -60,10 +60,7 @@ const LoginForm = () => {
               message: "올바른 이메일 형식이 아닙니다.",
             },
           })}
-          onChange={(e) => {
-            clearErrors("email");
-            // register("email").onChange(e);
-          }}
+          onChange={() => clearErrors("email")}
         />
         {errors.email && <FormErrorText>{errors.email.message}</FormErrorText>}
         <CustomInput
@@ -78,15 +75,12 @@ const LoginForm = () => {
               message: "비밀번호는 최소 4자 이상이어야 합니다.",
             },
           })}
-          onChange={(e) => {
-            clearErrors("password");
-            // register("password").onChange(e);
-          }}
+          onChange={() => clearErrors("password")}
         />
         {errors.password && (
           <FormErrorText>{errors.password.message}</FormErrorText>
         )}
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" size="full" color="gold" disabled={isSubmitting}>
           로그인
         </Button>
       </form>
