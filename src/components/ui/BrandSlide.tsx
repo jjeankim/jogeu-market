@@ -95,16 +95,16 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
 
       {/* 내비게이션 버튼 */}
       <div
-        className={`swiper-button-prev absolute -translate-y-1/2 top-1/2 -left-10 z-10 cursor-pointer ${isBeginning ? "opacity-0 pointer-events-none" : ""}`}
+        className={`custom-prev absolute -translate-y-1/2 top-1/2 -left-15 z-10 cursor-pointer ${isBeginning ? "opacity-0 pointer-events-none" : ""}`}
         ref={prevRef}
       >
-        <FiChevronLeft size={24} className="text-black" />
+        <FiChevronLeft size={40} className="text-gray-400" />
       </div>
       <div
-        className={`swiper-button-next absolute -translate-y-1/2 top-1/2 -right-10 z-10 cursor-pointer ${isEnd ? "opacity-0 pointer-events-none" : ""}`}
+        className={`custom-next absolute -translate-y-1/2 top-1/2 -right-15 z-10 cursor-pointer ${isEnd ? "opacity-0 pointer-events-none" : ""}`}
         ref={nextRef}
       >
-        <FiChevronRight size={24} className="text-black" />
+        <FiChevronRight size={40} className="text-gray-400" />
       </div>
     </div>
   );
