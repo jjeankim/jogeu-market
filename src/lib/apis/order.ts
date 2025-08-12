@@ -1,4 +1,5 @@
 import axiosInstance from "../axiosInstance";
+import { AxiosError } from "axios";
 
 export interface OrderItem {
   productId: number;
@@ -50,10 +51,10 @@ export const createOrder = async (orderData: OrderData) => {
     }
 
     return res.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("주문 생성 실패", error);
-    if (error.response) {
-      console.error("서버 응답:", error.response.data);
+    if ((error as AxiosError<{ message: string }>)?.response) {
+      console.error("서버 응답:", (error as AxiosError<{ message: string }>)?.response?.data);
     }
     throw error;
   }

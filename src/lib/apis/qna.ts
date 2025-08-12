@@ -20,11 +20,11 @@ export const fetchProductQnAs = async (
   // 1차 키에서 못 찾으면 중첩 객체에서 첫 배열을 찾아 반환
   if (data && typeof data === 'object') {
     for (const key of Object.keys(data)) {
-      const val = (data as any)[key];
+      const val = (data as Record<string, unknown>)[key];
       if (Array.isArray(val)) return val as ProductQnA[];
       if (val && typeof val === 'object') {
         for (const subKey of Object.keys(val)) {
-          const subVal = (val as any)[subKey];
+          const subVal = (val as Record<string, unknown>)[subKey];
           if (Array.isArray(subVal)) return subVal as ProductQnA[];
         }
       }

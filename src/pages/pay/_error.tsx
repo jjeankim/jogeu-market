@@ -36,7 +36,7 @@ function PayError({ statusCode }: Props) {
   );
 }
 
-PayError.getInitialProps = ({ res, err }: any) => {
+PayError.getInitialProps = ({ res, err }: { res: { statusCode: number }, err: { statusCode: number } }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   return { statusCode };
 };
