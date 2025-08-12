@@ -45,7 +45,6 @@ jobs:
           app_artifact_location: ".next" # Next.js 빌드 결과
           skip_app_build: true           # 이미 빌드했으니 스킵
           skip_api_build: true
-          skip_deploy_on_missing_secrets: true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -54,3 +53,4 @@ jobs:
       - uses: Azure/static-web-apps-deploy@v1
         with:
           action: close
+
