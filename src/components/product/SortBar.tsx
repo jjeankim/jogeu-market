@@ -20,7 +20,7 @@ const SortBar = ({ totalItems, selectedSort, onChange }: Props) => {
       <div className="flex space-x-4">
         총 <span>{totalItems}</span>건
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center  ">
         <SortDropdown
           options={sortOptions}
           value={selectedSort}
