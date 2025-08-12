@@ -15,9 +15,6 @@ const Header = () => {
   const router = useRouter();
   const logout = useAuthStore((state) => state.logout);
 
-  const handleMenuClick = (menu: string) => {
-    router.push(`/?menu=${menu}`);
-  };
 
   const handleRedirect = (path: string) => {
     if (isLoggedIn) router.push(path);
@@ -31,16 +28,11 @@ const Header = () => {
   }, [initializeAuth]);
 
   const handleLogout = async () => {
-    // if (typeof window !== "undefined") {
-    //   localStorage.removeItem("accessToken");
-    //   localStorage.removeItem("userName");
-    //   window.location.href = "/";
-    // }
+   
     await logout();
     router.push("/");
   };
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () =>{

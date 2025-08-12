@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PickProductCard from "./PickProductCard";
-import { Product, Props } from "@/lib/apis/product";
+import {  Props } from "@/lib/apis/product";
 import { useRouter } from "next/router";
 
 // interface Product {

@@ -6,6 +6,13 @@ interface Brand {
   name: string;
 }
 
+interface Coupon {
+  id: number;
+  name: string;
+  discountType: string;
+  discountValue: number;
+}
+
 interface Product {
   id: number;
   name: string;
@@ -68,7 +75,7 @@ interface Order {
   updatedAt: string;
   user: User;
   address: Address;
-  coupon: any;
+  coupon: Coupon;
   orderItems: OrderItem[];
 }
 

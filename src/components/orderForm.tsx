@@ -7,6 +7,7 @@ import useAuthStore from '@/store/AuthStore'
 import { fetchMyCouponList } from '@/lib/apis/coupon'
 import { fetchUser } from '@/lib/apis/user'
 import { CouponData } from '@/types/my/coupon'
+import Image from 'next/image'
 
 // 카카오 주소 API 콜백 함수 타입 선언
 declare global {
@@ -60,7 +61,7 @@ const OrderForm = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<CouponData | null>(null)
   const [discountAmount, setDiscountAmount] = useState(0)
   
-  const { userName, isLoggedIn } = useAuthStore()
+  const {  isLoggedIn } = useAuthStore()
 
   // 세션 스토리지에서 주문 데이터 읽어오기
   useEffect(() => {
@@ -254,9 +255,11 @@ const OrderForm = () => {
                   <div key={item.id} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
                     <div className="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
                       {item.product.thumbnailImageUrl ? (
-                        <img 
+                        <Image 
                           src={item.product.thumbnailImageUrl} 
                           alt={item.product.name}
+                          width={230}
+                          height={230}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -453,14 +456,14 @@ const OrderForm = () => {
                     <option value="">쿠폰을 선택하세요</option>
                     {coupons.map((couponData) => (
                       <option key={couponData.id} value={couponData.id.toString()}>
-                        {couponData.coupon.name} ({couponData.coupon.discountType === 'fixed' ? `${couponData.coupon.discountValue}원` : `${couponData.coupon.discountValue}%`} 할인)
+                        {couponData.coupon.name} ({couponData.coupon.discountType === 'FIXED' ? `${couponData.coupon.discountValue}원` : `${couponData.coupon.discountValue}%`} 할인)
                       </option>
                     ))}
                   </select>
                 </div>
                 
                 {discountAmount > 0 && (
-                  <div className="flex justify-between items-center py-2">
+                  <div className="flex justify-between items-center py-2">      
                     <span className="text-sm font-medium text-gray-700">총 쿠폰 할인</span>
                     <span className="text-sm font-semibold text-red-600">-{discountAmount.toLocaleString()}원</span>
                   </div>

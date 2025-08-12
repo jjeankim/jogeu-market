@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import ProductCardWithHeart from "@/components/my/ProductCardWithHeart";
 import Pagination from "@/components/Pagination";
-import Image from "next/image";
+//import Image from "next/image";
 import Button from "@/components/ui/Button";
 
 import { axiosWishlist } from "../../lib/apis/wishlist";
