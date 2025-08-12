@@ -11,7 +11,7 @@ const CategoryTabs = ({
 }: CategoryTabsProps) => {
   return (
     <div className="my-3 mt-10 flex justify-center">
-      {categories.map(({ label, value }) => (
+      {categories.map(({ label, value }: { label: string, value: string }) => (
         <Link
           key={value}
           href="#"

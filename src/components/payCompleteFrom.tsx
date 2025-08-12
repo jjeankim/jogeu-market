@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { CartItem } from "@/lib/apis/cart";
+import { Coupon } from "@/lib/apis/coupon";
 
 interface OrderData {
-  items: any[];
+  items: CartItem[];
   totalPrice: number;
   shippingFee: number;
   orderInfo: {
@@ -23,7 +25,7 @@ interface OrderData {
       roadAddrPart2: string;
       addrDetail: string;
     };
-    selectedCoupon?: any;
+    selectedCoupon?: Coupon;
     discountAmount: number;
     deliveryMessage?: string;
   };
@@ -161,7 +163,7 @@ const PayCompleteFrom = () => {
                       <span className="text-red-500">0원</span>
                     </td>
                     <td className="px-4 py-4 text-center border-b border-gray-200">
-                      <span className="text-red-500">{formatPrice(item.product.price * item.quantity)}</span>
+                      <span className="text-red-500">{formatPrice(parseInt(item.product.price) * item.quantity)}</span>
                     </td>
                   </tr>
                 ))}
