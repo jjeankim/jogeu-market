@@ -1,9 +1,10 @@
 import Button from "@/components/ui/Button";
 import ModalLayout from "@/components/ui/ModalLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/useToast";
 import { createProductQnA, fetchProductQnAs } from "@/lib/apis/qna";
 import type { ProductQnA } from "@/types/product/qna";
+import { AxiosError } from "axios";
 
 type QnABoxProps = {
   productId: number;
@@ -16,28 +17,24 @@ const QnABox = ({ productId }: QnABoxProps) => {
   const [isPublic, setIsPublic] = useState(true);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState<ProductQnA[]>([]);
-  // 단건 상세 조회가 필요하면 아래 상태/로더를 활성화하고 적절한 qnaId를 전달하여 사용하세요.
-  // const [qna, setQnA] = useState<ProductQnA | null>(null);
 
-  const loadList = async () => {
+  const loadList = useCallback(async () => {
     try {
       const qnas = await fetchProductQnAs(productId);
       setList(qnas);
-    } catch (e) {
-      showError("상품 문의를 불러오지 못했습니다.");
+    } catch (error) {
+      showError("상품 문의를 불러오지 못했습니다.")
+      console.error(error);
     }
-  };
+  }, [productId, showError]);
 
-  // const loadQnA = async (qnaId: number) => {
-  //   const qna = await getProductQnA(productId, qnaId);
-  //   setQnA(qna);
-  // };
+
 
   useEffect(() => {
     if (productId) {
       loadList();
     }
-  }, [productId]);
+  }, [productId, loadList]);
 
   const handleSubmit = async () => {
     if (!question.trim()) {
@@ -52,8 +49,9 @@ const QnABox = ({ productId }: QnABoxProps) => {
       setQuestion("");
       setIsPublic(true);
       await loadList();
-    } catch (e: any) {
-      showError(e?.response?.data?.message || "문의 등록에 실패했습니다.");
+    } catch (error) {
+      showError((error as AxiosError<{ message: string }>)?.response?.data?.message || "문의 등록에 실패했습니다.");
+      console.error(error);
     } finally {
       setLoading(false);
     }

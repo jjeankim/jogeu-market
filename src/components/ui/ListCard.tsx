@@ -4,29 +4,15 @@ import { FiStar } from "react-icons/fi";
 import { useState } from "react";
 import axiosInstance from "@/lib/axiosInstance";
 import { useToast } from "@/hooks/useToast";
-import { getImageUrl } from "@/lib/utils/getImageUrl";
-
-type Product = {
-  id: number;
-  brand: string | { id: number; name: string; logoImageUrl?: string };
-
-  name: string;
-  price: number;
-  review: number;
-  imgUrl?: string;
-  thumbnailImageUrl?: string;
-};
+import { AxiosError } from "axios";
+import { Product } from "@/lib/apis/product";
 
 interface ListCardProps {
-  product: Product & {
-    review: number;
-    imgUrl?: string;
-    thumbnailImageUrl?: string;
-  };
+  product: Product;
   onClick?: () => void;
 }
 
-const ListCard = ({ product, onClick }: ListCardProps) => {
+const ListCard = ({ product }: ListCardProps) => {
   const [wish, setWish] = useState(false);
   const [wishId, setWishId] = useState<number | null>(null);
   const { showSuccess, showError } = useToast();
@@ -51,10 +37,10 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
         setWish(false);
         setWishId(null);
       }
-    } catch {
-      if (error.response?.status === 409) {
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 409) {
         showError("이미 위시리스트에 추가된 상품입니다.");
-      } else if (error.response?.status === 401) {
+      } else if (error instanceof AxiosError && error.response?.status === 401) {
         showError("유효하지 않은 사용자입니다.");
       } else {
         showError("서버 오류가 발생했습니다.");
@@ -71,8 +57,8 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
         quantity: 1,
       });
       showSuccess(res.data.message);
-    } catch {
-      if (error.response?.status === 401) {
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 401) {
         showError("유효하지 않은 사용자입니다.");
       } else {
         showError("서버 오류가 발생했습니다.");
@@ -81,7 +67,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
     }
   };
 
-  const { brand, name, price, review, imgUrl, thumbnailImageUrl } = product;
+  const { brand, name, price, review, thumbnailImageUrl } = product;
 
   const imageSrc =
     thumbnailImageUrl && thumbnailImageUrl.length > 0
@@ -124,7 +110,7 @@ const ListCard = ({ product, onClick }: ListCardProps) => {
       <div className="flex justify-center">
         <div className="flex flex-col items-center">
           <span className="text-sm font-light text-black">
-            {typeof brand === "string" ? brand : brand?.name || "브랜드명"}
+            {brand?.name || "브랜드명"}
           </span>
           <h3 className="text-lg text-center text-gray-700">{name}</h3>
           <span className="flex flex-raw items-center text-lg font-medium text-[#FF572D]">

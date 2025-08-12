@@ -4,11 +4,33 @@ import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
 import { CartItem } from "@/lib/apis/cart";
 import { useToast } from "@/hooks/useToast";
+import { Coupon } from "@/lib/apis/coupon";
 
 // TossPayments 타입 정의
+interface TossPaymentsWidgets {
+  setAmount: (amount: { currency: string; value: number }) => Promise<void>;
+  renderPaymentMethods: (options: { selector: string; variantKey: string }) => Promise<void>;
+  renderAgreement: (options: { selector: string; variantKey: string }) => Promise<void>;
+  requestPayment: (options: {
+    orderId: string;
+    orderName: string;
+    successUrl: string;
+    failUrl: string;
+    customerEmail: string;
+    customerName: string;
+    customerMobilePhone: string;
+    windowTarget: string;
+  }) => Promise<void>;
+  cleanup?: () => void;
+}
+
+interface TossPaymentsInstance {
+  widgets: (options: { customerKey: string }) => TossPaymentsWidgets;
+}
+
 declare global {
   interface Window {
-    TossPayments: any;
+    TossPayments: (clientKey: string) => TossPaymentsInstance;
   }
 }
 
@@ -17,8 +39,13 @@ interface PaymentData {
   totalPrice: number;
   shippingFee: number;
   orderInfo?: {
-    address: any;
-    selectedCoupon: any;
+    address: {
+      zipNo: string;
+      roadAddrPart1: string;
+      roadAddrPart2: string;
+      addrDetail: string;
+    };
+    selectedCoupon: Coupon;
     discountAmount: number;
   };
 }
@@ -52,7 +79,7 @@ const Checkout = () => {
     // 결제 데이터가 없으면 초기화하지 않음
     if (!paymentData || loading) return;
 
-    let widgets: any = null;
+    let widgets: TossPaymentsWidgets | null = null;
     let isInitialized = false;
 
     // 기존 위젯이 있다면 정리
@@ -69,7 +96,7 @@ const Checkout = () => {
     // 이미 스크립트가 로드되어 있는지 확인
     const existingScript = document.querySelector('script[src="https://js.tosspayments.com/v2/standard"]');
     
-    if (existingScript && window.TossPayments) {
+    if (existingScript && typeof window.TossPayments === 'function') {
       // 이미 스크립트가 로드되어 있으면 바로 초기화
       initializePayments();
     } else {
@@ -86,7 +113,7 @@ const Checkout = () => {
       
       try {
         // DOM 요소들이 준비될 때까지 잠시 대기
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise<void>(resolve => setTimeout(resolve, 100));
         
         const button = document.getElementById("payment-button");
         const paymentMethodElement = document.getElementById("payment-method");
@@ -140,7 +167,8 @@ const Checkout = () => {
               // 주문번호 생성 (현재 시간 기반)
               const orderNumber = `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`;
               
-              await widgets.requestPayment({
+              if (widgets) {
+                await widgets.requestPayment({
                 orderId: generateRandomString(),
                 orderName: orderName,
                 successUrl: `${window.location.origin}/pay/success?orderNumber=${orderNumber}`,
@@ -149,11 +177,13 @@ const Checkout = () => {
                 customerName: "테스트 고객",
                 customerMobilePhone: "01012345678",
                 windowTarget: "iframe", // iframe 모드로 변경
-              });
-            } catch (error: any) {
+                });
+              }
+            } catch (error: unknown) {
               console.error("결제 요청 중 오류 발생:", error);
+              const errorMessage = error instanceof Error ? error.message : String(error);
               const message =
-                (typeof error?.message === 'string' && error.message.includes('취소'))
+                (typeof errorMessage === 'string' && errorMessage.includes('취소'))
                   ? '결제가 취소되었어요. 주문 페이지로 이동합니다.'
                   : '결제 중 오류가 발생했어요. 주문 페이지로 이동합니다.';
               showError(message);
@@ -174,9 +204,9 @@ const Checkout = () => {
 
     return () => {
       // 컴포넌트 언마운트 시 위젯 정리
-      if (widgets) {
+      if (widgets && widgets.cleanup) {
         try {
-          widgets.cleanup?.();
+          widgets.cleanup();
         } catch (error) {
           console.log("위젯 정리 중 오류:", error);
         }
@@ -195,7 +225,7 @@ const Checkout = () => {
       
       isInitialized = false;
     };
-  }, [paymentData, loading]);
+  }, [paymentData, loading , showError, router]);
 
   if (loading) {
     return (

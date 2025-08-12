@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { createOrder, OrderData } from "@/lib/apis/order";
+import { CartItem } from "@/lib/apis/cart";
 
 interface PaymentData {
   paymentKey: string;
@@ -13,55 +14,10 @@ interface PaymentData {
 
 const Success = () => {
   const router = useRouter();
-  const [responseData, setResponseData] = useState<any>(null);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [orderCreated, setOrderCreated] = useState(false);
 
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const paymentKey = urlParams.get("paymentKey");
-    const orderId = urlParams.get("orderId");
-    const amount = urlParams.get("amount");
-    const orderNumber = urlParams.get("orderNumber");
-
-    if (paymentKey && orderId && amount && orderNumber) {
-      setPaymentData({ paymentKey, orderId, amount, orderNumber});
-      
-      // 서버로 결제 승인에 필요한 결제 정보를 보내기
-      confirmPayment({ paymentKey, orderId, amount, orderNumber });
-    }
-  }, [router.isReady]);
-
-  const confirmPayment = async (requestData: PaymentData) => {
-    try {
-      const response = await fetch("/api/confirm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        console.log(json);
-        window.location.href = `/fail?message=${json.message}&code=${json.code}`;
-        return;
-      }
-
-      setResponseData(json);
-      
-      // 결제 성공 후 주문 생성 및 장바구니 정리
-      await handleOrderCreation(requestData.orderNumber);
-    } catch (error) {
-      console.error("결제 승인 중 오류 발생:", error);
-    }
-  };
-
-  const handleOrderCreation = async (orderNumber: string) => {
+  const handleOrderCreation = useCallback(async (orderNumber: string) => {
     try {
       // 세션 스토리지에서 주문 데이터 가져오기
       const paymentDataStr = sessionStorage.getItem('paymentData');
@@ -77,7 +33,7 @@ const Success = () => {
 
       // 주문 데이터 생성
       const orderData: OrderData = {
-        items: items.map((item: any) => ({
+        items: items.map((item: CartItem) => ({
           productId: item.product.id,
           quantity: item.quantity,
           price: parseInt(item.product.price),
@@ -116,7 +72,6 @@ const Success = () => {
         
         // 장바구니에서 주문된 상품들 제거 (에러 시 무시)
         try {
-          const { removeSelectedItems } = await import('@/lib/apis/cart');
           const cartItemIds = orderData.items
             .filter(item => item.cartItemId)
             .map(item => item.cartItemId!);
@@ -175,7 +130,50 @@ const Success = () => {
       // 에러가 발생해도 주문 완료 상태로 설정
       setOrderCreated(true);
     }
-  };
+  }, []);
+
+  const confirmPayment = useCallback(async (requestData: PaymentData) => {
+    try {
+      const response = await fetch("/api/confirm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        console.log(json);
+        window.location.href = `/fail?message=${json.message}&code=${json.code}`;
+        return;
+      }
+
+      
+      // 결제 성공 후 주문 생성 및 장바구니 정리
+      await handleOrderCreation(requestData.orderNumber);
+    } catch (error) {
+      console.error("결제 승인 중 오류 발생:", error);
+    }
+  }, [handleOrderCreation]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentKey = urlParams.get("paymentKey");
+    const orderId = urlParams.get("orderId");
+    const amount = urlParams.get("amount");
+    const orderNumber = urlParams.get("orderNumber");
+
+    if (paymentKey && orderId && amount && orderNumber) {
+      setPaymentData({ paymentKey, orderId, amount, orderNumber});
+      
+      // 서버로 결제 승인에 필요한 결제 정보를 보내기
+      confirmPayment({ paymentKey, orderId, amount, orderNumber });
+    }
+  }, [router.isReady, router, confirmPayment]);
 
   return (
     <>

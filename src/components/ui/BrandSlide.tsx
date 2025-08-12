@@ -4,7 +4,7 @@ import { Navigation } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Link from "next/link";
-import "swiper/css";
+import { Swiper } from "swiper/types";
 
 type Brand = {
   id: number;
@@ -20,7 +20,7 @@ interface SliderProps {
 function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<Swiper | null>(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [navReady, setNavReady] = useState(false);
@@ -31,12 +31,18 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
 
   useEffect(() => {
     if (navReady && swiperRef.current && prevRef.current && nextRef.current) {
-      swiperRef.current.params.navigation.prevEl = prevRef.current;
-      swiperRef.current.params.navigation.nextEl = nextRef.current;
+      const swiper = swiperRef.current;
+      
+      // params.navigation이 존재하고 객체인지 확인
+      if (swiper.params.navigation && typeof swiper.params.navigation === 'object') {
+        // 타입 단언을 사용하여 안전하게 할당
+        (swiper.params.navigation as { prevEl?: HTMLElement; nextEl?: HTMLElement }).prevEl = prevRef.current;
+        (swiper.params.navigation as { prevEl?: HTMLElement; nextEl?: HTMLElement }).nextEl = nextRef.current;
 
-      swiperRef.current.navigation.destroy(); // 기존 내비게이션 초기화
-      swiperRef.current.navigation.init(); // 새로 초기화
-      swiperRef.current.navigation.update(); // 업데이트
+        swiper.navigation.destroy(); // 기존 내비게이션 초기화
+        swiper.navigation.init(); // 새로 초기화
+        swiper.navigation.update(); // 업데이트
+      }
     }
   }, [navReady]);
 
@@ -89,16 +95,16 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
 
       {/* 내비게이션 버튼 */}
       <div
-        className={`swiper-button-prev absolute -translate-y-1/2 top-1/2 -left-10 z-10 cursor-pointer ${isBeginning ? "opacity-0 pointer-events-none" : ""}`}
+        className={`custom-prev absolute -translate-y-1/2 top-1/2 -left-15 z-10 cursor-pointer ${isBeginning ? "opacity-0 pointer-events-none" : ""}`}
         ref={prevRef}
       >
-        <FiChevronLeft size={24} className="text-black" />
+        <FiChevronLeft size={40} className="text-gray-400" />
       </div>
       <div
-        className={`swiper-button-next absolute -translate-y-1/2 top-1/2 -right-10 z-10 cursor-pointer ${isEnd ? "opacity-0 pointer-events-none" : ""}`}
+        className={`custom-next absolute -translate-y-1/2 top-1/2 -right-15 z-10 cursor-pointer ${isEnd ? "opacity-0 pointer-events-none" : ""}`}
         ref={nextRef}
       >
-        <FiChevronRight size={24} className="text-black" />
+        <FiChevronRight size={40} className="text-gray-400" />
       </div>
     </div>
   );

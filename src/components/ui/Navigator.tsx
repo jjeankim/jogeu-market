@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import HamburgerNavigator from "./HamburgerNavigator";
-// import { HiMenu } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
 import { HiMenu } from "react-icons/hi";
-import router from "next/router";
+import { Category } from "@/lib/apis/category";
+
 
 const Navigator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,7 +67,7 @@ const Navigator = () => {
         >
           <HamburgerNavigator
             isMenuOpen={isMenuOpen}
-            categoriesFromApi={categories}
+            categoriesFromApi={categories as Category[]}
             onClose={() => setIsMenuOpen(false)}
           />
         </div>
@@ -77,7 +77,7 @@ const Navigator = () => {
             <li>
               <a
                 href="#best"
-                className="hover:text-yellow-500 transition-colors ml-10"
+                className="hover:text-[#fcc18e] transition-colors ml-10"
                 onClick={(e) => {
                   e.preventDefault();
                   handleHashScroll("#best");
@@ -89,7 +89,7 @@ const Navigator = () => {
             <li>
               <a
                 href="#pick"
-                className="hover:text-yellow-500 transition-colors ml-10"
+                className="hover:text-[#fcc18e] transition-colors ml-10"
                 onClick={(e) => {
                   e.preventDefault();
                   handleHashScroll("#pick");
@@ -102,7 +102,7 @@ const Navigator = () => {
             <li>
               <a
                 href="#brand"
-                className="hover:text-yellow-500 transition-colors ml-10"
+                className="hover:text-[#fcc18e] transition-colors ml-10"
                 onClick={(e) => {
                   e.preventDefault();
                   handleHashScroll("#brand");
@@ -114,7 +114,7 @@ const Navigator = () => {
             <li>
               <a
                 href="#new"
-                className="hover:text-yellow-500 transition-colors ml-10"
+                className="hover:text-[#fcc18e] transition-colors ml-10"
                 onClick={(e) => {
                   e.preventDefault();
                   handleHashScroll("#new");

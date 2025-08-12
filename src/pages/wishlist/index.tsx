@@ -2,16 +2,15 @@ import { useState, useEffect } from "react";
 import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import ProductCardWithHeart from "@/components/my/ProductCardWithHeart";
 import Pagination from "@/components/Pagination";
-import Image from "next/image";
 import Button from "@/components/ui/Button";
-
+import { WishlistItem } from "@/lib/apis/wishlist";
 import { axiosWishlist } from "../../lib/apis/wishlist";
 import SEO from "@/components/SEO";
 
 const PAGE_SIZE = 8;
 
 const Index = () => {
-  const [wishlist, setWishlist] = useState([]);
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);

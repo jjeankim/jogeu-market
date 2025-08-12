@@ -1,31 +1,34 @@
 import Link from "next/link";
+import { Category } from "@/lib/apis/category";
 
 interface CategoryTabsProps {
   currentCategory: string;
   onCategoryChange: (category: string) => void;
+  categories: Category[];
 }
 
 const CategoryTabs = ({
   currentCategory,
   onCategoryChange,
+  categories,
 }: CategoryTabsProps) => {
   return (
     <div className="my-3 mt-10 flex justify-center">
-      {categories.map(({ label, value }) => (
+      {categories.map((category) => (
         <Link
-          key={value}
+          key={category.slug}
           href="#"
           onClick={(e) => {
             e.preventDefault();
-            onCategoryChange(value);
+            onCategoryChange(category.slug);
           }}
           className={`font-medium text-lg mx-6 cursor-pointer ${
-            currentCategory === value
+            currentCategory === category.slug
               ? "text-blue-500 font-bold"
               : "text-gray-700"
           }`}
         >
-          {label}
+          {category.name}
         </Link>
       ))}
     </div>

@@ -2,14 +2,6 @@ import ListCard from "@/components/ui/ListCard";
 import Link from "next/link";
 import { Product } from "@/lib/apis/product";
 
-// interface Product {
-//   id: number | string;
-//   brand: string;
-//   name: string;
-//   price: number;
-//   review: number;
-//   imgUrl: string;
-// }
 
 interface ProductGridProps {
   products: Product[];

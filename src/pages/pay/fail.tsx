@@ -31,7 +31,7 @@ const Fail = () => {
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [router.isReady]);
+  }, [router.isReady , showError, router]);
 
   return (
     <>

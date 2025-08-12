@@ -98,7 +98,7 @@ const CartForm = () => {
   // 선택 삭제
   const handleRemoveSelected = async () => {
     const selectedIds = Object.entries(checkedItems)
-      .filter(([_, checked]) => checked)
+      .filter(([checked]) => checked)
       .map(([id]) => parseInt(id));
     
     if (selectedIds.length === 0) {
