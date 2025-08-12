@@ -18,6 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env: 
+      NEXT_PUBLIC_API_URL: ${{secrets.NEXT_PUBLIC_API_URL}}
+      NEXT_PUBLIC_AZURE_CQA_ENDPOINT: ${{secrets.NEXT_PUBLIC_AZURE_CQA_ENDPOINT}}
+      NEXT_PUBLIC_AZURE_CQA_KEY: ${{secrets.NEXT_PUBLIC_AZURE_CQA_KEY}}
+      NEXT_PUBLIC_AZURE_CQA_PROJECT_NAME: ${{secrets.NEXT_PUBLIC_AZURE_CQA_PROJECT_NAME}}
+      NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME: ${{secrets.NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME}}
+      NEXT_PUBLIC_AZURE_CQA_API_VERSION: ${{secrets.NEXT_PUBLIC_AZURE_CQA_API_VERSION}}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,7 +46,6 @@ jobs:
           app_artifact_location: ".next" # 빌드 산출물
           skip_app_build: true
           skip_api_build: true           # Functions 안 쓰면 true (SSR은 자동 래핑됨)
-
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
