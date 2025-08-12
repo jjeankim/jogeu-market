@@ -4,6 +4,9 @@ import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import OrderTable from "@/components/my/OrderTable";
 import SEO from "@/components/SEO";
 import { Coupon } from "@/lib/apis/coupon";
+import axiosInstance from "@/lib/axiosInstance";
+import { AxiosError } from "axios";
+
 
 interface Brand {
   id: number;
@@ -80,35 +83,33 @@ const MyOrderPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return;
-
-    fetch("http://localhost:4000/api/orders", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errorMsg = await res.text();
-          throw new Error(`주문 조회 실패: ${res.status} - ${errorMsg}`);
+    const fetchOrders = async () => {
+      try {
+        const res = await axiosInstance.get("api/orders");
+        console.log(res.data.data);
+        setOrders(res.data.data);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          console.error(
+            "주문 조회 실패: ",
+            error.response?.data?.message || error.message
+          );
+        } else if (error instanceof Error) {
+          console.error("주문조회 실패: ", error.message);
+        } else {
+          showError("서버 오류가 발생했습니다.");
+          console.error(error);
         }
-        return res.json();
-      })
-      .then(({ data }) => {
-        setOrders(data);
-      })
-      .catch((err) => {
-        console.error("에러:", err);
         setOrders([]);
-      });
+      }
+    };
+
+    fetchOrders();
   }, []);
 
   return (
     <>
-    <SEO title="마이쇼핑"/>
+      <SEO title="마이쇼핑" />
       <MyPageLayoutWithWelcome>
         <div className="w-full min-w-[42rem] mx-auto p-4">
           <OrderTable orders={orders as Order[]} />

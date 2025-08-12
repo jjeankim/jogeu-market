@@ -79,7 +79,7 @@ interface Order {
   orderItems: OrderItem[];
 }
 
-interface OrderTableProps { 
+interface OrderTableProps {
   orders: Order[];
 }
 
@@ -117,13 +117,13 @@ const OrderTable = ({ orders }: OrderTableProps) => {
                 </a>
               </td>
               <td className="p-2 mt-3 border-r-2 border-b-2 border-gray-300">
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-3 items-center  ">
                   <Image
-                    src="/images/noImg.png"
-                    width={80}
-                    height={80}
+                    src={item.product.thumbnailImageUrl}
+                    width={60}
+                    height={60}
                     alt="상품이미지"
-                    className="rounded-md border object-cover"
+                    className="rounded-md border object-cover  "
                   />
                   <div>
                     <p className="text-gray-500">{item.product.brand.name}</p>
