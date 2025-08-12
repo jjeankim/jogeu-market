@@ -1,9 +1,10 @@
 import Button from "@/components/ui/Button";
 import ModalLayout from "@/components/ui/ModalLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/useToast";
 import { createProductQnA, fetchProductQnAs } from "@/lib/apis/qna";
 import type { ProductQnA } from "@/types/product/qna";
+import { AxiosError } from "axios";
 
 type QnABoxProps = {
   productId: number;
@@ -17,7 +18,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState<ProductQnA[]>([]);
 
-  const loadList = async () => {
+  const loadList = useCallback(async () => {
     try {
       const qnas = await fetchProductQnAs(productId);
       setList(qnas);
@@ -25,7 +26,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
       showError("상품 문의를 불러오지 못했습니다.")
       console.error(error);
     }
-  };
+  }, [productId, showError]);
 
 
 
@@ -48,8 +49,9 @@ const QnABox = ({ productId }: QnABoxProps) => {
       setQuestion("");
       setIsPublic(true);
       await loadList();
-    } catch (e: any) {
-      showError(e?.response?.data?.message || "문의 등록에 실패했습니다.");
+    } catch (error) {
+      showError((error as AxiosError<{ message: string }>)?.response?.data?.message || "문의 등록에 실패했습니다.");
+      console.error(error);
     } finally {
       setLoading(false);
     }

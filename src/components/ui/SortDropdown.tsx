@@ -28,7 +28,7 @@ const SortDropdown = ({ options, value, onChange }: SortDropdownProps) => {
       </button>
 
       {open && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 w-[80%] bg-white border border-gray-200 rounded-md shadow z-10">
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 w-[100%] bg-white border border-gray-200 rounded-md shadow z-10">
           {options.map((option, i) => (
             <button
               key={option.value}
