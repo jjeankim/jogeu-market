@@ -19,7 +19,7 @@ export default function TabContents({ tabs, content }: TabsProps) {
           >
             <button
               onClick={() => setActiveTab(index)}
-              className={`cursor-pointer px-10 py-1 rounded-lg ${
+              className={`w-full cursor-pointer px-10 py-2 rounded-4xl ${
                 activeTab === index ? "bg-[#C5A76A] text-white" : "text-black"
               }`}
             >
