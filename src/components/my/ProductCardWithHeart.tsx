@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ProductCard from "@/components/ui/ProductCard";
-import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/lib/axiosInstance";

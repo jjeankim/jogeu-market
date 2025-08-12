@@ -13,7 +13,6 @@ interface PaymentData {
 
 const Success = () => {
   const router = useRouter();
-  const [responseData, setResponseData] = useState<any>(null);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [orderCreated, setOrderCreated] = useState(false);
 
@@ -32,7 +31,7 @@ const Success = () => {
       // 서버로 결제 승인에 필요한 결제 정보를 보내기
       confirmPayment({ paymentKey, orderId, amount, orderNumber });
     }
-  }, [router.isReady]);
+  }, [router.isReady , router ]);
 
   const confirmPayment = async (requestData: PaymentData) => {
     try {
@@ -52,7 +51,6 @@ const Success = () => {
         return;
       }
 
-      setResponseData(json);
       
       // 결제 성공 후 주문 생성 및 장바구니 정리
       await handleOrderCreation(requestData.orderNumber);
@@ -116,7 +114,6 @@ const Success = () => {
         
         // 장바구니에서 주문된 상품들 제거 (에러 시 무시)
         try {
-          const { removeSelectedItems } = await import('@/lib/apis/cart');
           const cartItemIds = orderData.items
             .filter(item => item.cartItemId)
             .map(item => item.cartItemId!);

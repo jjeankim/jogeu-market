@@ -195,7 +195,7 @@ const Checkout = () => {
       
       isInitialized = false;
     };
-  }, [paymentData, loading]);
+  }, [paymentData, loading , showError, router]);
 
   if (loading) {
     return (

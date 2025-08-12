@@ -22,8 +22,6 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
   badgeLabel,
   tags = [],
   className = "",
-  imageWidth,
-  imageHeight,
   onClick,
 }) => {
   return (

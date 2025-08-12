@@ -137,9 +137,11 @@ const PayCompleteFrom = () => {
                       <div className="flex items-center space-x-3">
                         <div className="w-40 h-40 border border-gray-300 rounded-md bg-white flex-shrink-0 overflow-hidden">
                           {item.product.thumbnailImageUrl ? (
-                            <img 
+                            <Image 
                               src={item.product.thumbnailImageUrl} 
                               alt={item.product.name}
+                              width={230}
+                              height={230}
                               className="w-full h-full object-cover"
                             />
                           ) : (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Product, PickProductCardProps } from "@/lib/apis/product";
+import { Product } from "@/lib/apis/product";
 
 // PickProductCard.tsx
 // interface Product {
@@ -23,7 +23,6 @@ interface PickProductCardProps {
 
 const PickProductCard: React.FC<PickProductCardProps> = ({
   product,
-  imageSize = { width: 230, height: 230 },
   onClick,
   fill,
 }) => {
@@ -34,12 +33,11 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
     price,
     thumbnailImageUrl,
     brand,
-    originalPrice,
     isSample,
     isPick,
   } = product;
 
-  const computedOriginalPrice = originalPrice ?? Math.round(price * 1.1);
+  const computedOriginalPrice = price ?? Math.round(price * 1.1);
   const tags = [
     isSample ? "샘플 증정" : null,
     isPick ? "MD's Pick" : null,
@@ -49,7 +47,7 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
   //   const badgeLabel = isSample ? "샘플 증정" : isPick ? "MD's Pick" : "세일";
 
   return (
-    <div className=" p-6 flex justify-between items-center " onClick={onClick}>
+    <div className=" p-6 flex justify-between items-center " onClick={() => onClick?.(product.id.toString())}>
       {fill ? (
         <div className="relative flex-1 aspect-square max-w-[300px] ">
           <Image

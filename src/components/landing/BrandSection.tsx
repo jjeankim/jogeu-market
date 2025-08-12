@@ -2,44 +2,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import PickProductCard from "./PickProductCard";
 import {
-  Product,
-  Brand,
-  Category,
-  BrandSectionProps,
+  BrandSectionProps
 } from "@/lib/apis/product";
 import { useRouter } from "next/router";
-
-// export interface Brand {
-//   id: number;
-//   name: string;
-//   logoImageUrl: string | null;
-// }
-
-// export interface Product {
-//   id: number;
-//   name: string;
-//   productCode: string;
-//   brandId: number;
-//   price: number;
-//   stockQuantity: number;
-//   thumbnailImageUrl: string;
-//   detailImageUrl: string;
-//   detailDescription: string;
-//   isSample: boolean;
-//   samplePrice: number;
-//   categoryId: number;
-//   createdAt: string;
-//   updatedAt: string;
-//   brand: Brand;
-//   category: Category;
-//   purchaseCount?: string;
-//   isPick: boolean;
-// }
-
-// interface BrandSectionProps {
-//   id: string;
-//   brands: Product[];
-// }
 
 const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
   const router = useRouter();

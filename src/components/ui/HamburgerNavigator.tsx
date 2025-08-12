@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 // 타입 정의
@@ -66,7 +65,6 @@ const mapCategoriesWithChildren = (
 };
 
 const HamburgerNavigator: FC<Props> = ({
-  isMenuOpen,
   categoriesFromApi,
   onClose,
 }) => {
@@ -90,10 +88,10 @@ const HamburgerNavigator: FC<Props> = ({
           key={category.slug}
           className="flex flex-col items-center p-3 space-y-4 text-lg"
         >
-          <li className="font-semibold text-xl">
+          <li className="font-semibold text-xl ">
             <button
               onClick={() => handleClick(`/product?category=${category.slug}`)}
-              className="hover:font-bold hover:text-shadow-xs"
+              className="hover:font-bold hover:text-[#cae6cd] cursor-pointer"
             >
               {category.name}
             </button>
@@ -101,6 +99,7 @@ const HamburgerNavigator: FC<Props> = ({
           {category.children.map((sub) => (
             <li key={sub.slug}>
               <button
+                className="hover:text-[#FEEBB3] cursor-pointer"
                 onClick={() =>
                   handleClick(
                     `/product?category=${category.slug}&subCategory=${sub.productCode}`
