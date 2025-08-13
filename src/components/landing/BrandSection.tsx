@@ -58,7 +58,7 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
             alt="브랜드 이미지"
             fill
             style={{
-              objectFit: "contain ",
+              objectFit: "contain",
               objectPosition: "center center",
               // filter: "brightness(0.9)",
             }}
