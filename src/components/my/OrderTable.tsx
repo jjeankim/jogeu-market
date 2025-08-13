@@ -139,7 +139,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
                 {item.quantity}
               </td>
               <td className="text-center text-red-600 pr-3 border-r-2 border-b-2 border-gray-300">
-                {item.priceAtPurchase}원
+                {item.priceAtPurchase.toLocaleString()}원
               </td>
               <td className="text-center pr-3 border-box p-3 border-b-2 border-gray-300">
                 <div className="flex flex-col items-center space-y-1">
