@@ -9,7 +9,7 @@ import { Swiper } from "swiper/types";
 type Brand = {
   id: number;
   name: string;
-  imgUrl?: string;
+  logoImgUrl?: string;
 };
 
 interface SliderProps {
