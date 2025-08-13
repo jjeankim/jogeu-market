@@ -51,12 +51,12 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
 
   return (
     <section id={id} className="bg-white h-auto space-y-4 py-4">
-      <h2 className="text-2xl font-bold text-center">Pick</h2>
-      <h3 className="text-xl text-center text-gray-600">
+      <h2 className="text-xl md:text-2xl font-bold text-center">Pick</h2>
+      <h3 className="text-lg md:text-xl text-center text-gray-600 px-4">
         엄선한 제품을 소개합니다
       </h3>
 
-      <div className="grid grid-cols-2 gap-6 h-96 px-6 relative overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 min-h-[500px] md:h-96 px-4 md:px-6 relative overflow-hidden">
         {/* 왼쪽 카드 - 애니메이션 */}
         <div className="relative h-full overflow-hidden ">
           {/* 이전 카드 */}
@@ -88,7 +88,7 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
         </div>
 
         {/* 오른쪽 리스트 */}
-        <ul className="flex flex-col justify-center h-full space-y-1 relative overflow-hidden  ">
+        <ul className="flex flex-col justify-center h-full space-y-1 relative overflow-hidden mt-4 md:mt-0">
           {products.map((product, i) => (
             <li
               key={product.id}
@@ -100,15 +100,15 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
                   setTimeout(() => setIsAnimating(false), 500);
                 }
               }}
-              className={`cursor-pointer transition-all duration-500 transform px-4 py-2 rounded-md flex items-center text-lg
+              className={`cursor-pointer transition-all duration-500 transform px-3 md:px-4 py-2 rounded-md flex items-center text-sm md:text-lg
                 ${
                   currentIndex === i
                     ? "translate-y-0 opacity-100 border-2 border-black text-black font-bold bg-white"
                     : "translate-y-2 opacity-50 border border-transparent text-gray-400"
                 }`}
             >
-              <span className="font-bold pr-3">{i + 1}</span>
-              <span>{product.name}</span>
+              <span className="font-bold pr-2 md:pr-3 text-sm md:text-base">{i + 1}</span>
+              <span className="truncate">{product.name}</span>
             </li>
           ))}
         </ul>

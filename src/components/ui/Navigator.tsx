@@ -46,20 +46,40 @@ const Navigator = () => {
 
   return (
     <>
-      <div className="flex items-center gap-6 mt-8 ">
+      <div className="flex items-center gap-6 mt-0 md:mt-8">
+        {/* 햄버거 메뉴 버튼 */}
         {isMenuOpen ? (
-          <>
-            <IoMdClose
-              size={32}
-              onClick={toggleMenu}
-              className="cursor-pointer"
-            />
-          </>
+          <IoMdClose
+            size={24}
+            onClick={toggleMenu}
+            className="cursor-pointer md:hidden"
+          />
         ) : (
-          <HiMenu size={32} onClick={toggleMenu} className="cursor-pointer" />
+          <HiMenu 
+            size={24} 
+            onClick={toggleMenu} 
+            className="cursor-pointer md:hidden text-gray-500" 
+          />
         )}
+        
+        {/* 데스크톱용 햄버거 버튼 (기존 크기) */}
+        {isMenuOpen ? (
+          <IoMdClose
+            size={32}
+            onClick={toggleMenu}
+            className="cursor-pointer hidden md:block"
+          />
+        ) : (
+          <HiMenu 
+            size={32} 
+            onClick={toggleMenu} 
+            className="cursor-pointer hidden md:block" 
+          />
+        )}
+
+        {/* 햄버거 메뉴 드롭다운 */}
         <div
-          className={`p-8 shadow-lg rounded-md grid grid-cols-4 absolute left-0 top-36 w-full overflow-hidden z-50 bg-white transition-all duration-300 ease-in-out transform origin-top rounded-b-2xl ${
+          className={`p-4 md:p-8 shadow-lg rounded-md grid grid-cols-2 md:grid-cols-4 absolute left-0 top-28 md:top-44 w-full overflow-hidden z-30 bg-white transition-all duration-300 ease-in-out transform origin-top rounded-b-2xl ${
             isMenuOpen
               ? "max-h-[800px] opacity-100 scale-y-100"
               : "max-h-0 opacity-0 scale-y-0"
@@ -72,8 +92,9 @@ const Navigator = () => {
           />
         </div>
 
-        <nav className="flex gap-30 text-2xl font-medium">
-          <ul className="grid grid-cols-4 gap-15 ">
+        {/* 데스크톱에서만 표시되는 네비게이션 메뉴 */}
+        <nav className="hidden md:flex gap-30 text-2xl font-medium">
+          <ul className="grid grid-cols-4 gap-15">
             <li>
               <a
                 href="#best"
@@ -98,7 +119,6 @@ const Navigator = () => {
                 Pick
               </a>
             </li>
-
             <li>
               <a
                 href="#brand"
