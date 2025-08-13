@@ -67,16 +67,16 @@ const ProductRegistration = () => {
   return (
     <>
       <SEO title="상품 등록" />
-      <div className="">
+      <div className="p-20 ">
         <h1 className="text-4xl font-bold text-center border-b-2 border-gray-200 py-4 mb-3">
           상품 등록
         </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="container mx-auto h-screen space-y-4"
+          className="container mx-auto h-screen space-y-4 p-3"
         >
           {/* 카테고리 선택 */}
-          <div>
+          <div className="">
             <label className="py-2 border-b-2 border-gray-200 block text-2xl ">
               카테고리
             </label>
@@ -234,7 +234,9 @@ const ProductRegistration = () => {
             />
           </div>
 
-          <Button type="submit">등록하기</Button>
+          <Button size="full" color="black">
+            후기 작성
+          </Button>
         </form>
       </div>
     </>
