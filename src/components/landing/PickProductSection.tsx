@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PickProductCard from "./PickProductCard";
-import {  Props } from "@/lib/apis/product";
+import { Props } from "@/lib/apis/product";
 import { useRouter } from "next/router";
 
 // interface Product {
@@ -56,9 +56,9 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
         엄선한 제품을 소개합니다
       </h3>
 
-      <div className="grid grid-cols-2 gap-6 h-96 px-6 relative overflow-hidden">
+      <div className="grid grid-cols-2 gap-6 h-96 px-6 relative overflow-hidden content-center">
         {/* 왼쪽 카드 - 애니메이션 */}
-        <div className="relative h-full overflow-hidden ">
+        <div className="relative h-full overflow-hidden">
           {/* 이전 카드 */}
           {isAnimating && (
             <div
