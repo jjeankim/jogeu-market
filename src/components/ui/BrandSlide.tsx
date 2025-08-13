@@ -5,12 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Link from "next/link";
 import { Swiper } from "swiper/types";
+import { Brand } from "@/lib/apis/brand";
+
 
 type Brand = {
   id: number;
   name: string;
   logoImgUrl?: string;
 };
+
 
 interface SliderProps {
   BrandList: Brand[];
@@ -95,7 +98,7 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
           >
             <Link href="" className="relative text-center aspect-square w-full">
               <Image
-                src={brand.logoImgUrl || "/images/noImg.png"}
+                src={brand.logoImageUrl || "/images/noImg.png"}
                 width={110}
                 height={110}
                 alt={brand.name}
