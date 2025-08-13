@@ -18,7 +18,10 @@ const ListCard = ({ product }: ListCardProps) => {
   const { showSuccess, showError } = useToast();
 
   // 하트아이콘 클릭 시 위시리스트 추가
-  const handleWishClick = async () => {
+  const handleWishClick = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // 부모 a로 이벤트 전달 안 함
+    e.preventDefault();
+
     try {
       if (!wish) {
         const res = await axiosInstance.post("/api/wishlist", {
@@ -53,7 +56,10 @@ const ListCard = ({ product }: ListCardProps) => {
   };
 
   // 장바구니 아이콘 클릭 시 장바구니 추가
-  const handleAddCart = async () => {
+  const handleAddCart = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // 부모 a로 이벤트 전달 안 함
+    e.preventDefault();
+
     try {
       const res = await axiosInstance.post("/api/cart", {
         productId: product.id,
@@ -132,7 +138,6 @@ const ListCard = ({ product }: ListCardProps) => {
               <FiStar />
               <span className="ml-1 text-gray-700">{review}</span>
             </div>
-
           </div>
         </div>
       </div>
