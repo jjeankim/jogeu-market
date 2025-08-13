@@ -87,7 +87,6 @@ const MyOrderPage = () => {
     const fetchOrders = async () => {
       try {
         const res = await axiosInstance.get("api/orders");
-        console.log(res.data.data);
         setOrders(res.data.data);
       } catch (error) {
         if (isAxiosError(error)) {
