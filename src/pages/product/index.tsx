@@ -96,20 +96,20 @@ const ProductList = () => {
   return (
     <>
       <SEO title="상품" />
-      <div className="mx-10">
+      <div className="mx-auto ">
         {/* 상단 제목 */}
-        <div className="text-center mt-20 text-3xl font-bold capitalize ">
+        <div className="text-center mt-20 text-3xl  capitalize font-semibold ">
           {currentCategory}
         </div>
 
         {/* 서브카테고리 탭만 노출 */}
-        <div className="my-3 mt-10 flex justify-center h-10 ">
+        <div className="min-w-[320px] my-3 mt-10  grid grid-cols-2 md:flex md:justify-center space-y-3">
           {subCategories.map(
             ({ label, value }: { label: string; value: string }) => (
               <button
                 key={value}
                 onClick={() => updateQuery({ subCategory: value, page: "1" })}
-                className={`font-medium md:text-md lg:text-lg mx-6 cursor-pointer bg-amber-200 ${
+                className={`font-medium sm:py-1 md:text-md lg:text-lg mx-6 cursor-pointer  ${
                   currentSubCategory === value ? "font-bold" : "text-gray-700"
                 }`}
                 style={
