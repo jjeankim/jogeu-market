@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import PickProductCard from "./PickProductCard";
-import {
-  BrandSectionProps
-} from "@/lib/apis/product";
+import { BrandSectionProps } from "@/lib/apis/product";
 import { useRouter } from "next/router";
 
 const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
@@ -43,9 +41,9 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
       </div>
 
       {/* 브랜드 이미지 + 제품 카드 */}
-      <div className=" flex flex-col items-center px-6 py-4 space-y-6">
+      <div className="flex flex-col items-center px-6 py-4 space-y-6">
         {/* 브랜드 대표 이미지 */}
-        <div className="relative w-full h-64 rounded overflow-hidden ">
+        <div className="relative w-full h-64 rounded overflow-hidden bg-white ">
           <Image
             src={
               selectedBrand.products[0]?.brand?.logoImageUrl ||
@@ -53,12 +51,19 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
             }
             alt="브랜드 이미지"
             fill
-            style={{ objectFit: "cover" }}
+            style={{
+              objectFit: "contain ",
+              objectPosition: "center center",
+              // filter: "brightness(0.9)",
+            }}
+            className="bg-white"
           />
           {/* <div className="flex w-full  h-full  justify-center items-center bg-gray-600 opacity-20  text-white text-2xl"></div> */}
-          <div className="absolute z-40 top-[50%] left-[50%] items-center translate-x-[-50%]   text-white text-2xl">
+          <div className="absolute z-40 top-[50%] left-[50%] items-center translate-x-[-50%]   text-gray-200 text-shadow-sm text-2xl">
             {selectedBrand.products[0]?.brand?.name || "브랜드 이름"}
           </div>
+          {/* Overlay 마스킹  */}
+          <div className="absolute inset-0 bg-black opacity-5"></div>
         </div>
 
         {/* 제품 카드 그리드 */}

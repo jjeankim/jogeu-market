@@ -28,14 +28,7 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
 }) => {
   if (!product) return null;
 
-  const {
-    name,
-    price,
-    thumbnailImageUrl,
-    brand,
-    isSample,
-    isPick,
-  } = product;
+  const { name, price, thumbnailImageUrl, brand, isSample, isPick } = product;
 
   const computedOriginalPrice = price ?? Math.round(price * 1.1);
   const tags = [
@@ -47,13 +40,21 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
   //   const badgeLabel = isSample ? "샘플 증정" : isPick ? "MD's Pick" : "세일";
 
   return (
-    <div className=" p-6 flex justify-between items-center " onClick={() => onClick?.(product.id.toString())}>
+    <div
+      className=" p-6 flex justify-between items-center "
+      onClick={() => onClick?.(product.id.toString())}
+    >
       {fill ? (
         <div className="relative flex-1 aspect-square max-w-[300px] ">
           <Image
             src={thumbnailImageUrl || "/images/noImg.png"}
             alt={name}
             fill
+            style={{
+              objectFit: "contain",
+              transform: "scale(0.8)",
+              transformOrigin: "center center",
+            }}
             className="border-2 object-cover"
           />
         </div>
@@ -64,6 +65,11 @@ const PickProductCard: React.FC<PickProductCardProps> = ({
             alt={name}
             width={230}
             height={230}
+            style={{
+              objectFit: "contain",
+              transform: "scale(0.8)",
+              transformOrigin: "center center",
+            }}
             className="border-2 object-cover "
           />
         </div>
