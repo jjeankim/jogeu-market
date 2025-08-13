@@ -32,12 +32,25 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
   useEffect(() => {
     if (navReady && swiperRef.current && prevRef.current && nextRef.current) {
       const swiper = swiperRef.current;
-      
+
       // params.navigation이 존재하고 객체인지 확인
-      if (swiper.params.navigation && typeof swiper.params.navigation === 'object') {
+      if (
+        swiper.params.navigation &&
+        typeof swiper.params.navigation === "object"
+      ) {
         // 타입 단언을 사용하여 안전하게 할당
-        (swiper.params.navigation as { prevEl?: HTMLElement; nextEl?: HTMLElement }).prevEl = prevRef.current;
-        (swiper.params.navigation as { prevEl?: HTMLElement; nextEl?: HTMLElement }).nextEl = nextRef.current;
+        (
+          swiper.params.navigation as {
+            prevEl?: HTMLElement;
+            nextEl?: HTMLElement;
+          }
+        ).prevEl = prevRef.current;
+        (
+          swiper.params.navigation as {
+            prevEl?: HTMLElement;
+            nextEl?: HTMLElement;
+          }
+        ).nextEl = nextRef.current;
 
         swiper.navigation.destroy(); // 기존 내비게이션 초기화
         swiper.navigation.init(); // 새로 초기화
@@ -82,7 +95,7 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
           >
             <Link href="" className="relative text-center aspect-square w-full">
               <Image
-                src={brand.imgUrl || "/images/noImg.png"}
+                src={brand.logoImgUrl || "/images/noImg.png"}
                 width={110}
                 height={110}
                 alt={brand.name}

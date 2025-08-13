@@ -29,17 +29,21 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
       className={`flex flex-col w-1/2 items-center ${className}`}
       onClick={onClick}
     >
-
       <div className="">
         <div className="relative  w-[230px] h-[230px] ">
           <Image
             src={imageUrl || "/images/noImg.png"}
             alt={name}
+            style={{
+              objectFit: "contain",
+              transform: "scale(0.8)",
+              transformOrigin: "center center",
+            }}
             // width={imageWidth || 230}
             // height={imageHeight || 230}
             fill
-            sizes="230px"
-            className="object-cover overflow-hidden "
+            // sizes="230px"
+            // className="object-cover overflow-hidden "
           />
           {badgeLabel && (
             <span className="bg-white absolute border-[3px]  border-red-300  top-1 left-1 w-15 h-15 flex items-center justify-center rounded-full font-semibold text-md">
