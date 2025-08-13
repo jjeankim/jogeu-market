@@ -8,13 +8,6 @@ import { Swiper } from "swiper/types";
 import { Brand } from "@/lib/apis/brand";
 
 
-type Brand = {
-  id: number;
-  name: string;
-  logoImgUrl?: string;
-};
-
-
 interface SliderProps {
   BrandList: Brand[];
   slidesPerView: number;
