@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Swiper } from "swiper/types";
 import { Brand } from "@/lib/apis/brand";
 
-
 interface SliderProps {
   BrandList: Brand[];
   slidesPerView: number;
