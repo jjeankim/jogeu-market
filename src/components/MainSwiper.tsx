@@ -23,7 +23,7 @@ const MainSwiper = () => {
   const totalSlides = 4;
 
   return (
-    <div className="relative w-full max-w-[1200px] mx-auto h-96 overflow-hidden mt-10 mb-30">
+    <div className="relative w-full max-w-[1200px] mx-auto h-48 md:h-96 overflow-hidden mt-4 md:mt-10 mb-4 md:mb-30">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         slidesPerView={1}
@@ -61,17 +61,19 @@ const MainSwiper = () => {
         ))}
       </Swiper>
       {/* Custom Pagination */}
-      <div className="absolute bottom-4 right-6 z-10 bg-black opacity-40 text-white text-sm px-3 py-1 rounded-full">
+      <div className="absolute bottom-2 md:bottom-4 right-3 md:right-6 z-10 bg-black opacity-40 text-white text-xs md:text-sm px-2 md:px-3 py-1 rounded-full">
         {String(currentIndex).padStart(2, "0")} /{" "}
         {String(totalSlides).padStart(2, "0")}
       </div>
 
-      {/* 네비게이션 버튼 */}
-      <button className="custom-prev cursor-pointer absolute left-10 top-1/2 z-10 -translate-y-1/2 bg-black opacity-30 text-white rounded-full w-14 h-14 flex items-center justify-center">
-        <FiChevronLeft size={30} />
+      {/* 네비게이션 버튼 - 모바일에서는 더 작게 */}
+      <button className="custom-prev cursor-pointer absolute left-2 md:left-10 top-1/2 z-10 -translate-y-1/2 bg-black opacity-30 text-white rounded-full w-8 h-8 md:w-14 md:h-14 flex items-center justify-center">
+        <FiChevronLeft size={20} className="md:hidden" />
+        <FiChevronLeft size={30} className="hidden md:block" />
       </button>
-      <button className="custom-next cursor-pointer absolute right-10 top-1/2 z-10 -translate-y-1/2 bg-black opacity-30 text-white rounded-full w-16 h-16 flex items-center justify-center">
-        <FiChevronRight size={30} />
+      <button className="custom-next cursor-pointer absolute right-2 md:right-10 top-1/2 z-10 -translate-y-1/2 bg-black opacity-30 text-white rounded-full w-8 h-8 md:w-16 md:h-16 flex items-center justify-center">
+        <FiChevronRight size={20} className="md:hidden" />
+        <FiChevronRight size={30} className="hidden md:block" />
       </button>
     </div>
   );

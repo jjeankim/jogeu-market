@@ -22,7 +22,7 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   const router = useRouter();
 
   const [currentPage, setCurrentPage] = useState(0);
-  const ITEMS_PER_PAGE = 4;
+  const ITEMS_PER_PAGE = 4; // 데스크톱에서는 4개씩, 모바일에서는 레이아웃으로 조정
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
   const handleNext = () => {
@@ -40,27 +40,20 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   );
 
   return (
-    <section id={id} className="flex flex-col w-full">
-      <h2 className="text-3xl font-bold mb-8 mt-10">
+    <section id={id} className="flex flex-col w-full px-2 md:px-0">
+      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 mt-6 md:mt-10 text-center md:text-left">
         {title}
-        <span className="pl-2 text-xl font-medium mb-2 align-middle">
+        <span className="pl-2 text-lg md:text-xl font-medium mb-2 align-middle">
           {subtitle}
         </span>
       </h2>
-      {/* <nav className="flex justify-end ">
-        <a href={showMoreLink} className="underline">
-          더보기
-        </a>
-      </nav> */}
 
-      <div className="flex-col ">
-        <div className="flex mx-auto mb-15">
+      <div className="flex-col">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-0 mx-auto mb-8 md:mb-15">
           {currentProducts.map((product) => (
             <LandingProductCard
               key={product.id}
               imageUrl={product.thumbnailImageUrl}
-              // fill
-              // sizes="230px"
               name={product.name}
               price={product.price}
               originalPrice={product.price * 1.1}
@@ -76,11 +69,11 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
         </div>
 
         <div
-          className="w-[30%] min-w-sm mx-auto text-center py-3 border-2 space-x-3 cursor-pointer mt-10 mb-10"
+          className="w-[80%] md:w-[30%] min-w-[200px] mx-auto text-center py-3 border-2 space-x-2 md:space-x-3 cursor-pointer mt-6 md:mt-10 mb-6 md:mb-10 hover:bg-gray-50 transition-colors"
           onClick={handleNext}
         >
-          <span className="">다른 상품 더보기</span>
-          <span>{currentPage + 1}</span>
+          <span className="text-sm md:text-base">다른 상품 더보기</span>
+          <span className="text-sm md:text-base">{currentPage + 1}</span>
           <span className="text-gray-300">|</span>
           <span className="text-gray-300">{totalPages}</span>
         </div>
