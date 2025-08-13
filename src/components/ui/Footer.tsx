@@ -3,8 +3,8 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="shrink-0 w-full min-h-72 bg-black px-4 md:px-10 py-6 md:py-4 flex justify-center items-center mx-auto">
-        <div className="w-full h-full grid grid-cols-1 md:grid-cols-6 gap-6 md:gap-5 text-white">
+      <footer className="shrink-0 w-full min-h-72 bg-[#FFFBEE] px-4 md:px-10 py-6 md:py-4 flex justify-center items-center mx-auto">
+        <div className="w-full h-full grid grid-cols-1 md:grid-cols-6 gap-6 md:gap-5 text-black">
           <div className="w-full md:col-span-2 companyInfo flex flex-col justify-between space-y-2 text-xs">
             <h4 className="font-bold text-lg mb-3">COMPANY.조그 마켓</h4>
             <div className="flex flex-col md:flex-row md:space-x-3 space-y-1 md:space-y-0">
