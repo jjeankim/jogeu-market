@@ -150,7 +150,7 @@ export default function ProductDetailPage() {
     router.push("/order");
   };
 
-  console.log("====thumbnail", product?.thumbnailImageUrl);
+  // console.log("====thumbnail", product?.thumbnailImageUrl);
 
   return (
     <>
@@ -161,7 +161,6 @@ export default function ProductDetailPage() {
           <div className="flex w-full pt-10 mb-20 ">
             <ProductImage
               imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
-              fill
               name={product.name}
             />
             <DetailInfo
