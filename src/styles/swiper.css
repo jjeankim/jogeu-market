@@ -1,4 +1,5 @@
-@import "swiper/components/pagination/pagination.min.css";
+/* @import "swiper/components/pagination/pagination.min.css"; */
+@import "swiper/css/pagination";
 @import "swiper/swiper-bundle.min.css";
 
 .brand-slider {

@@ -4,7 +4,13 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'yourcdn.com', '127.0.0.1', 'static.toss.im', "jogeumarket.blob.core.windows.net"],
+    domains: [
+      "localhost",
+      "yourcdn.com",
+      "127.0.0.1",
+      "static.toss.im",
+      "jogeumarket.blob.core.windows.net",
+    ],
     remotePatterns: [
       {
         protocol: "http",
@@ -24,6 +30,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  output: "standalone",
+  transpilePackages: ["swiper"], // swiper 패키지 트랜스파일 설정
 };
 
 export default nextConfig;
