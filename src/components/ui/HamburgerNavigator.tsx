@@ -1,14 +1,6 @@
 import { FC } from "react";
 import { useRouter } from "next/router";
-
-// 타입 정의
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  isActive: boolean;
-}
+import { Category } from "@/lib/apis/category";
 
 interface SubCategory {
   name: string;

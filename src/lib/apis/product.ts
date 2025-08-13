@@ -33,6 +33,8 @@ export interface Product {
   category: Category;
   purchaseCount?: string;
   isPick: boolean;
+  review: number;
+  imgUrl?: string;
 }
 
 // BrandSection

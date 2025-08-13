@@ -1,4 +1,5 @@
 import axiosInstance from "../axiosInstance";
+import { AxiosError } from "axios";
 
 export interface CartItem {
   id: number;
@@ -61,12 +62,12 @@ export const removeFromCart = async (cartItemId: number): Promise<void> => {
     console.log(`장바구니 아이템 삭제 요청: DELETE /api/cart/${cartItemId}`);
     const response = await axiosInstance.delete(`/api/cart/${cartItemId}`);
     console.log(`장바구니 아이템 ${cartItemId} 삭제 성공:`, response.data);
-  } catch (error: any) {
+  } catch (error) {
     console.error(`장바구니 아이템 ${cartItemId} 삭제 실패:`, {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      message: error.message,
+      status: (error as AxiosError<{ message: string }>)?.response?.status,
+      statusText: (error as AxiosError<{ message: string }>)?.response?.statusText,
+      data: (error as AxiosError<{ message: string }>)?.response?.data,
+      message: (error as AxiosError<{ message: string }>)?.response?.data?.message,
       url: `/api/cart/${cartItemId}`
     });
     throw error;

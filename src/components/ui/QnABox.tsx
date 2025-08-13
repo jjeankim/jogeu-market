@@ -1,9 +1,10 @@
 import Button from "@/components/ui/Button";
 import ModalLayout from "@/components/ui/ModalLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/useToast";
 import { createProductQnA, fetchProductQnAs } from "@/lib/apis/qna";
 import type { ProductQnA } from "@/types/product/qna";
+import { AxiosError } from "axios";
 
 type QnABoxProps = {
   productId: number;
@@ -17,7 +18,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState<ProductQnA[]>([]);
 
-  const loadList = async () => {
+  const loadList = useCallback(async () => {
     try {
       const qnas = await fetchProductQnAs(productId);
       setList(qnas);
@@ -25,7 +26,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
       showError("상품 문의를 불러오지 못했습니다.")
       console.error(error);
     }
-  };
+  }, [productId, showError]);
 
 
 
@@ -48,8 +49,9 @@ const QnABox = ({ productId }: QnABoxProps) => {
       setQuestion("");
       setIsPublic(true);
       await loadList();
-    } catch (e: any) {
-      showError(e?.response?.data?.message || "문의 등록에 실패했습니다.");
+    } catch (error) {
+      showError((error as AxiosError<{ message: string }>)?.response?.data?.message || "문의 등록에 실패했습니다.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -57,7 +59,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
 
   return (
     <div className="w-full my-4">
-      <div className=" flex flex-col justify-center items-center gap-6 border-2 border-black rounded-full p-4 w-full ">
+      <div className=" flex flex-col justify-center items-center gap-6 border-2 border-black rounded-2xl p-4 w-full ">
         <h2 className="text-lg font-bold mt-4">
           구매하시려는 상품에 대해 궁금한 점이 있으시면 문의해 주세요
         </h2>
@@ -102,14 +104,14 @@ const QnABox = ({ productId }: QnABoxProps) => {
 
       {isOpen && (
         <ModalLayout onClose={() => setIsOpen(false)}>
-          <div className="space-y-4">
+          <div className="space-y-10">
             <h3 className="text-lg font-bold">상품 문의 작성</h3>
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="문의하실 내용을 입력해주세요."
               rows={5}
-              className="w-full border rounded-lg p-3 outline-none"
+              className="w-full border rounded-md p-3 outline-none"
             />
             <label className="flex items-center gap-2 text-sm">
               <input

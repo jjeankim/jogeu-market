@@ -1,5 +1,12 @@
 import axiosInstance from "../axiosInstance";
 
+export interface Coupon {
+  id: number;
+  name: string;
+  discountType: string;
+  discountValue: number;
+}
+
 //요청-응답만 처리
 export const fetchMyCouponList = async () => {
   const res = await axiosInstance.get("/api/coupon/me");

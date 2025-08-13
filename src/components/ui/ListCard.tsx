@@ -5,24 +5,10 @@ import { useState } from "react";
 import axiosInstance from "@/lib/axiosInstance";
 import { useToast } from "@/hooks/useToast";
 import { AxiosError } from "axios";
-
-type Product = {
-  id: number;
-  brand: string | { id: number; name: string; logoImageUrl?: string };
-
-  name: string;
-  price: number;
-  review: number;
-  imgUrl?: string;
-  thumbnailImageUrl?: string;
-};
+import { Product } from "@/lib/apis/product";
 
 interface ListCardProps {
-  product: Product & {
-    review: number;
-    imgUrl?: string;
-    thumbnailImageUrl?: string;
-  };
+  product: Product;
   onClick?: () => void;
 }
 
@@ -131,6 +117,7 @@ const ListCard = ({ product }: ListCardProps) => {
             </button>
           </div>
         </div>
+
         <div className="flex justify-center">
           <div className="flex flex-col items-center">
             <span className="text-sm font-light text-black">
@@ -145,6 +132,7 @@ const ListCard = ({ product }: ListCardProps) => {
               <FiStar />
               <span className="ml-1 text-gray-700">{review}</span>
             </div>
+
           </div>
         </div>
       </div>

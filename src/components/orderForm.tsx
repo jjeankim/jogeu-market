@@ -9,10 +9,20 @@ import { fetchUser } from '@/lib/apis/user'
 import { CouponData } from '@/types/my/coupon'
 import Image from 'next/image'
 
-// 카카오 주소 API 콜백 함수 타입 선언
+// 카카오 주소 API 타입 선언
 declare global {
   interface Window {
-    daum: any
+    daum: {
+      Postcode: new (options: {
+        oncomplete: (data: {
+          zonecode: string;
+          roadAddress: string;
+          jibunAddress: string;
+        }) => void;
+      }) => {
+        open: () => void;
+      };
+    };
   }
 }
 
@@ -200,7 +210,11 @@ const OrderForm = () => {
     script.onload = () => {
       // 카카오 주소 검색 팝업 열기
       new window.daum.Postcode({
-        oncomplete: function(data: any) {
+        oncomplete: function(data: {
+          zonecode: string;
+          roadAddress: string;
+          jibunAddress: string;
+        }) {
           setAddressData({
             zipNo: data.zonecode,
             roadAddrPart1: data.roadAddress,

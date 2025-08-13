@@ -67,8 +67,8 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
             >
               <PickProductCard
                 product={products[prevIndex]}
-                sizes="230px"
-                className="object-contain"
+                imageSize={{ width: 230, height: 230 }}
+                onClick={() => onItemClick(products[prevIndex].id.toString())}
               />
             </div>
           )}
@@ -82,9 +82,7 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
             <PickProductCard
               product={products[currentIndex]}
               onClick={() => onItemClick(products[currentIndex].id.toString())}
-              fill
-              // sizes="230px"
-              className="object-cover"
+              imageSize={{ width: 230, height: 230 }}
             />
           </div>
         </div>
