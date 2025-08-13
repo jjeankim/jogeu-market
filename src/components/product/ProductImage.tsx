@@ -15,14 +15,19 @@ export default function ProductImage({
   };
 
   return (
-    <div className="w-[50%] relative pr-15">
-      <div className="relative overflow-hidden border-2 border-black rounded-lg aspect-square">
+    <div className="w-[50%] relative pr-15 flex ">
+      <div className="relative overflow-hidden border-2 border-black rounded-lg aspect-square flex items-center justify-center">
         <Image
           src={getImageUrl()}
           width={300}
           height={300}
-          className="w-full object-cover"
+          className="w-[80%]"
           alt={name}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+            transform: "scale(0.8)",
+          }}
         />
       </div>
     </div>
