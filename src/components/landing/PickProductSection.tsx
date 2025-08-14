@@ -3,21 +3,6 @@ import PickProductCard from "./PickProductCard";
 import { Props } from "@/lib/apis/product";
 import { useRouter } from "next/router";
 
-// interface Product {
-//   id: number;
-//   name: string;
-//   price: number;
-//   thumbnailImageUrl: string;
-//   brand: { name: string };
-//   originalPrice?: number;
-//   tags?: string[];
-// }
-
-// interface Props {
-//   id: string;
-//   products: Product[];
-// }
-
 const PickProductSection: React.FC<Props> = ({ id, products }) => {
   const router = useRouter();
 
@@ -56,10 +41,9 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
         엄선한 제품을 소개합니다
       </h3>
 
-      <div className="grid grid-cols-2 gap-6 h-96 px-6 relative overflow-hidden content-center">
-
+      <div className="sm:grid sm:grid-cols-1 sm:h-auto md:grid md:grid-cols-2 gap-6 h-96 px-6 relative overflow-hidden content-center sm:pb-10">
         {/* 왼쪽 카드 - 애니메이션 */}
-        <div className="relative h-full overflow-hidden">
+        <div className="relative h-full overflow-hidden sm:h-70 ">
           {/* 이전 카드 */}
           {isAnimating && (
             <div
@@ -89,7 +73,7 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
         </div>
 
         {/* 오른쪽 리스트 */}
-        <ul className="flex flex-col justify-center h-full space-y-1 relative overflow-hidden mt-4 md:mt-0">
+        <ul className="flex flex-col justify-center h-full space-y-1 relative overflow-hidden mt-4 md:mt-0 ">
           {products.map((product, i) => (
             <li
               key={product.id}
@@ -108,7 +92,9 @@ const PickProductSection: React.FC<Props> = ({ id, products }) => {
                     : "translate-y-2 opacity-50 border border-transparent text-gray-400"
                 }`}
             >
-              <span className="font-bold pr-2 md:pr-3 text-sm md:text-base">{i + 1}</span>
+              <span className="font-bold pr-2 md:pr-3 text-sm md:text-base">
+                {i + 1}
+              </span>
               <span className="truncate">{product.name}</span>
             </li>
           ))}

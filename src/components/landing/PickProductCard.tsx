@@ -1,19 +1,6 @@
 import Image from "next/image";
 import { Product } from "@/lib/apis/product";
 
-// PickProductCard.tsx
-// interface Product {
-//   id: number;
-//   name: string;
-//   price: number;
-//   thumbnailImageUrl: string;
-//   brand: { name: string };
-//   originalPrice?: number;
-//   tags?: string[];
-//   isSample?: boolean;
-//   isPick?: boolean;
-// }
-
 interface PickProductCardProps {
   product: Product;
   fill?: boolean;
