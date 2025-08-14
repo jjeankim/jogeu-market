@@ -4,6 +4,7 @@ import CartPaymentInfo from "./CartPaymentInfo";
 import { CartItem, getCartItems, updateCartQuantity, removeFromCart, removeSelectedItems, mergeDuplicateCartItems } from "@/lib/apis/cart";
 import useAuthStore from "@/store/AuthStore";
 import { useRouter } from "next/router";
+import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "@/lib/constants";
 
 const CartForm = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -120,7 +121,7 @@ const CartForm = () => {
    const orderData = {
     items: [cartItem],
     totalPrice : parseInt(cartItem.product.price) * cartItem.quantity,
-    shippingFee : parseInt(cartItem.product.price) * cartItem.quantity > 50000 ? 0 : 3000,
+    shippingFee : parseInt(cartItem.product.price) * cartItem.quantity > FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE,
    };
 
    if (typeof window !== 'undefined') {
@@ -136,12 +137,10 @@ const CartForm = () => {
   const totalPrice = selectedItems.reduce((sum, item) => {
     return sum + (parseInt(item.product.price) * item.quantity);
   }, 0);
-  const shippingFee = totalPrice > 50000 ? 0 : 3000;
+  const shippingFee = totalPrice > FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
 
   // 주문하기
   const handleOrderClick = () => {
-    console.log('주문하기 클릭됨, 선택된 아이템들:', selectedItems);
-    console.log('체크된 아이템들:', checkedItems);
     
     if (selectedItems.length === 0) {
       alert('주문할 상품을 선택해주세요.');

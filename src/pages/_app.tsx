@@ -36,15 +36,15 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ToastProvider>
       <AppInitializer />
-      <div className="max-w-screen-xl mx-auto px-4">
+      <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col h-screen">
           {showHeaderFooter && <Header />}
-         <div className="flex-1"> 
+          <div className="flex-1">
             <Component {...pageProps} />
           </div>
           {showHeaderFooter && <Footer />}
         </div>
-         <QnATest />
+        <QnATest />
       </div>
     </ToastProvider>
   );

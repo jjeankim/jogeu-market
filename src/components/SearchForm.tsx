@@ -77,7 +77,7 @@ useEffect(() => {
               height={180}
               priority={false}
             />
-            <p className="mt-6 text-4xl text-center font-medium text-gray-400">[검색 결과가 없습니다]</p>
+            <p className="mt-6 text-md md:text-4xl text-center font-medium text-gray-400">[검색 결과가 없습니다]</p>
           </div>
         ) : (
           <ul className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-15">

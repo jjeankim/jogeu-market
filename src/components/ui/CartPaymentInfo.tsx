@@ -1,5 +1,6 @@
 import { CartPayProps } from "@/types/cart/cart";
 import Button from "./Button";
+import { FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 
 interface ExtendedCartPayProps extends CartPayProps {
   onOrderClick?: () => void;
@@ -31,9 +32,9 @@ const CartPaymentInfo = ({
             <span>원</span>
           </div>
         </div>
-        {totalPrice > 50000 && (
+        {totalPrice > FREE_SHIPPING_THRESHOLD && (
           <div className="text-sm text-green-600">
-            🎉 50,000원 이상 구매로 배송비 무료!
+            🎉 {FREE_SHIPPING_THRESHOLD.toLocaleString()}원 이상 구매로 배송비 무료!
           </div>
         )}
         <p className="border-b-2"></p>
