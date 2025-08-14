@@ -10,7 +10,7 @@ const AuthFormLayout = ({
   children: ReactNode;
 }) => {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen m-8">
       <div className="w-full max-w-xl">
         <div className="flex justify-center mb-24">
 
