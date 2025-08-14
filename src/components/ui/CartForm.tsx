@@ -130,20 +130,20 @@ const CartForm = () => {
 
   //개별주문
   const handleIndividualOrder = (cartItem: CartItem) => {
-<<<<<<< HEAD
+
    const orderData = {
     items: [cartItem],
     totalPrice : parseInt(cartItem.product.price) * cartItem.quantity,
     shippingFee : parseInt(cartItem.product.price) * cartItem.quantity > FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE,
    };
-=======
-    const orderData = {
-      items: [cartItem],
-      totalPrice: parseInt(cartItem.product.price) * cartItem.quantity,
-      shippingFee:
-        parseInt(cartItem.product.price) * cartItem.quantity > 50000 ? 0 : 3000,
-    };
->>>>>>> 005840354a6f0ba975dfcf0dba2215ff70b247c8
+
+    // const orderData = {
+    //   items: [cartItem],
+    //   totalPrice: parseInt(cartItem.product.price) * cartItem.quantity,
+    //   shippingFee:
+    //     parseInt(cartItem.product.price) * cartItem.quantity > 50000 ? 0 : 3000,
+    // };
+
 
     if (typeof window !== "undefined") {
       sessionStorage.setItem("orderData", JSON.stringify(orderData));
@@ -160,10 +160,6 @@ const CartForm = () => {
 
   // 주문하기
   const handleOrderClick = () => {
-<<<<<<< HEAD
-    
-=======
->>>>>>> 005840354a6f0ba975dfcf0dba2215ff70b247c8
     if (selectedItems.length === 0) {
       alert("주문할 상품을 선택해주세요.");
       return;
