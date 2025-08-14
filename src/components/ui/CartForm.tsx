@@ -140,8 +140,6 @@ const CartForm = () => {
 
   // 주문하기
   const handleOrderClick = () => {
-    console.log('주문하기 클릭됨, 선택된 아이템들:', selectedItems);
-    console.log('체크된 아이템들:', checkedItems);
     
     if (selectedItems.length === 0) {
       alert('주문할 상품을 선택해주세요.');
