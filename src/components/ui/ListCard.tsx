@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
 import { FiStar } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "@/lib/axiosInstance";
 import { useToast } from "@/hooks/useToast";
 import { AxiosError } from "axios";
@@ -12,10 +12,32 @@ interface ListCardProps {
   onClick?: () => void;
 }
 
+interface ReviewStats {
+  total: number;
+  average: number;
+  distribution: { star: number; count: number }[];
+}
+
 const ListCard = ({ product }: ListCardProps) => {
   const [wish, setWish] = useState(false);
   const [wishId, setWishId] = useState<number | null>(null);
+  const [reviewStats, setReviewStats] = useState<ReviewStats | null>(null);
   const { showSuccess, showError } = useToast();
+
+  // 리뷰 통계 가져오기
+  useEffect(() => {
+    const fetchReviewStats = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `/api/products/${product.id}/reviews/stats`
+        );
+        setReviewStats(res.data);
+      } catch (err) {
+        console.error("리뷰 통계 조회 실패", err);
+      }
+    };
+    fetchReviewStats();
+  }, [product.id]);
 
   // 하트아이콘 클릭 시 위시리스트 추가
   const handleWishClick = async (e: React.MouseEvent) => {
@@ -135,8 +157,17 @@ const ListCard = ({ product }: ListCardProps) => {
               <span className="text-sm">원</span>
             </span>
             <div className="flex flex-raw items-center">
-              <FiStar />
-              <span className="ml-1 text-gray-700">{review}</span>
+              <FiStar
+                className={`${
+                  reviewStats && reviewStats.total > 0
+                    ? "fill-yellow-400"
+                    : "text-gray-700"
+                }`}
+              />
+              <span className="ml-1 text-gray-700">
+                {reviewStats ? reviewStats.average : "0.0"} (
+                {reviewStats ? reviewStats.total : 0})
+              </span>
             </div>
           </div>
         </div>
