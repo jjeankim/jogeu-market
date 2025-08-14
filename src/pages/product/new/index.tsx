@@ -45,8 +45,6 @@ const ProductRegistration = () => {
   }, []);
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-
     const formData = new FormData();
     formData.append("category", String(data.category));
     formData.append("brand", String(data.brand));
