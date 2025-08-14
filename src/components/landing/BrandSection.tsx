@@ -63,9 +63,6 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
             }}
             className="bg-white"
           />
-          <div className="absolute z-40 top-[50%] left-[50%] items-center translate-x-[-50%] text-white text-lg md:text-2xl font-medium">
-            {selectedBrand.products?.[0]?.brand?.name || "브랜드 이름"}
-          </div>
           {/* Overlay 마스킹  */}
           <div className="absolute inset-0 bg-black opacity-5"></div>
         </div>
