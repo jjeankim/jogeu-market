@@ -49,7 +49,7 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
       </h2>
 
       <div className="flex-col">
-        <div className="flex flex-col md:flex-row gap-4 md:gap-0 mx-auto mb-8 md:mb-15">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-10 mx-auto mb-8 md:mb-15">
           {currentProducts.map((product) => (
             <LandingProductCard
               key={product.id}
