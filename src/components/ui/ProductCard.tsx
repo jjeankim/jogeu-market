@@ -24,13 +24,19 @@ const ProductCard = ({
       onClick={onClick}
       className="flex border rounded-[10px] w-[600px] p-3 max-w-full"
     >
-      <Image
-        width={150}
-        height={150}
-        src={imgUrl || "/images/noImg.png"}
-        alt={name}
-        className="rounded-[10px]"
-      />
+      <div className="relative aspect-square w-1/2   max-w-[230px] ">
+        <Image
+          src={imgUrl || "/images/noImg.png"}
+          alt={name}
+          fill
+          className="rounded-[10px] "
+          style={{
+            objectFit: "contain",
+            transform: "scale(0.8)",
+            transformOrigin: "center center",
+          }}
+        />
+      </div>
       <div className="p-4 flex flex-col gap-3">
         <p>{name}</p>
         <span>{price}</span>

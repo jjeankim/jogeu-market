@@ -53,6 +53,7 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
           {currentProducts.map((product) => (
             <LandingProductCard
               key={product.id}
+              id={product.id}
               imageUrl={product.thumbnailImageUrl}
               name={product.name}
               price={product.price}

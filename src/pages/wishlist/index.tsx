@@ -82,7 +82,7 @@ const Index = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-6 overflow-hidden">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden">
                 {wishlist.map((item) => (
                   <ProductCardWithHeart
                     key={item.id}
