@@ -6,8 +6,8 @@ import { AxiosError } from "axios";
 const useProductActions = (productId: number) => {
   const [wish, setWish] = useState(false);
   const [wishId, setWishId] = useState<number | null>(null);
-  const [cart, setCart] = useState(false);
-  const [cartId, setCartId] = useState<number | null>(null);
+  // const [cart, setCart] = useState(false);
+  // const [cartId, setCartId] = useState<number | null>(null);
 
   const { showSuccess, showError } = useToast();
 
@@ -29,7 +29,7 @@ const useProductActions = (productId: number) => {
           showError("삭제할 위시리스트 상품을 찾을 수 없습니다.");
           return;
         }
-        const res = await axiosInstancce.delete(`/api/wishlist/${wishId}`);
+        const res = await axiosInstance.delete(`/api/wishlist/${wishId}`);
         showSuccess(res.data.message);
         setWish(false);
         setWishId(null);

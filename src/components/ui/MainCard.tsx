@@ -13,7 +13,6 @@ interface MainCardProps {
 
 const MainCard = ({ item }: MainCardProps) => {
   const { name, price } = item;
-  console.log(typeof price, price);
 
   return (
     <div className="w-full">

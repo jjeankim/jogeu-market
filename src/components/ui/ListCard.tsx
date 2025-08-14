@@ -1,5 +1,3 @@
-//
-
 import Image from "next/image";
 import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
 import { FiStar } from "react-icons/fi";
@@ -100,7 +98,7 @@ const ListCard = ({ product }: ListCardProps) => {
     }
   };
 
-  const { brand, name, price, review, thumbnailImageUrl } = product;
+  const { brand, name, price, thumbnailImageUrl } = product;
 
   const imageSrc =
     thumbnailImageUrl && thumbnailImageUrl.length > 0

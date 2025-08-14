@@ -30,8 +30,6 @@ const useAuthStore = create<AuthStore>((set) => ({
       { withCredentials: true }
     );
 
-    console.log("백엔드 응답:", res.data); // 디버깅용
-
     const { accessToken: token, data: userName } = res.data;
 
     if (token && userName) {
@@ -55,14 +53,12 @@ const useAuthStore = create<AuthStore>((set) => ({
       );
 
       if (res.status === 204) {
-        console.log("refreshToken 없음 → 로그인 상태 아님");
         return;
       }
 
       const accessToken = res.data.accessToken;
       if (accessToken) {
         set({ accessToken, isLoggedIn: true });
-        console.log("재발급 성공", accessToken);
       }
 
       const profileRes = await axiosInstance.get(
@@ -74,21 +70,16 @@ const useAuthStore = create<AuthStore>((set) => ({
 
       const userName = profileRes.data.name;
       set({ userName });
-      console.log(userName);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
 
         if (axiosError.response?.status === 401) {
-          console.log("refresh token이 없거나 만료됨 - 로그인이 필요합니다");
           set({ accessToken: null, isLoggedIn: false, userName: "" });
         } else if (
           axiosError.code === "ECONNREFUSED" ||
           axiosError.message === "Network Error"
         ) {
-          console.log(
-            "백엔드 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요."
-          );
           set({ accessToken: null, isLoggedIn: false, userName: "" });
         } else {
           console.error("refresh 요청 실패", axiosError);
@@ -103,7 +94,6 @@ const useAuthStore = create<AuthStore>((set) => ({
 
   accessToken: null,
   setAccessToken: (token) => {
-    console.log("[setAccessToken]", token);
     set({ accessToken: token, isLoggedIn: true });
   },
 

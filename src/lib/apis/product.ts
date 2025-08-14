@@ -55,7 +55,7 @@ export interface LandingProductCardProps {
   imageWidth?: number;
   imageHeight?: number;
   onClick?: () => void;
-  id: string;
+  id: number;
 }
 
 // LandingProductSection
