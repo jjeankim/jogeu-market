@@ -86,7 +86,7 @@ const ListCard = ({ product }: ListCardProps) => {
   return (
     <>
       <div className="flex flex-col items-center ">
-        <div className="relative  w-[250px] h-[250px] rounded-lg mb-3   flex justify-center items-center">
+        <div className="relative  w-[250px] h-[250px] rounded-2xl mb-3 shadow-[5px_10px_20px_rgba(0,0,0,0.1)] flex justify-center items-center">
           <div className="relative rounded-lg mb-3  w-[200px] h-[200px]  ">
             <Image
               src={imageSrc}
