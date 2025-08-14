@@ -30,7 +30,6 @@ const LandingProductSection: React.FC<LandingProductSectionProps> = ({
   };
 
   const onItemClick = (productId: string) => {
-    console.log("===product clicked");
     router.push(`/product/${productId}`);
   };
 
