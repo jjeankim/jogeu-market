@@ -8,6 +8,7 @@ import QuantitySelect from "@/components/product/QuantitySelect";
 import { PriceDisplay } from "@/components/product/PriceDisplay";
 import Button from "@/components/ui/Button";
 import { PiCheckBold } from "react-icons/pi";
+import { FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 
 type Props = {
   product: ProductDetail;
@@ -85,7 +86,7 @@ export default function ProductInfo({
 
       <p className="flex flex-col text-lg text-gray-500 mb-10">
         <span className="">배송비</span>
-        <span className="text-black">10,000원 이상 무료배송</span>
+        <span className="text-black">{FREE_SHIPPING_THRESHOLD.toLocaleString()}원 이상 무료배송</span>
       </p>
 
       <div className="flex flex-col items-center w-full mb-4">
