@@ -1,3 +1,5 @@
+//
+
 import Image from "next/image";
 import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
 import { FiStar } from "react-icons/fi";

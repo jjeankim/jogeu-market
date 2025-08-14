@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     permissions:
-       id-token: write
-       contents: read
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,10 +28,10 @@ jobs:
         uses: actions/github-script@v6
         id: idtoken
         with:
-           script: |
-               const coredemo = require('@actions/core')
-               return await coredemo.getIDToken()
-           result-encoding: string
+          script: |
+            const coredemo = require('@actions/core')
+            return await coredemo.getIDToken()
+          result-encoding: string
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -45,14 +45,15 @@ jobs:
           output_location: ".next" # Built app content directory - optional
           app_build_command: "npm install && rm -rf .next/cache && npm run build"
           github_id_token: ${{ steps.idtoken.outputs.result }}
-    env: 
-       NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-       NEXT_PUBLIC_AZURE_CQA_ENDPOINT: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_ENDPOINT }}
-       NEXT_PUBLIC_AZURE_CQA_KEY: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_KEY }}
-       NEXT_PUBLIC_AZURE_CQA_PROJECT_NAME: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_PROJECT_NAME }}
-       NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME }}
-       NEXT_PUBLIC_AZURE_CQA_API_VERSION: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_API_VERSION }}
-          ###### End of Repository/Build Configurations ######
+    env:
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+      NEXT_PUBLIC_AZURE_CQA_ENDPOINT: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_ENDPOINT }}
+      NEXT_PUBLIC_AZURE_CQA_KEY: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_KEY }}
+      NEXT_PUBLIC_AZURE_CQA_PROJECT_NAME: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_PROJECT_NAME }}
+      NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME }}
+      NEXT_PUBLIC_AZURE_CQA_API_VERSION:
+        ${{ secrets.NEXT_PUBLIC_AZURE_CQA_API_VERSION }}
+        ###### End of Repository/Build Configurations ######
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
