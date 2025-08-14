@@ -33,6 +33,9 @@ const CartForm = () => {
       try {
         const result = await mergeDuplicateCartItems();
         if (result.mergedCount > 0) {
+          console.log(
+            `중복된 장바구니 아이템 ${result.mergedCount}개를 정리했습니다.`
+          );
         }
       } catch (mergeError) {
         console.error("중복 정리 실패:", mergeError);
@@ -163,7 +166,8 @@ const CartForm = () => {
     // 브라우저 환경에서만 세션스토리지 사용
     if (typeof window !== "undefined") {
       sessionStorage.setItem("orderData", JSON.stringify(orderData));
-      
+    }
+
     router.push("/order");
   };
 
