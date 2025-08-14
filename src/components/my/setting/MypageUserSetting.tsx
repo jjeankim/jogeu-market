@@ -3,6 +3,7 @@ import { User, UserSettingListProps } from "@/types/my/settings";
 import { useEffect, useState } from "react";
 import SubTitle from "../coupon/SubTitle";
 import PasswordChangeModal from "./PasswordChangeModal";
+import Spinner from "@/components/ui/Spinner";
 
 const UserSettingList = ({
   title,
@@ -42,9 +43,9 @@ const MypageUserSetting = () => {
     getUser();
   }, []);
 
-  // 임시로 만든 로직
+ 
   if (!user) {
-    return <div>...로딩중</div>;
+    return <Spinner />
   }
 
   const { phoneNumber, email, addresses } = user;
