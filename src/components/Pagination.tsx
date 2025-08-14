@@ -58,7 +58,7 @@ const Pagination = ({
             key={num}
             onClick={() => onPageChange(num)}
             className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-              num === currentPage ? "text-blue-500" : "text-gray-800"
+              num === currentPage ? "text-logo" : "text-gray-800"
             }`}
           >
             {num}

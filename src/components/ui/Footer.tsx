@@ -6,51 +6,88 @@ const Footer = () => {
       <footer className="shrink-0 w-full min-h-72 bg-[#FFFBEE] px-4 md:px-10 py-6 md:py-4 flex justify-center items-center mx-auto">
         <div className="w-full h-full grid grid-cols-1 md:grid-cols-6 gap-6 md:gap-5 text-black">
           <div className="w-full md:col-span-2 companyInfo flex flex-col justify-between space-y-2 text-xs">
-            <h4 className="font-bold text-lg mb-3">COMPANY.조그 마켓</h4>
+            <h4 className="font-bold text-lg mb-3">PROJECT.조그마켓</h4>
             <div className="flex flex-col md:flex-row md:space-x-3 space-y-1 md:space-y-0">
-              <span>owner: 김진</span>
-              <span>tel.02-2688-4103</span>
+              <span>team leader: 김진</span>
+              <span>개발기간: 2024.07.18 - 2024.08.20</span>
             </div>
-            <span>business no. 295-88-0287</span>
-            <span>mail order license.2025-서울구로-2123[사업자 정보확인]</span>
-            <span>personal info manager. 서이현 (hohi1215@naver.com)</span>
+            <span>프로젝트 유형: 팀 프로젝트 (4명)</span>
+            <span>frontend: Next.js, React, TypeScript, Tailwind CSS</span>
+            <span>backend: Node.js, Express, PostgreSQL, Prisma</span>
             <span>
-              address. [08225] 서울특별시 구로구 중앙로3길 46 (고척동) 강서빌딩
-              703호 오디너리먼트
+              github repository: 
+              <a href="https://github.com/jjeankim/jogeu-market" className="text-black hover:text-gray-700 ml-1">
+                Frontend
+              </a> / 
+              <a href="https://github.com/jjeankim/jogeu-market-api" className="text-black hover:text-gray-700 ml-1">
+                Backend
+              </a>
             </span>
-            <span>대량주문/협력문의 hohi1215@naver.com</span>
-            <span>저작권침해/사진도용 제보 hohi1215@naver.com</span>
+            <span>대량주문/협력문의 miyukikj35@gmail.com</span>
+            <span>개발문의/버그리포트 miyukikj35@gmail.com</span>
             <span>
-              copyright © 조그마켓 all rights reserved / published by sz
+              copyright © 조그마켓 프로젝트 팀 all rights reserved / E-commerce Platform
             </span>
           </div>
+
           <div className="flex flex-col space-y-2">
-            <h4 className="font-bold text-lg mb-3">C/S CENTER</h4>
-            <span className="text-xl md:text-2xl mb-3">02-2688-4103</span>
-            <span className="text-xs">MON-FRI AM10:00-PM04:00</span>
-            <span className="text-xs">BREAK TIME PM12:00-PM01:00</span>
-            <span className="text-xs">SAT,SUN,HOLIDAY OFF</span>
+            <h4 className="font-bold text-lg mb-3">DEVELOPMENT TEAM</h4>
+            <span className="text-lg md:text-xl mb-3 font-semibold">4명의 개발자</span>
+            <span className="text-xs">김진 - Team Leader / Full-Stack</span>
+            <span className="text-xs">최수영 - Full-Stack Developer</span>
+            <span className="text-xs">함선우 - Full-Stack Developer</span>
+            <span className="text-xs">허영선 - Full-Stack Developer</span>
           </div>
+
           <div className="flex flex-col space-y-2">
-            <h4 className="font-bold text-lg mb-3">BANK ACCOUNT</h4>
-            <span className="text-xs">국민 757101-04-180003</span>
-            <span className="text-xs">예금주 : 주식회사 조그마켓</span>
+            <h4 className="font-bold text-lg mb-3">CONTACT INFO</h4>
+            <span className="text-xs">김진: miyukikj35@gmail.com</span>
+            <span className="text-xs">
+              GitHub: 
+              <a href="https://github.com/jjeankim" className="text-black hover:text-gray-700 ml-1">
+                jjeankim
+              </a>
+            </span>
+            <span className="text-xs">최수영: csy9980@gmail.com</span>
+            <span className="text-xs">함선우: return0@knou.ac.kr</span>
+            <span className="text-xs">허영선: heo4021@outlook.com</span>
+            <span className="text-xs">
+              GitHub: 
+              <a href="https://github.com/Youngsun33" className="text-black hover:text-gray-700 ml-1">
+                Youngsun33
+              </a>
+            </span>
           </div>
+
           <div className="flex flex-col space-y-2">
-            <h4 className="font-bold text-lg mb-3">교환/반품 주소</h4>
+            <h4 className="font-bold text-lg mb-3">기술스택 / 주요기능</h4>
             <span className="text-xs leading-relaxed">
-              [08563] 서울특별시 금천구 독산로50길 23 학습관2층 202호
+              사용자 인증 (JWT, 소셜로그인), 상품 관리, 장바구니, 주문/결제, 리뷰 시스템
             </span>
             <span className="text-xs leading-relaxed">
-              * 반품 및 교환 제품은 공지사항을 참고하여 CJ대한통운으로 반품요청
-              부탁드립니다.
+              위시리스트, 쿠폰 시스템, Q&A, 마이페이지, 주문내역 관리
+            </span>
+            <span className="text-xs leading-relaxed">
+              * 토스페이먼츠, Azure Blob Storage, PostgreSQL을 활용한 
+              완전한 이커머스 플랫폼
             </span>
           </div>
+
           <div className="flex flex-col space-y-2">
-            <h4 className="font-bold text-lg mb-3">SERVICE</h4>
+            <h4 className="font-bold text-lg mb-3">PROJECT LINKS</h4>
             <span className="text-xs leading-relaxed">
-              고객님은 안전거래를 위해 현금 등으로 결제시 저희 쇼핑몰 에서
-              가입한 구매안전 서비스를 이용하실 수 있습니다.
+              <a href="https://www.notion.so/while-ture-2390dbd00533802db8f2e96478e80048?pvs=21" 
+                 className="text-black hover:text-gray-700 block mb-2">
+                📚 프로젝트 문서 (Notion)
+              </a>
+              <a href="https://github.com/jjeankim/jogeu-market" 
+                 className="text-black hover:text-gray-700 block mb-2">
+                🔗 Frontend Repository
+              </a>
+              <a href="https://github.com/jjeankim/jogeu-market-api" 
+                 className="text-black hover:text-gray-700 block">
+                🔗 Backend Repository
+              </a>
             </span>
           </div>
         </div>
