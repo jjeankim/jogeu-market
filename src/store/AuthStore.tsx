@@ -30,12 +30,19 @@ const useAuthStore = create<AuthStore>((set) => ({
       { withCredentials: true }
     );
 
-    const { accessToken: token, data: userName } = res.data;
+    // const { accessToken: token, data: userName } = res.data;
+    const token = res.data?.accessToken;
+    const userName = res.data?.user?.name;
 
-    if (token && userName) {
-      set({ isLoggedIn: true, userName });
-    }
-    return token;
+    // if (token && userName) {
+    //   set({ isLoggedIn: true, userName });
+    // }
+    // return token;
+
+    if (token) set({ accessToken: token, isLoggedIn: true });  
+    if (userName) set({ userName });
+
+    return token; 
   },
   signup: async ({ email, password, name }: AuthValues) => {
     await axios.post(`${API_BASE_URL}/api/auth/signup`, {
