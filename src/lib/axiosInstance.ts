@@ -5,7 +5,7 @@ import useAuthStore from "@/store/AuthStore";
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
-})
+});
 
 // 인증이 필요한 요청 시 액세스토큰 자동 삽입
 axiosInstance.interceptors.request.use((config) => {
@@ -21,12 +21,18 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const refreshRes = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {}, { withCredentials: true });
+        const refreshRes = await axios.post(
+          `${API_BASE_URL}/api/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
         const newToken = refreshRes.data.accessToken;
         useAuthStore.getState().setAccessToken(newToken);
 
@@ -45,4 +51,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance
+export default axiosInstance;
