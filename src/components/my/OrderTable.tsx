@@ -1,5 +1,6 @@
 // components/my/OrderTable.tsx
 import Image from "next/image";
+import Link from "next/link";
 
 interface Brand {
   id: number;
@@ -98,7 +99,6 @@ const OrderTable = ({ orders }: OrderTableProps) => {
       <tbody className="border-box">
         {orders.map((order) => {
           const item = order.orderItems[0];
-
           return (
             <tr className="border-t" key={order.id}>
               <td className="p-2 space-y-1 border-r-2 border-b-2 border-gray-300">
@@ -117,43 +117,45 @@ const OrderTable = ({ orders }: OrderTableProps) => {
                 </a>
               </td>
               <td className="p-2 mt-3 border-r-2 border-b-2 border-gray-300">
-                <div className="flex gap-3 items-center  ">
-                  <Image
-                    src={item.product.thumbnailImageUrl}
-                    width={60}
-                    height={60}
-                    alt="상품이미지"
-                    className="rounded-md border object-cover  "
-                  />
-                  <div>
-                    <p className="text-gray-500">{item.product.brand.name}</p>
-                    <p className="text-black line-clamp-2">
-                      {item.product.name}
-                    </p>
+                <Link href={`/product/${item.product.id}`} passHref>
+                  <div className="flex gap-3 items-center  ">
+                    <Image
+                      src={item.product.thumbnailImageUrl}
+                      width={60}
+                      height={60}
+                      alt="상품이미지"
+                      className="rounded-md border object-cover  "
+                    />
+                    <div>
+                      <p className="text-gray-500">{item.product.brand.name}</p>
+                      <p className="text-black line-clamp-2">
+                        {item.product.name}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </td>
               <td className="text-center border-r-2 border-b-2 border-gray-300">
                 {item.quantity}
               </td>
               <td className="text-center text-red-600 pr-3 border-r-2 border-b-2 border-gray-300">
-                {item.priceAtPurchase}원
+                {item.priceAtPurchase.toLocaleString()}원
               </td>
               <td className="text-center pr-3 border-box p-3 border-b-2 border-gray-300">
                 <div className="flex flex-col items-center space-y-1">
-                  <p className="px-1 p-1">배송완료</p>
-                  <a
+                  <p className="px-1 p-1">주문완료</p>
+                  <Link
                     className="px-3 py-1 border-1 rounded-full inline-block text-xs"
                     href=""
                   >
                     배송조회
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-1 border-1 rounded-full inline-block text-xs"
-                    href=""
+                    href="/my/reviews"
                   >
                     리뷰작성
-                  </a>
+                  </Link>
                 </div>
               </td>
             </tr>

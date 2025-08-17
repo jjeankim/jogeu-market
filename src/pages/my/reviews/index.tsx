@@ -10,6 +10,7 @@ import WrittenReviewCard from "@/components/my/review/WrittenReviewCard";
 import { useToast } from "@/hooks/useToast";
 import axios from "axios";
 import SEO from "@/components/SEO";
+import Spinner from "@/components/ui/Spinner";
 
 const MyReviewPage = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
@@ -66,23 +67,20 @@ const MyReviewPage = () => {
         const isDeleted = review?.isDeleted;
 
         if (filter === "written") {
-          // 리뷰 텍스트가 있고, 삭제되지 않은 경우만 포함
           return hasText && !isDeleted;
         }
 
         if (filter === "unwritten") {
-          // 리뷰 텍스트가 없는 경우 (삭제 여부는 무관)
           return !hasText;
         }
 
-        return true; // "all"인 경우
+        return true;
       })
       .map((item) => ({
         ...item,
         orderedAt: order.orderedAt,
       }))
   );
-  // orderList[] > orderItem[] > review[]를 가져오는 구조로
 
   const allOrderItems = orderList.flatMap((order) =>
     order.orderItems.map((item) => ({
@@ -126,10 +124,8 @@ const MyReviewPage = () => {
 
           <div className="grid grid-cols-1 border-t-2 relative">
             {loading && orderList.length === 0 ? (
-              // 처음 로딩에만 스피너 표시 (깜빡임 방지)
               <div className="py-10 flex justify-center">
-                {/* <LoadingSpinner /> */}
-                <p className="text-gray-500">로딩 중...</p>
+                <Spinner />
               </div>
             ) : filteredItems.length > 0 ? (
               filteredItems.map((item) =>

@@ -28,7 +28,7 @@ const Pay = () => {
           </div>
           
           <div className="pt-1 pb-1 px-2">
-            <p className="text-[15px] leading-[1.6] text-[#8b95a1] text-[13px]">
+            <p className="text-[15px] leading-[1.6] text-[#8b95a1]">
               테스트용 결제 정보: 100원
             </p>
           </div>

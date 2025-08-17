@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import SEO from "@/components/SEO";
+import useAuthStore from "@/store/AuthStore";
+import { useRouter } from "next/router";
 
 type Category = {
   id: number;
@@ -43,8 +45,6 @@ const ProductRegistration = () => {
   }, []);
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-
     const formData = new FormData();
     formData.append("category", String(data.category));
     formData.append("brand", String(data.brand));
@@ -64,16 +64,24 @@ const ProductRegistration = () => {
     );
   };
 
+  const { isLoggedIn } = useAuthStore();
+  const router = useRouter();
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/");
+    }
+  }, [router, isLoggedIn]);
+
   return (
     <>
       <SEO title="상품 등록" />
-      <div className="p-20 ">
+      <div className="p-20  ">
         <h1 className="text-4xl font-bold text-center border-b-2 border-gray-200 py-4 mb-3">
           상품 등록
         </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="container mx-auto h-screen space-y-4 p-3"
+          className="container mx-auto h-auto space-y-4 p-3"
         >
           {/* 카테고리 선택 */}
           <div className="">

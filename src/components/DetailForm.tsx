@@ -150,8 +150,6 @@ export default function ProductDetailPage() {
     router.push("/order");
   };
 
-  // console.log("====thumbnail", product?.thumbnailImageUrl);
-
   return (
     <>
       {!product ? (

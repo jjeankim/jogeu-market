@@ -2,17 +2,8 @@ import Image from "next/image";
 import React from "react";
 import { LandingProductCardProps } from "@/lib/apis/product";
 
-// interface LandingProductCardProps {
-//   imageUrl: string;
-//   name: string;
-//   price: number;
-//   originalPrice?: number;
-//   badgeLabel?: string; // BEST, Pick
-//   tags?: string[]; // 세일, 샘플증정, MD's Pick
-//   className?: string;
-//   imageWidth?: number;
-//   imageHeight?: number;
-// }
+import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
+import useProductActions from "@/hooks/useProductActions";
 
 const LandingProductCard: React.FC<LandingProductCardProps> = ({
   imageUrl,
@@ -23,25 +14,49 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
   tags = [],
   className = "",
   onClick,
+  id,
 }) => {
+  const { wish, toggleWish, addToCart } = useProductActions(id);
+  console.log(id);
+
   return (
     <div
       className={`flex flex-col w-full md:w-1/2 items-center cursor-pointer ${className}`}
       onClick={onClick}
     >
-      <div className="w-full max-w-[280px]">
+      <div className="w-full max-w-[280px] ">
         <div className="relative w-full aspect-square max-w-[230px] mx-auto">
-          <Image
-            src={imageUrl || "/images/noImg.png"}
-            alt={name}
-            style={{
-              objectFit: "contain",
-              transform: "scale(0.8)",
-              transformOrigin: "center center",
-            }}
-            fill
-            sizes="(max-width: 768px) 280px, 230px"
-          />
+          <div>
+            <Image
+              src={imageUrl || "/images/noImg.png"}
+              alt={name}
+              style={{
+                objectFit: "contain",
+                transform: "scale(0.8)",
+                transformOrigin: "center center",
+              }}
+              fill
+              sizes="(max-width: 768px) 280px, 230px"
+            />
+            <div className=" absolute bottom-0 flex justify-between w-full">
+              <button
+                className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95"
+                onClick={(e) => toggleWish(e)}
+              >
+                <PiHeartBold
+                  className={`text-[24px] transition-all duration-300 ${
+                    wish ? "text-red-500 scale-110" : "text-black"
+                  }`}
+                />
+              </button>
+              <button
+                className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95"
+                onClick={(e) => addToCart(e)}
+              >
+                <PiShoppingCartSimpleBold className="text-[24px]" />
+              </button>
+            </div>
+          </div>
           {badgeLabel && (
             <span className="bg-white absolute border-[3px] border-red-300 top-1 left-1 w-12 h-12 md:w-15 md:h-15 flex items-center justify-center rounded-full font-semibold text-xs md:text-md">
               {badgeLabel}
@@ -50,7 +65,9 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
         </div>
 
         <div className="w-full flex flex-col mx-auto px-2">
-          <h2 className="text-center mt-3 text-sm md:text-base line-clamp-2">{name}</h2>
+          <h2 className="text-center mt-3 text-sm md:text-base line-clamp-2">
+            {name}
+          </h2>
           <div className="text-center mt-1">
             {originalPrice && (
               <span className="line-through text-gray-300 pr-2 text-sm md:text-md">

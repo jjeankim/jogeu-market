@@ -15,7 +15,6 @@ const Header = () => {
   const router = useRouter();
   const logout = useAuthStore((state) => state.logout);
 
-
   const handleRedirect = (path: string) => {
     if (isLoggedIn) router.push(path);
     else router.push("/login");
@@ -28,20 +27,17 @@ const Header = () => {
   }, [initializeAuth]);
 
   const handleLogout = async () => {
-   
     await logout();
     router.push("/");
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = () =>{
+  const handleSearch = () => {
     if (searchTerm.trim()) {
       router.push(`/search?q=${searchTerm}`);
     }
   };
-
-
 
   return (
     <header className="relative w-full shrink-0 mt-3 md:mt-6">
@@ -77,7 +73,6 @@ const Header = () => {
 
       {/* 데스크톱: 기존 스타일 유지 */}
       <div className="hidden md:block">
-
         <div className="flex items-start justify-between">
           <div className="flex flex-col">
             <Link href="/" className="w-50">
@@ -92,7 +87,7 @@ const Header = () => {
             <Navigator />
           </div>
 
-          <div className="flex items-center gap-6 mt-24">
+          <div className="flex items-center gap-6 mt-26">
             <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
               <input
                 type="text"
@@ -100,9 +95,13 @@ const Header = () => {
                 className="bg-transparent outline-none text-sm w-60 p-2"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
-              <FiSearch className="text-gray-600 cursor-pointer" size={22} onClick={handleSearch}/>
+              <FiSearch
+                className="text-gray-600 cursor-pointer"
+                size={22}
+                onClick={handleSearch}
+              />
             </div>
 
             <button
@@ -137,7 +136,9 @@ const Header = () => {
             <div className="flex justify-end items-center gap-3 text-xs text-gray-600">
               {isLoggedIn ? (
                 <div className="flex gap-2 items-center">
-                  <span className="text-gray-800 truncate max-w-[100px]">{userName}님</span>
+                  <span className="text-gray-800 truncate max-w-[100px]">
+                    {userName}님
+                  </span>
                   <button
                     onClick={handleLogout}
                     className="hover:text-black transition"
@@ -211,11 +212,11 @@ const Header = () => {
               className="bg-transparent outline-none text-sm flex-1 p-1"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
-            <FiSearch 
-              className="text-gray-600 cursor-pointer" 
-              size={20} 
+            <FiSearch
+              className="text-gray-600 cursor-pointer"
+              size={20}
               onClick={handleSearch}
             />
           </div>

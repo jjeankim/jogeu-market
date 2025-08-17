@@ -53,7 +53,8 @@ const ProductList = () => {
     typeof subCategory === "string" ? subCategory : "all";
   const currentPage = Number(page) || 1;
   const currentSort = typeof sort === "string" ? sort : "latest";
-  const subCategories = mainToSubMap[currentCategory as keyof typeof mainToSubMap] || [];
+  const subCategories =
+    mainToSubMap[currentCategory as keyof typeof mainToSubMap] || [];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -94,56 +95,58 @@ const ProductList = () => {
 
   return (
     <>
-  <SEO title="상품" />
-    <div className="mx-10">
-      {/* 상단 제목 */}
-      <div className="text-center mt-20 text-3xl font-bold capitalize">
-        {currentCategory}
+      <SEO title="상품" />
+      <div className="mx-auto ">
+        {/* 상단 제목 */}
+        <div className="text-center mt-20 text-3xl  capitalize font-semibold ">
+          {currentCategory}
+        </div>
+
+        {/* 서브카테고리 탭만 노출 */}
+        <div className="min-w-[320px] my-3 mt-10  grid grid-cols-2 md:flex md:justify-center space-y-3">
+          {subCategories.map(
+            ({ label, value }: { label: string; value: string }) => (
+              <button
+                key={value}
+                onClick={() => updateQuery({ subCategory: value, page: "1" })}
+                className={`font-medium sm:py-1 md:text-md lg:text-lg mx-6 cursor-pointer  ${
+                  currentSubCategory === value ? "font-bold" : "text-gray-700"
+                }`}
+                style={
+                  currentSubCategory === value
+                    ? { color: "var(--color-logo)" }
+                    : undefined
+                }
+              >
+                {label}
+              </button>
+            )
+          )}
+        </div>
+        {/* 브랜드 슬라이더 */}
+        <BrandSlider
+          category={currentCategory}
+          subCategory={currentSubCategory}
+        />
+
+        {/* 정렬 바 */}
+        <SortBar
+          totalItems={totalCount}
+          selectedSort={currentSort}
+          onChange={(sort) => updateQuery({ sort, page: "1" })}
+        />
+
+        {/* 상품 그리드 */}
+        <ProductGrid products={products} />
+
+        {/* 페이지네이션 */}
+        <PaginationBar
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => updateQuery({ page: page.toString() })}
+        />
       </div>
-
-      {/* 서브카테고리 탭만 노출 */}
-      <div className="my-3 mt-10 flex justify-center">
-        {subCategories.map(({ label, value }: { label: string, value: string }) => (
-          <button
-            key={value}
-            onClick={() => updateQuery({ subCategory: value, page: "1" })}
-            className={`font-medium text-lg mx-6 cursor-pointer ${
-              currentSubCategory === value ? "font-bold" : "text-gray-700"
-            }`}
-            style={
-              currentSubCategory === value
-                ? { color: "var(--color-logo)" }
-                : undefined
-            }
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      {/* 브랜드 슬라이더 */}
-      <BrandSlider
-        category={currentCategory}
-        subCategory={currentSubCategory}
-      />
-
-      {/* 정렬 바 */}
-      <SortBar
-        totalItems={totalCount}
-        selectedSort={currentSort}
-        onChange={(sort) => updateQuery({ sort, page: "1" })}
-      />
-
-      {/* 상품 그리드 */}
-      <ProductGrid products={products} />
-
-      {/* 페이지네이션 */}
-      <PaginationBar
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={(page) => updateQuery({ page: page.toString() })}
-      />
-    </div>
-      </>
+    </>
   );
 };
 

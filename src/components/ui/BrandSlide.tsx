@@ -54,11 +54,6 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
     }
   }, [navReady]);
 
-  useEffect(() => {
-    console.log("prevRef.current:", prevRef.current);
-    console.log("nextRef.current:", nextRef.current);
-  }, []);
-
   return (
     <div className="brand-slider relative max-w-[500px] mx-auto">
       <SwiperReact
@@ -73,7 +68,6 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
           setIsEnd(swiper.isEnd);
         }}
         onSlideChange={(swiper) => {
-          console.log("isBeginning:", swiper.isBeginning);
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
