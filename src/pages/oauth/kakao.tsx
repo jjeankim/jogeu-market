@@ -1,8 +1,7 @@
 import { useToast } from "@/hooks/useToast";
-import { API_BASE_URL } from "@/lib/constants";
 import useAuthStore from "@/store/AuthStore";
 import axios from "axios";
-import { useRouter } from "next/router"; // App Router 쓰시면 next/navigation
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const KakaoCallback = () => {
@@ -30,7 +29,7 @@ const KakaoCallback = () => {
     (async () => {
       try {
         const res = await axios.post(
-          `${API_BASE_URL}/api/auth/kakao`,
+          `${apiBase}/api/auth/kakao`,
           { code },
           { withCredentials: true }
         );
