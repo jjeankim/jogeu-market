@@ -17,7 +17,6 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
   id,
 }) => {
   const { wish, toggleWish, addToCart } = useProductActions(id);
-  console.log(id);
 
   return (
     <div
