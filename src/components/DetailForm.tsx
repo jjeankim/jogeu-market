@@ -42,14 +42,12 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!product?.id) return;
 
-    // 리뷰 데이터
     getAllReviews(product.id, { page: 1, limit: 10 }).then((res) => {
       if (res?.data) {
         setReviews(res.data);
       }
     });
 
-    // 리뷰 통계 가져오기
     getReviewStats(product.id).then((stats) => {
       if (stats) setReviewStats(stats);
     });
@@ -115,7 +113,6 @@ export default function ProductDetailPage() {
     currency: "KRW",
   });
 
-  // 장바구니
   const handleCartClick = async () => {
     try {
       const res = await axiosInstance.post("/api/cart", {
@@ -156,7 +153,33 @@ export default function ProductDetailPage() {
         <div>로딩 중...</div>
       ) : (
         <>
-          <div className="flex w-full pt-10 mb-20 ">
+          <div className="md:hidden w-full pt-4 pb-20 px-4">
+            <ProductImage
+              imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
+              name={product.name}
+            />
+            <div className="mt-8">
+              <DetailInfo
+                product={product}
+                brand={product.brand}
+                wish={wish}
+                handleWishClick={handleWishClick}
+                handleShareClick={handleShareClick}
+                handleCartClick={handleCartClick}
+                handleOrderClick={handleOrderClick}
+                quantity={quantity}
+                quantityInc={quantityInc}
+                quantityDec={quantityDec}
+                formattedOrigin={formattedOrigin}
+                formattedSale={formattedSale}
+                discountRate={discountRate}
+                isDiscounted={isDiscounted}
+                totalPrice={totalPrice}
+              />
+            </div>
+          </div>
+
+          <div className="hidden md:flex w-full pt-10 mb-20">
             <ProductImage
               imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
               name={product.name}
@@ -179,10 +202,11 @@ export default function ProductDetailPage() {
               totalPrice={totalPrice}
             />
           </div>
+
           <TabContents
             tabs={["상품 정보", "상품 후기", "상품 문의"]}
             content={[
-              <div key="info" className="flex pt-4 pb-10 justify-center ">
+              <div key="info" className="flex pt-4 pb-10 justify-center px-4 md:px-0">
                 {product.detailDescription}
               </div>,
               <ReviewTabContent
@@ -192,7 +216,7 @@ export default function ProductDetailPage() {
                 productId={product.id}
               />,
 
-              <div key="qna" className="flex pt-4 pb-10 justify-center">
+              <div key="qna" className="flex pt-4 pb-10 justify-center px-4 md:px-0">
                 <QnABox productId={product.id} />
               </div>,
             ]}
