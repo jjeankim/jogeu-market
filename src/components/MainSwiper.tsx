@@ -23,7 +23,7 @@ const MainSwiper = () => {
   const totalSlides = 4;
 
   return (
-    <div className="relative w-full max-w-[1200px] mx-auto h-48 md:h-96 overflow-hidden mt-4 md:mt-10 mb-4 md:mb-30">
+    <div className="relative w-full max-w-[1240px] mx-auto h-48 md:h-96 overflow-hidden mt-4 md:mt-10 mb-4 md:mb-30">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         slidesPerView={1}

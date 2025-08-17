@@ -208,7 +208,7 @@ const Checkout = () => {
         try {
           widgets.cleanup();
         } catch (error) {
-          console.log("위젯 정리 중 오류:", error);
+          console.error("위젯 정리 중 오류:", error);
         }
       }
       

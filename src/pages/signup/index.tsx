@@ -5,7 +5,7 @@ const Signup = () => {
   return (
     <>
       <SEO title="조그마켓 : 회원가입" />
-      <SignUpForm />;
+      <SignUpForm />
     </>
   );
 };

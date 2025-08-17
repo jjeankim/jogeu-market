@@ -20,6 +20,7 @@ const MyPageWelcomeCard = () => {
 
   return (
     <div className="border-2 rounded-2xl">
+
       <div className="p-6 md:p-16">
         <h3 className="text-xl font-bold md:text-4xl text-center md:text-left">
           <span className="text-[#B29977]">{userName}</span> 님 환영합니다!

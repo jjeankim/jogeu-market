@@ -35,7 +35,7 @@ const BrandSlider = ({
   }, [category, subCategory]);
 
   return (
-    <div className="flex items-center justify-center mt-10">
+    <div className="flex items-center justify-center mt-10 ">
       <BrandSlide BrandList={brandList} slidesPerView={slidesPerView} />
     </div>
   );

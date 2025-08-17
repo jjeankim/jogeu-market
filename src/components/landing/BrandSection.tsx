@@ -68,7 +68,7 @@ const BrandSection: React.FC<BrandSectionProps> = ({ id, brands }) => {
         </div>
 
         {/* 제품 카드 그리드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full items-center">
           {sampleProductCards.map((product: Product) => (
             <div className="w-full mx-auto" key={product.id}>
               <PickProductCard

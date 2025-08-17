@@ -34,40 +34,35 @@ interface OrderData {
 const PayCompleteFrom = () => {
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-  const [orderNumber, setOrderNumber] = useState<string>('');
+  const [orderNumber, setOrderNumber] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // 세션스토리지에서 주문 데이터 읽어오기
-    if (typeof window !== 'undefined') {
-      const savedOrderData = sessionStorage.getItem('paymentData');
+    if (typeof window !== "undefined") {
+      const savedOrderData = sessionStorage.getItem("paymentData");
       if (savedOrderData) {
         try {
           const parsedData = JSON.parse(savedOrderData);
           // 주문번호를 우선순위로 찾기
-          const orderNum = parsedData.orderNumber || 
-                          parsedData.orderInfo?.orderer?.orderNumber || 
-                          '주문번호 미발급';
+          const orderNum =
+            parsedData.orderNumber ||
+            parsedData.orderInfo?.orderer?.orderNumber ||
+            "주문번호 미발급";
           setOrderNumber(orderNum);
           setOrderData(parsedData);
-          
-          console.log('주문번호 설정:', orderNum);
-          console.log('전체 paymentData:', parsedData);
-          
-          
+
           // 주문 완료 후 세션스토리지 정리 (페이지 로드 후 약간의 지연을 두고 정리)
           setTimeout(() => {
-            sessionStorage.removeItem('paymentData');
-            sessionStorage.removeItem('orderData');
+            sessionStorage.removeItem("paymentData");
+            sessionStorage.removeItem("orderData");
           }, 1000);
-          
         } catch (error) {
-          console.error('주문 데이터 파싱 실패:', error);
-          router.push('/');
+          console.error("주문 데이터 파싱 실패:", error);
+          router.push("/");
         }
       } else {
-        console.log('주문 데이터가 없음, 홈으로 리다이렉트');
-        router.push('/');
+        router.push("/");
       }
     }
     setLoading(false);
@@ -85,9 +80,11 @@ const PayCompleteFrom = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-gray-600 mb-4">주문 데이터를 찾을 수 없습니다</div>
-          <button 
-            onClick={() => router.push('/')}
+          <div className="text-lg text-gray-600 mb-4">
+            주문 데이터를 찾을 수 없습니다
+          </div>
+          <button
+            onClick={() => router.push("/")}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             홈으로 돌아가기
@@ -98,7 +95,7 @@ const PayCompleteFrom = () => {
   }
 
   const formatPrice = (price: number) => {
-    return price.toLocaleString() + '원';
+    return price.toLocaleString() + "원";
   };
 
   return (
@@ -114,13 +111,9 @@ const PayCompleteFrom = () => {
         <h2 className="text-xl md:text-4xl mt-6 md:mt-10 font-bold text-center">
           주문이 완료되었습니다.
         </h2>
-<<<<<<< Updated upstream
+
         <p className="text-lg md:text-2xl text-logo">주문번호 : {orderNumber}</p>
-=======
-        <p className="text-base md:text-2xl text-logo text-center mt-2">
-          주문번호 : {orderNumber}
-        </p>
->>>>>>> Stashed changes
+
       </div>
 
       <div className="flex flex-col items-start justify-center my-6 md:my-10 px-4 md:px-30 w-full">
@@ -181,10 +174,18 @@ const PayCompleteFrom = () => {
             <table className="w-full border-collapse border-t border-b border-gray-200 font-medium text-lg md:text-2xl">
               <thead>
                 <tr className="bg-gray-50">
-                  <th className="py-4 px-4 text-left font-medium text-black border-t border-b border-gray-200 ">상품명</th>
-                  <th className="py-4 px-2 text-center font-medium text-black border-t border-b border-gray-200">수량</th>
-                  <th className="py-4 px-2 text-center font-medium text-black border-t border-b border-gray-200">할인 금액</th>
-                  <th className="py-4  text-center font-medium text-black border-t border-b border-gray-200">결제 금액</th>
+                  <th className="py-4 px-4 text-left font-medium text-black border-t border-b border-gray-200 ">
+                    상품명
+                  </th>
+                  <th className="py-4 px-2 text-center font-medium text-black border-t border-b border-gray-200">
+                    수량
+                  </th>
+                  <th className="py-4 px-2 text-center font-medium text-black border-t border-b border-gray-200">
+                    할인 금액
+                  </th>
+                  <th className="py-4  text-center font-medium text-black border-t border-b border-gray-200">
+                    결제 금액
+                  </th>
                 </tr>
               </thead>
               <tbody className="text-sm">
@@ -194,8 +195,8 @@ const PayCompleteFrom = () => {
                       <div className="flex items-center space-x-3">
                         <div className="w-40 h-40 border border-gray-300 rounded-md bg-white flex-shrink-0 overflow-hidden">
                           {item.product.thumbnailImageUrl ? (
-                            <Image 
-                              src={item.product.thumbnailImageUrl} 
+                            <Image
+                              src={item.product.thumbnailImageUrl}
                               alt={item.product.name}
                               width={230}
                               height={230}
@@ -206,8 +207,12 @@ const PayCompleteFrom = () => {
                           )}
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-gray-500 text-lg">{item.product.brand?.name || '브랜드명 없음'}</span>
-                          <span className="text-black text-lg">{item.product.name}</span>
+                          <span className="text-gray-500 text-lg">
+                            {item.product.brand?.name || "브랜드명 없음"}
+                          </span>
+                          <span className="text-black text-lg">
+                            {item.product.name}
+                          </span>
                         </div>
                       </div>
                     </td>
@@ -218,7 +223,11 @@ const PayCompleteFrom = () => {
                       <span className="text-red-500">0원</span>
                     </td>
                     <td className="px-4 py-4 text-center border-b border-gray-200">
-                      <span className="text-red-500">{formatPrice(parseInt(item.product.price) * item.quantity)}</span>
+                      <span className="text-red-500">
+                        {formatPrice(
+                          parseInt(item.product.price) * item.quantity
+                        )}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -295,14 +304,19 @@ const PayCompleteFrom = () => {
             </span>
             <span className="flex flex-row w-full border-t-2 border-gray-200 p-2.5 justify-between items-center">
               {" "}
-              <p>{orderData.orderInfo.address.roadAddrPart1} {orderData.orderInfo.address.addrDetail}</p>{" "}
+              <p>
+                {orderData.orderInfo.address.roadAddrPart1}{" "}
+                {orderData.orderInfo.address.addrDetail}
+              </p>{" "}
               <button className="px-3 py-1 bg-logo text-white outline-4 outline-logo rounded-full text-center hover:scale-105  transition-all duration-300 cursor-pointer">
                 배송지 변경
               </button>
             </span>
             <span className="w-full border-t-2 border-gray-200 p-2.5">
               {" "}
-              <p>{orderData.orderInfo.deliveryMessage || '배송 메모 없음'}</p>{" "}
+              <p>
+                {orderData.orderInfo.deliveryMessage || "배송 메모 없음"}
+              </p>{" "}
             </span>
             <span className="w-full border-t-2 border-gray-200"> </span>
           </div>
@@ -385,7 +399,13 @@ const PayCompleteFrom = () => {
             </span>
             <span className="w-full border-t-2 border-gray-200 p-2.5 text-red-500">
               {" "}
-              <p>{formatPrice(orderData.totalPrice + orderData.shippingFee - orderData.orderInfo.discountAmount)}</p>{" "}
+              <p>
+                {formatPrice(
+                  orderData.totalPrice +
+                    orderData.shippingFee -
+                    orderData.orderInfo.discountAmount
+                )}
+              </p>{" "}
             </span>
             <span className="w-full border-t-2 border-gray-200"> </span>
           </div>

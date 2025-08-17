@@ -23,7 +23,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
       const qnas = await fetchProductQnAs(productId);
       setList(qnas);
     } catch (error) {
-      showError("상품 문의를 불러오지 못했습니다.")
+      showError("상품 문의를 불러오지 못했습니다.");
       console.error(error);
     }
   }, [productId, showError]);
@@ -41,14 +41,20 @@ const QnABox = ({ productId }: QnABoxProps) => {
     }
     setLoading(true);
     try {
-      await createProductQnA(productId, { question: question.trim(), isPublic });
+      await createProductQnA(productId, {
+        question: question.trim(),
+        isPublic,
+      });
       showSuccess("문의가 등록되었습니다.");
       setIsOpen(false);
       setQuestion("");
       setIsPublic(true);
       await loadList();
     } catch (error) {
-      showError((error as AxiosError<{ message: string }>)?.response?.data?.message || "문의 등록에 실패했습니다.");
+      showError(
+        (error as AxiosError<{ message: string }>)?.response?.data?.message ||
+          "문의 등록에 실패했습니다."
+      );
       console.error(error);
     } finally {
       setLoading(false);
@@ -74,7 +80,13 @@ const QnABox = ({ productId }: QnABoxProps) => {
       <h1 className="text-xl md:text-2xl font-bold mt-8 md:mt-10 p-2 md:p-4">상품문의</h1>
       <span className="block w-full border-b-2 border-black mt-2 md:mt-4"></span>
 
+<<<<<<< HEAD
       <div className="mt-4 md:mt-6 space-y-3 md:space-y-4">
+=======
+      {/* 단건 QnA 미리보기 필요 시 위의 loadQnA와 함께 활성화 */}
+
+      <div className="mt-6 space-y-4">
+>>>>>>> 4b97fbd6b0e77f58ea4d5734a918c2a0ad6e398f
         {list.length === 0 ? (
           <div className="text-gray-500 p-4 text-center">등록된 문의가 없습니다.</div>
         ) : (
@@ -135,4 +147,3 @@ const QnABox = ({ productId }: QnABoxProps) => {
 };
 
 export default QnABox;
-

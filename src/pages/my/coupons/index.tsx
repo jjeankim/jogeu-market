@@ -2,7 +2,7 @@ import CouponCard from "@/components/my/coupon/CouponCard";
 import MyCoupon from "@/components/my/coupon/MyCoupon";
 import RegisterCoupon from "@/components/my/coupon/RegisterCoupon";
 import SubTitle from "@/components/my/coupon/SubTitle";
-import MyPageLayout from "@/components/my/MyPageLayout";
+import MyPageLayoutWithWelcome from "@/components/my/MyPageLayoutWithWelcome";
 import SEO from "@/components/SEO";
 import Spinner from "@/components/ui/Spinner";
 import { useToast } from "@/hooks/useToast";
@@ -33,7 +33,6 @@ const MyCouponPage = () => {
     }
   }, [showError]);
 
- 
   useEffect(() => {
     loadCouponList();
   }, [loadCouponList]);
@@ -41,7 +40,7 @@ const MyCouponPage = () => {
   return (
     <>
       <SEO title="마이쇼핑" />
-      <MyPageLayout>
+      <MyPageLayoutWithWelcome>
         <MyCoupon
           totalCount={couponList.length}
           expiringSoonCount={
@@ -70,7 +69,7 @@ const MyCouponPage = () => {
             </div>
           )}
         </div>
-      </MyPageLayout>
+      </MyPageLayoutWithWelcome>
     </>
   );
 };
