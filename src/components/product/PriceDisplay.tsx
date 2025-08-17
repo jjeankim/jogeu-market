@@ -7,7 +7,6 @@ export function formatPriceInfo({
   locale = "ko-KR",
   currency = "KRW",
 }: PriceInfo) {
-  // price, originPrice가 undefined 혹은 null일 때 기본값
   const safePrice = typeof price === "number" ? price : null;
   const safeOriginPrice = typeof originPrice === "number" ? originPrice : null;
 
