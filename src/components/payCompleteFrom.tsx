@@ -100,28 +100,77 @@ const PayCompleteFrom = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center mt-20 px-4 md:px-10">
+      <div className="flex flex-col items-center justify-center mt-10 md:mt-20 px-4 md:px-10">
         <Image
           src="/images/logo_jogeuMarket2.svg"
           alt="조그마켓 로고2"
           width={400}
           height={40}
+          className="w-64 md:w-[400px]"
         ></Image>
-        <h2 className="text-2xl md:text-4xl mt-10 font-bold">
+        <h2 className="text-xl md:text-4xl mt-6 md:mt-10 font-bold text-center">
           주문이 완료되었습니다.
         </h2>
-        <p className="text-lg md:text-2xl text-logo">
-          주문번호 : {orderNumber}
-        </p>
+
+        <p className="text-lg md:text-2xl text-logo">주문번호 : {orderNumber}</p>
+
       </div>
 
-      <div className="flex flex-col items-start justify-center my-10 px-4 md:px-30 w-full">
-        <div className="flex flex-col w-full items-center justify-center mt-10">
-          <h2 className="text-2xl md:text-4xl mb-10 w-full font-bold border-b-2">
+      <div className="flex flex-col items-start justify-center my-6 md:my-10 px-4 md:px-30 w-full">
+        <div className="flex flex-col w-full items-center justify-center mt-6 md:mt-10">
+          <h2 className="text-xl md:text-4xl mb-6 md:mb-10 w-full font-bold border-b-2">
             주문 상품
           </h2>
 
-          <div className="w-full overflow-x-auto ">
+          {/* 모바일용 상품 목록 */}
+          <div className="md:hidden w-full space-y-4">
+            {orderData.items.map((item, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-20 h-20 md:w-40 md:h-40 border border-gray-300 rounded-md bg-white flex-shrink-0 overflow-hidden">
+                    {item.product.thumbnailImageUrl ? (
+                      <Image
+                        src={item.product.thumbnailImageUrl}
+                        alt={item.product.name}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200"></div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-gray-500 text-sm">
+                      {item.product.brand?.name || "브랜드명 없음"}
+                    </div>
+                    <div className="text-black text-sm font-medium truncate">
+                      {item.product.name}
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span>수량:</span>
+                        <span>{item.quantity}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>할인:</span>
+                        <span className="text-red-500">0원</span>
+                      </div>
+                      <div className="flex justify-between text-sm font-semibold">
+                        <span>결제금액:</span>
+                        <span className="text-red-500">
+                          {formatPrice(parseInt(item.product.price) * item.quantity)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 데스크톱용 테이블 */}
+          <div className="hidden md:block w-full overflow-x-auto">
             <table className="w-full border-collapse border-t border-b border-gray-200 font-medium text-lg md:text-2xl">
               <thead>
                 <tr className="bg-gray-50">
@@ -188,11 +237,47 @@ const PayCompleteFrom = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-start justify-center my-20 px-4 md:px-30 w-full">
-        <h2 className="text-2xl md:text-4xl mb-10 w-full font-bold">
+      <div className="flex flex-col items-start justify-center my-10 md:my-20 px-4 md:px-30 w-full">
+        <h2 className="text-xl md:text-4xl mb-6 md:mb-10 w-full font-bold">
           배송지 정보
         </h2>
-        <div className="flex flex-col lg:flex-row w-full items-start justify-start">
+        
+        {/* 모바일용 배송지 정보 */}
+        <div className="md:hidden w-full space-y-4">
+          <div className="space-y-3">
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-600 mb-1">성함</span>
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm">{orderData.orderInfo.shipping.name}</span>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-600 mb-1">휴대전화</span>
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm">{orderData.orderInfo.shipping.phone}</span>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-600 mb-1">배송지 주소</span>
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm">
+                  {orderData.orderInfo.address.roadAddrPart1} {orderData.orderInfo.address.addrDetail}
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-600 mb-1">배송 메모</span>
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm">
+                  {orderData.orderInfo.deliveryMessage || "배송 메모 없음"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 데스크톱용 배송지 정보 */}
+        <div className="hidden md:flex flex-col lg:flex-row w-full items-start justify-start">
           <div className="flex flex-col w-full lg:w-1/3 items-start justify-center gap-5">
             <p className="text-lg md:text-2xl font-medium inline-block w-full md:w-64 px-4 py-1 bg-none outline-4 outline-logo rounded-full text-center">
               성함
@@ -238,11 +323,45 @@ const PayCompleteFrom = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-start justify-center my-20 px-4 md:px-30 w-full">
-        <h2 className="text-2xl md:text-4xl mb-10 w-full font-bold">
+      <div className="flex flex-col items-start justify-center my-10 md:my-20 px-4 md:px-30 w-full">
+        <h2 className="text-xl md:text-4xl mb-6 md:mb-10 w-full font-bold">
           결제 정보
         </h2>
-        <div className="flex flex-col lg:flex-row w-full items-start justify-start ">
+        
+        {/* 모바일용 결제 정보 */}
+        <div className="md:hidden w-full space-y-4">
+          <div className="space-y-3">
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span className="text-sm font-medium">상품 금액</span>
+              <span className="text-sm">{formatPrice(orderData.totalPrice)}</span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span className="text-sm font-medium">할인 금액</span>
+              <span className="text-sm text-red-500">-{formatPrice(orderData.orderInfo.discountAmount)}</span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span className="text-sm font-medium">적립 예정 포인트</span>
+              <span className="text-sm">{formatPrice(Math.floor(orderData.totalPrice * 0.02))}</span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span className="text-sm font-medium">배송비</span>
+              <span className="text-sm">{formatPrice(orderData.shippingFee)}</span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg border-2 border-blue-200">
+              <span className="text-sm font-bold">최종 결제 금액</span>
+              <span className="text-sm font-bold text-red-500">
+                {formatPrice(
+                  orderData.totalPrice +
+                    orderData.shippingFee -
+                    orderData.orderInfo.discountAmount
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 데스크톱용 결제 정보 */}
+        <div className="hidden md:flex flex-col lg:flex-row w-full items-start justify-start ">
           <div className="flex flex-col w-full lg:w-1/3 items-start justify-center gap-5">
             <p className="text-lg md:text-2xl font-medium inline-block w-full md:w-64 px-4 py-1 bg-none outline-4 outline-logo rounded-full text-center">
               상품 금액
