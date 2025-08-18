@@ -42,7 +42,6 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
 
   const { showSuccess, showError } = useToast();
 
-
   const formattedDate = (() => {
     if (!createdAt) return "";
     const date = new Date(createdAt);
@@ -64,12 +63,12 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
         response = await axiosInstance.post(url);
       }
 
-      console.log("좋아요 응답:", response.data); 
+      console.log("좋아요 응답:", response.data);
 
       setLiked(!liked);
       setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
 
-      // showSuccess(liked ? "좋아요를 취소했습니다." : "좋아요를 누르셨습니다.");
+      showSuccess(liked ? "좋아요를 취소했습니다." : "좋아요를 누르셨습니다.");
     } catch (error) {
       console.error("좋아요 요청 오류:", error);
 
@@ -100,14 +99,16 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
       <div className="flex flex-col space-y-3 flex-1 min-w-0">
         <div className="flex flex-col md:flex-row md:space-x-3 space-y-1 md:space-y-0">
           <span className="text-sm md:text-base">{maskedLocalPart}</span>
-          <span className="text-sm md:text-base text-gray-500">{formattedDate}</span>
+          <span className="text-sm md:text-base text-gray-500">
+            {formattedDate}
+          </span>
         </div>
         <StarRating rating={rating} />
         <p className="text-sm md:text-base break-words">{reviewText}</p>
       </div>
 
       {/* 이미지 & 좋아요 */}
-      <div className="flex flex-row md:flex-col justify-between md:justify-around items-center mt-3 md:mt-0 md:min-w-56">
+      <div className="flex flex-row   justify-between md:justify-around items-center mt-3 md:mt-0 md:min-w-56 ">
         <div className="flex items-center justify-center rounded-2xl overflow-hidden">
           {imageUrl ? (
             <Image
@@ -124,7 +125,7 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
         <div
           className={`flex flex-row md:flex-col items-center cursor-pointer select-none ml-4 md:ml-0 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          } `}
           onClick={handleLikeToggle}
         >
           <FiThumbsUp

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
 import { LandingProductCardProps } from "@/lib/apis/product";
-
 import { PiHeartBold, PiShoppingCartSimpleBold } from "react-icons/pi";
-import useProductActions from "@/hooks/useProductActions";
+import useUserWishlist from "@/hooks/useUserWishlist";
+import { useCart } from "@/hooks/useCart";
 
 const LandingProductCard: React.FC<LandingProductCardProps> = ({
   imageUrl,
@@ -16,7 +16,9 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
   onClick,
   id,
 }) => {
-  const { wish, toggleWish, addToCart } = useProductActions(id);
+  const { userWishlist, toggleWishlist } = useUserWishlist();
+  const isWished = userWishlist.has(id);
+  const { addToCart } = useCart();
 
   return (
     <div
@@ -40,17 +42,23 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
             <div className=" absolute bottom-0 flex justify-between w-full">
               <button
                 className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95"
-                onClick={(e) => toggleWish(e)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWishlist(id);
+                }}
               >
                 <PiHeartBold
                   className={`text-[24px] transition-all duration-300 ${
-                    wish ? "text-red-500 scale-110" : "text-black"
+                    isWished ? "text-red-500 scale-110" : "text-black"
                   }`}
                 />
               </button>
               <button
                 className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95"
-                onClick={(e) => addToCart(e)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(id);
+                }}
               >
                 <PiShoppingCartSimpleBold className="text-[24px]" />
               </button>
