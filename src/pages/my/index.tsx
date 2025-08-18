@@ -10,7 +10,7 @@ const MyPage = () => {
       <MyPageLayoutWithWelcome>
         <MyPageOrderStatusCard>
           {/* 모바일 */}
-          <div className="md:hidden mb-6">
+          {/* <div className="md:hidden mb-6">
             <h3 className="text-2xl font-bold mb-4">진행 중인 주문</h3>
             <div className="flex flex-wrap gap-2">
               <span className="text-sm text-gray-400 hover:text-[#b29977] px-3 py-1 bg-gray-100 rounded-full">
@@ -29,10 +29,10 @@ const MyPage = () => {
                 최근 1년 이상
               </span>
             </div>
-          </div>
+          </div> */}
 
           {/* 데스크톱 */}
-          <div className="hidden md:flex gap-10 items-baseline mb-10">
+          {/* <div className="hidden md:flex gap-10 items-baseline mb-10">
             <h3 className="text-3xl font-bold">진행 중인 주문</h3>
             <span className="text-gray-400 hover:text-[#b29977]">
               최근 1개월
@@ -47,7 +47,7 @@ const MyPage = () => {
             <span className="text-gray-400 hover:text-[#b29977]">
               최근 1년 이상
             </span>
-          </div> */}
+          </div>  */}
           <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-6 items-start sm:items-baseline mb-6 md:mb-10">
             <h3 className="text-2xl md:text-3xl font-bold">진행 중인 주문</h3>
             <div className="flex flex-wrap gap-3 sm:gap-6 text-sm sm:text-base md:text-lg">
