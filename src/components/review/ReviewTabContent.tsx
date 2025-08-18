@@ -1,6 +1,5 @@
 import React from "react";
-import { ReviewItem } from "@/lib/apis/review";
-import { ReviewStats } from "@/lib/apis/review";
+import { ReviewItem, ReviewStats } from "@/lib/apis/review";
 import StarRating from "../my/review/StarRating";
 import ReviewCardWithStars from "../my/review/ReviewCardWithStars";
 
@@ -17,7 +16,6 @@ export default function ReviewTabContent({
   productId,
   isLoading = false,
 }: ReviewTabContentProps) {
-  // 로딩 상태 처리
   if (isLoading || reviewStats === null) {
     return (
       <div className="flex items-center justify-center p-10">
@@ -29,7 +27,6 @@ export default function ReviewTabContent({
     );
   }
 
-  // 안전한 기본값 설정
   const safeReviewStats = {
     total: reviewStats?.total ?? 0,
     average: reviewStats?.average ?? 0,
@@ -37,27 +34,27 @@ export default function ReviewTabContent({
   };
 
   return (
-
-    <div className="flex flex-col space-y-3 pt-4 pb-10 justify-center">
+    <div className="flex flex-col space-y-3 pt-4 pb-10 justify-center px-4 md:px-0">
+      {/* 리뷰 통계 */}
       <div className="flex flex-col">
-        <div className="flex justify-start space-x-3">
+        <div className="flex justify-start space-x-3 mb-4">
           <span className="text-base md:text-md font-semibold">상품후기</span>
-          <span className="text-base md:text-md text-gray-500">{safeReviewStats.total}</span>
+          <span className="text-base md:text-md text-gray-500">
+            {safeReviewStats.total}
+          </span>
         </div>
 
-        <div className="w-full border-2 rounded-md p-10 grid grid-cols-2 gap-3 justify-items-center">
+        <div className="w-full border-2 rounded-md p-10 grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
           {/* 별점 */}
-          <div className="w-full border-r-2 border-gray-300 flex flex-col space-y-3 justify-center items-center text-xl">
-            <span className="font-bold text-2xl">
+          <div className="w-full md:border-r-2 md:border-gray-300 flex flex-col space-y-3 justify-center items-center text-xl md:text-2xl">
+            <span className="font-bold">
               {safeReviewStats.average.toFixed(1)}
             </span>
-            <div className="flex">
-              <StarRating rating={safeReviewStats.average} />
-            </div>
+            <StarRating rating={safeReviewStats.average} />
           </div>
 
-          {/* 분포도 */}
-          <div className="w-2/3 pl-4">
+          {/* 별점 분포 */}
+          <div className="w-full md:w-2/3 md:pl-4">
             <ul className="space-y-2">
               {[5, 4, 3, 2, 1].map((rating) => {
                 const distItem = safeReviewStats.distribution.find(
@@ -70,9 +67,9 @@ export default function ReviewTabContent({
                 return (
                   <li
                     key={rating}
-                    className="flex items-center space-x-3 w-full"
+                    className="flex items-center space-x-3 w-full text-sm md:text-base"
                   >
-                    <span className="w-9 text-center text-sm">{rating}점</span>
+                    <span className="w-9 text-center">{rating}점</span>
                     <div className="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden relative">
                       <div
                         className="bg-[var(--color-logo)] h-full rounded-full flex items-center justify-end pr-1 transition-all duration-300"
@@ -93,7 +90,7 @@ export default function ReviewTabContent({
                         </span>
                       )}
                     </div>
-                    <span className="w-10 text-right text-sm">{count}개</span>
+                    <span className="w-10 text-right">{count}개</span>
                   </li>
                 );
               })}
@@ -102,19 +99,15 @@ export default function ReviewTabContent({
         </div>
       </div>
 
-
-      {/* 후기 리스트 */}
+      {/* 리뷰 리스트 */}
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <div className="flex border-b-2 w-full p-3">
-            {/* 필터 옵션들은 필요에 따라 추가 */}
-          </div>
+          <div className="flex border-b-2 w-full p-3"></div>
           <span className="w-20 border-b-2 flex items-center justify-center"></span>
         </div>
 
-        {/* 리뷰 목록 또는 빈 상태 */}
-        {!reviews || reviews.length === 0 ? (
-          <div className="flex items-center justify-center p-15 min-h-[200px]">
+        {reviews.length === 0 ? (
+          <div className="flex items-center justify-center p-8 md:p-15 min-h-[200px]">
             <div className="text-center">
               <div className="text-gray-400 text-6xl mb-4">📝</div>
               <h1 className="text-lg font-medium text-gray-600 mb-2">
