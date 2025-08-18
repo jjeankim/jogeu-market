@@ -34,13 +34,13 @@ const SocialLoginLink = () => {
           type="button"
           className="rounded-[10px] w-50 h-12 bg-[url('/images/naver_logo.png')] bg-no-repeat bg-center bg-cover cursor-pointer"
           onClick={handleNaverLogin}
-        ></button>
+        />
 
         <button
           type="button"
-          className="rounded-[10px] w-50 h-12 bg-[url('/images/kakao_logo.png')] bg-no-repeat bg-center bg-cover cursor-pointer"
+          className="rounded-[10px] w-50 h-12 bg-[url('/images/kakao_logo.png')] bg-no-repeat bg-[position:1rem_center] bg-cover cursor-pointer"
           onClick={handleKakaoLogin}
-        ></button>
+        />
       </div>
     </div>
   );
