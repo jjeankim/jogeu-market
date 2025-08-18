@@ -53,6 +53,11 @@ const useUserWishlist = () => {
           return newMap;
         });
       } else {
+        if (userWishlist.has(productId)) {
+          showError("이미 위시리스트에 존재합니다.");
+          return;
+        }
+
         const res = await axiosInstance.post<{
           wishlist: WishlistItemWithId;
           message: string;
