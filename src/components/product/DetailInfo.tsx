@@ -46,14 +46,16 @@ export default function ProductInfo({
   totalPrice,
 }: Props) {
   return (
-    <div className="w-[50%]">
+    <div className="w-full md:w-[50%]">
       <div className="relative mb-4">
-        <span className="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs text-[#9f8265] font-medium ring-1 ring-[#9f8265] ring-inset mr-1">
-          {brand.name}
-        </span>
-        <span className="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs text-[#9f8265] font-medium ring-1 ring-[#9f8265] ring-inset">
-          Best Seller
-        </span>
+        <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
+          <span className="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs text-[#9f8265] font-medium ring-1 ring-[#9f8265] ring-inset">
+            {brand.name}
+          </span>
+          <span className="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs text-[#9f8265] font-medium ring-1 ring-[#9f8265] ring-inset">
+            Best Seller
+          </span>
+        </div>
 
         <div className="absolute right-0 top-0">
           <button
@@ -75,7 +77,7 @@ export default function ProductInfo({
         </div>
       </div>
 
-      <p className="text-2xl mb-4">{product.name}</p>
+      <p className="text-xl md:text-2xl mb-4">{product.name}</p>
 
       <PriceDisplay
         isDiscounted={isDiscounted}
@@ -84,7 +86,7 @@ export default function ProductInfo({
         discountRate={discountRate}
       />
 
-      <p className="flex flex-col text-lg text-gray-500 mb-10">
+      <p className="flex flex-col text-base md:text-lg text-gray-500 mb-6 md:mb-10">
         <span className="">배송비</span>
         <span className="text-black">{FREE_SHIPPING_THRESHOLD.toLocaleString()}원 이상 무료배송</span>
       </p>
@@ -95,17 +97,17 @@ export default function ProductInfo({
           onIncrease={quantityInc}
           onDecrease={quantityDec}
         />
-        <div className="mt-4 w-full flex justify-between text-xl">
+        <div className="mt-4 w-full flex justify-between text-lg md:text-xl">
           <span className="font-medium">총 상품 금액</span>
-          <span className="font-bold text-2xl text-[#FF572D]">
+          <span className="font-bold text-xl md:text-2xl text-[#FF572D]">
             {totalPrice}
           </span>
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex flex-col md:flex-row gap-3">
         <Button
-          className="flex items-center justify-center w-[50%] mr-3"
+          className="flex items-center justify-center w-full md:w-[50%] md:mr-3"
           variant="outlined"
           size="md"
           color="black"
@@ -115,7 +117,7 @@ export default function ProductInfo({
           장바구니
         </Button>
         <Button
-          className="flex items-center justify-center w-[50%]"
+          className="flex items-center justify-center w-full md:w-[50%]"
           variant="filled"
           size="md"
           color="gold"

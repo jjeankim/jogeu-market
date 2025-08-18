@@ -19,10 +19,13 @@ export default function ProductDetailPage() {
   const [wishId, setWishId] = useState<number | null>(null);
   const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const [reviewStats, setReviewStats] = useState<ReviewStats | null>(null);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+  const [reviewError, setReviewError] = useState<string | null>(null);
+
   const { showSuccess, showError } = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [reviewStats, setReviewStats] = useState<ReviewStats | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -32,7 +35,7 @@ export default function ProductDetailPage() {
         setProduct(res.data.products);
       } catch (error) {
         showError("상품 정보를 불러오지 못했습니다.");
-        console.error(error);
+        console.error("Product fetch error:", error);
       }
     };
 
@@ -42,21 +45,65 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!product?.id) return;
 
-    // 리뷰 데이터
-    getAllReviews(product.id, { page: 1, limit: 10 }).then((res) => {
-      if (res?.data) {
-        setReviews(res.data);
-      }
-    });
+    const fetchReviewData = async () => {
+      setIsLoadingReviews(true);
+      setReviewError(null);
 
-    // 리뷰 통계 가져오기
-    getReviewStats(product.id).then((stats) => {
-      if (stats) setReviewStats(stats);
-    });
+      try {
+        // 리뷰 데이터와 통계를 병렬로 가져오기
+        const [reviewsResponse, statsResponse] = await Promise.allSettled([
+          getAllReviews(product.id, { page: 1, limit: 10 }),
+          getReviewStats(product.id),
+        ]);
+
+        // 리뷰 데이터 처리
+        if (
+          reviewsResponse.status === "fulfilled" &&
+          reviewsResponse.value?.data
+        ) {
+          setReviews(reviewsResponse.value.data);
+        } else {
+          console.error("리뷰 데이터 로드 실패:", reviewsResponse);
+          setReviews([]);
+        }
+
+        // 리뷰 통계 처리
+        if (statsResponse.status === "fulfilled" && statsResponse.value) {
+          setReviewStats(statsResponse.value);
+        } else {
+          console.error("리뷰 통계 로드 실패:", statsResponse);
+          setReviewStats({
+            total: 0,
+            average: 0,
+            distribution: [1, 2, 3, 4, 5].map((star) => ({ star, count: 0 })),
+          });
+        }
+      } catch (error) {
+        console.error("리뷰 데이터 로드 중 오류:", error);
+        setReviewError("리뷰 정보를 불러오는 중 오류가 발생했습니다.");
+        setReviews([]);
+        setReviewStats({
+          total: 0,
+          average: 0,
+          distribution: [1, 2, 3, 4, 5].map((star) => ({ star, count: 0 })),
+        });
+      } finally {
+        setIsLoadingReviews(false);
+      }
+    };
+
+    fetchReviewData();
   }, [product?.id]);
 
   if (!product) {
-    return <div>로딩 중...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">상품 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
   }
 
   const { formattedOrigin, formattedSale, discountRate, isDiscounted } =
@@ -107,6 +154,7 @@ export default function ProductDetailPage() {
       console.error(error);
     }
   };
+
   const quantityInc = () => setQuantity((prev) => prev + 1);
   const quantityDec = () => setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
 
@@ -115,7 +163,6 @@ export default function ProductDetailPage() {
     currency: "KRW",
   });
 
-  // 장바구니
   const handleCartClick = async () => {
     try {
       const res = await axiosInstance.post("/api/cart", {
@@ -134,71 +181,121 @@ export default function ProductDetailPage() {
   };
 
   const handleOrderClick = () => {
-    const orderData = {
-      items: [
-        {
-          product,
-          quantity,
-        },
-      ],
-      totalPrice: product.price * quantity,
-      shippingFee: product.price * quantity > 10000 ? 0 : 3000,
-    };
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("orderData", JSON.stringify(orderData));
+    try {
+      const orderData = {
+        items: [
+          {
+            product,
+            quantity,
+          },
+        ],
+        totalPrice: product.price * quantity,
+        shippingFee: product.price * quantity > 10000 ? 0 : 3000,
+      };
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("orderData", JSON.stringify(orderData));
+      }
+      router.push("/order");
+    } catch (error) {
+      console.error("주문 처리 중 오류:", error);
+      showError("주문 처리 중 오류가 발생했습니다.");
     }
-    router.push("/order");
   };
 
   return (
     <>
-      {!product ? (
-        <div>로딩 중...</div>
-      ) : (
-        <>
-          <div className="flex w-full pt-10 mb-20 ">
-            <ProductImage
-              imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
-              name={product.name}
-            />
-            <DetailInfo
-              product={product}
-              brand={product.brand}
-              wish={wish}
-              handleWishClick={handleWishClick}
-              handleShareClick={handleShareClick}
-              handleCartClick={handleCartClick}
-              handleOrderClick={handleOrderClick}
-              quantity={quantity}
-              quantityInc={quantityInc}
-              quantityDec={quantityDec}
-              formattedOrigin={formattedOrigin}
-              formattedSale={formattedSale}
-              discountRate={discountRate}
-              isDiscounted={isDiscounted}
-              totalPrice={totalPrice}
-            />
-          </div>
-          <TabContents
-            tabs={["상품 정보", "상품 후기", "상품 문의"]}
-            content={[
-              <div key="info" className="flex pt-4 pb-10 justify-center ">
-                {product.detailDescription}
-              </div>,
+      {/* 모바일 레이아웃 */}
+      <div className="md:hidden w-full pt-4 pb-20 px-4">
+        <ProductImage
+          imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
+          name={product.name}
+        />
+        <div className="mt-8">
+          <DetailInfo
+            product={product}
+            brand={product.brand}
+            wish={wish}
+            handleWishClick={handleWishClick}
+            handleShareClick={handleShareClick}
+            handleCartClick={handleCartClick}
+            handleOrderClick={handleOrderClick}
+            quantity={quantity}
+            quantityInc={quantityInc}
+            quantityDec={quantityDec}
+            formattedOrigin={formattedOrigin}
+            formattedSale={formattedSale}
+            discountRate={discountRate}
+            isDiscounted={isDiscounted}
+            totalPrice={totalPrice}
+          />
+        </div>
+      </div>
+
+      {/* 데스크탑 레이아웃 */}
+      <div className="hidden md:flex w-full pt-10 mb-20">
+        <ProductImage
+          imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
+          name={product.name}
+        />
+        <DetailInfo
+          product={product}
+          brand={product.brand}
+          wish={wish}
+          handleWishClick={handleWishClick}
+          handleShareClick={handleShareClick}
+          handleCartClick={handleCartClick}
+          handleOrderClick={handleOrderClick}
+          quantity={quantity}
+          quantityInc={quantityInc}
+          quantityDec={quantityDec}
+          formattedOrigin={formattedOrigin}
+          formattedSale={formattedSale}
+          discountRate={discountRate}
+          isDiscounted={isDiscounted}
+          totalPrice={totalPrice}
+        />
+      </div>
+
+      <TabContents
+        tabs={["상품 정보", "상품 후기", "상품 문의"]}
+        content={[
+          <div key="info" className="flex pt-4 pb-10 justify-center px-4 md:px-0">
+            {product.detailDescription || (
+              <div className="text-center py-10 text-gray-500">
+                상품 상세 정보가 없습니다.
+              </div>
+            )}
+          </div>,
+
+          <div key="review">
+            {reviewError ? (
+              <div className="flex items-center justify-center p-10">
+                <div className="text-center">
+                  <div className="text-red-500 text-4xl mb-4">⚠️</div>
+                  <p className="text-red-600 mb-2">{reviewError}</p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                  >
+                    다시 시도
+                  </button>
+                </div>
+              </div>
+            ) : (
               <ReviewTabContent
-                key="review"
                 reviews={reviews}
                 reviewStats={reviewStats}
                 productId={product.id}
-              />,
+                isLoading={isLoadingReviews}
+              />
+            )}
+          </div>,
 
-              <div key="qna" className="flex pt-4 pb-10 justify-center">
-                <QnABox productId={product.id} />
-              </div>,
-            ]}
-          />
-        </>
-      )}
+          <div key="qna" className="flex pt-4 pb-10 justify-center px-4 md:px-0">
+            <QnABox productId={product.id} />
+          </div>,
+        ]}
+      />
     </>
   );
 }

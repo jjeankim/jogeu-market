@@ -18,8 +18,7 @@ const CustomFileInput = ({ onFileSelect, fileName }: CustomFileInputProps) => {
   };
 
   return (
-    <div className="w-full flex items-center justify-between  mb-4">
-      {/* {숨겨진 파일 인풋} */}
+    <div className="w-full mb-4">
       <input
         type="file"
         ref={fileInputRef}
@@ -27,24 +26,48 @@ const CustomFileInput = ({ onFileSelect, fileName }: CustomFileInputProps) => {
         className="hidden"
         id="file"
       />
-      <input
-        type="text"
-        value={fileName}
-        readOnly
-        placeholder="첨부파일"
-        className="upload-name border border-gray-400 rounded-[10px] px-4 py-0.5 placeholder:text-sm focus:outline-logo"
-      />
+      
+      {/* 모바일 */}
+      <div className="md:hidden space-y-2">
+        <input
+          type="text"
+          value={fileName}
+          readOnly
+          placeholder="첨부파일"
+          className="w-full border border-gray-400 rounded-[10px] px-4 py-2 placeholder:text-sm focus:outline-logo"
+        />
+        <Button
+          type="button"
+          size="sm"
+          onClick={handleClick}
+          variant="outlined"
+          color="gold"
+          className="w-full"
+        >
+          파일찾기
+        </Button>
+      </div>
 
-      <Button
-        type="button"
-        size="sm"
-        onClick={handleClick}
-        variant="outlined"
-        color="gold"
-        className="shrink-0"
-      >
-        파일찾기
-      </Button>
+      {/* 데스크톱 */}
+      <div className="hidden md:flex items-center justify-between">
+        <input
+          type="text"
+          value={fileName}
+          readOnly
+          placeholder="첨부파일"
+          className="flex-1 border border-gray-400 rounded-[10px] px-4 py-0.5 placeholder:text-sm focus:outline-logo mr-2"
+        />
+        <Button
+          type="button"
+          size="sm"
+          onClick={handleClick}
+          variant="outlined"
+          color="gold"
+          className="shrink-0"
+        >
+          파일찾기
+        </Button>
+      </div>
     </div>
   );
 };

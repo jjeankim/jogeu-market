@@ -9,7 +9,30 @@ const MyPage = () => {
       <SEO title="마이쇼핑" />
       <MyPageLayoutWithWelcome>
         <MyPageOrderStatusCard>
-          {/* <div className="flex gap-10 items-baseline mb-10">
+          {/* 모바일 */}
+          <div className="md:hidden mb-6">
+            <h3 className="text-2xl font-bold mb-4">진행 중인 주문</h3>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-sm text-gray-400 hover:text-[#b29977] px-3 py-1 bg-gray-100 rounded-full">
+                최근 1개월
+              </span>
+              <span className="text-sm text-gray-400 hover:text-[#b29977] px-3 py-1 bg-gray-100 rounded-full">
+                최근 3개월
+              </span>
+              <span className="text-sm text-gray-400 hover:text-[#b29977] px-3 py-1 bg-gray-100 rounded-full">
+                최근 6개월
+              </span>
+              <span className="text-sm text-gray-400 hover:text-[#b29977] px-3 py-1 bg-gray-100 rounded-full">
+                최근 1년
+              </span>
+              <span className="text-sm text-gray-400 hover:text-[#b29977] px-3 py-1 bg-gray-100 rounded-full">
+                최근 1년 이상
+              </span>
+            </div>
+          </div>
+
+          {/* 데스크톱 */}
+          <div className="hidden md:flex gap-10 items-baseline mb-10">
             <h3 className="text-3xl font-bold">진행 중인 주문</h3>
             <span className="text-gray-400 hover:text-[#b29977]">
               최근 1개월

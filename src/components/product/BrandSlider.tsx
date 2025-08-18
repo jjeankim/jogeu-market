@@ -8,12 +8,16 @@ import "swiper/css/pagination";
 interface BrandSliderProps {
   category: string;
   subCategory: string;
+  selectedBrandId?: number | null;
+  onBrandSelect: (brandId: number | null) => void;
   slidesPerView?: number;
 }
 
 const BrandSlider = ({
   category,
   subCategory,
+  selectedBrandId,
+  onBrandSelect,
   slidesPerView = 4,
 }: BrandSliderProps) => {
   const [brandList, setBrandList] = useState<Brand[]>([]);
@@ -35,8 +39,13 @@ const BrandSlider = ({
   }, [category, subCategory]);
 
   return (
-    <div className="flex items-center justify-center mt-10 ">
-      <BrandSlide BrandList={brandList} slidesPerView={slidesPerView} />
+    <div className="flex items-center justify-center mt-10">
+      <BrandSlide
+        BrandList={brandList}
+        slidesPerView={slidesPerView}
+        selectedBrandId={selectedBrandId}
+        onBrandSelect={onBrandSelect}
+      />
     </div>
   );
 };
