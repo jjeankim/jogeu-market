@@ -59,22 +59,23 @@ const MyPageWelcomeCard = () => {
           <div className="text-[20px] md:text-[30px]">
             <LuTicketPercent />
           </div>
-          <span className="text-md font-bold lg:text-2xl lg:leading-[64px]">
+          <span className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold">
             쿠폰
           </span>
-          <Link href={"/my/coupons"}>
-            <span className="text-md font-bold md:text-2xl md:leading-[64px] hover:text-[#B29977]">
+          <Link href="/my/coupons">
+            <span className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold hover:text-[#B29977]">
               {couponList.length} 개
             </span>
           </Link>
         </div>
-        <div className="flex-1 flex justify-between items-center p-6 md:p-10 ">
-          <FiStar size={30} />
-          <span className="text-md font-bold md:text-2xl leading-[64px]">
+
+        <div className="flex-1 flex justify-between items-center p-4 sm:p-6 md:p-8 lg:p-10">
+          <FiStar className="text-xl sm:text-2xl md:text-3xl lg:text-4xl" />
+          <span className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold">
             포인트
           </span>
-          <span className="text-md font-bold md:text-2xl leading-[64px]">
-            30000 P
+          <span className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold">
+            30,000 P
           </span>
         </div>
       </div>

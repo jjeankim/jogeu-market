@@ -111,7 +111,10 @@ const MyOrderPage = () => {
     <>
       <SEO title="마이쇼핑" />
       <MyPageLayoutWithWelcome>
-        <div className="w-full min-w-[42rem] mx-auto p-4">
+        {/* <div className="w-full min-w-[42rem] mx-auto">
+          <OrderTable orders={orders as Order[]} />
+        </div> */}
+        <div className="w-full mx-auto">
           <OrderTable orders={orders as Order[]} />
         </div>
       </MyPageLayoutWithWelcome>
