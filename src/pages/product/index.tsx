@@ -6,6 +6,12 @@ import ProductGrid from "@/components/product/ProductGrid";
 import PaginationBar from "@/components/product/PaginationBar";
 import BrandSlider from "@/components/product/BrandSlider";
 import SEO from "@/components/SEO";
+import { Product } from "@/lib/apis/product";
+
+interface ProductApiResponse {
+  products: Product[];
+  totalCount: number;
+}
 
 const mainToSubMap = {
   beauty: [
@@ -42,12 +48,12 @@ const ProductList = () => {
     subCategory = "all",
     page = "1",
     sort = "latest",
-    brandId, // 브랜드 ID 추가
+    brandId,
   } = router.query;
 
-  const [allProducts, setAllProducts] = useState([]); // 전체 상품 데이터
-  const [filteredProducts, setFilteredProducts] = useState([]); // 필터링된 상품
-  const [displayProducts, setDisplayProducts] = useState([]); // 현재 페이지에 표시할 상품
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [displayProducts, setDisplayProducts] = useState<Product[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedBrandId, setSelectedBrandId] = useState<number | null>(null);
@@ -71,15 +77,18 @@ const ProductList = () => {
           category: currentCategory,
           page: "1",
           sort: currentSort,
-          limit: "1000", // 충분히 큰 수로 설정하여 모든 상품 가져오기
+          limit: "1000",
         };
 
         if (currentSubCategory !== "all") {
           params.productCode = currentSubCategory;
         }
 
-        const res = await axiosInstance.get("/api/product", { params });
-        setAllProducts(res.data.products);
+        const res = await axiosInstance.get<ProductApiResponse>(
+          "/api/product",
+          { params }
+        );
+        setAllProducts(res.data.products as Product[]);
       } catch (error) {
         console.error("상품 불러오기 실패", error);
       }
@@ -95,8 +104,8 @@ const ProductList = () => {
 
   // 브랜드 필터링 및 정렬 처리
   useEffect(() => {
-    let filtered = [...allProducts];
-
+    let filtered: Product[] = [...allProducts];
+    console.log("===filtered===", filtered);
     // 브랜드 필터링
     if (selectedBrandId) {
       filtered = filtered.filter(
@@ -124,9 +133,9 @@ const ProductList = () => {
       case "priceLow":
         filtered.sort((a, b) => a.price - b.price);
         break;
-      case "rating":
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
+      // case "rating":
+      //   filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      //   break;
       default:
         break;
     }
@@ -173,7 +182,7 @@ const ProductList = () => {
         </div>
 
         {/* 서브카테고리 탭만 노출 */}
-        <div className="min-w-[320px] my-3 mt-10  grid grid-cols-2 md:flex md:justify-center space-y-3">
+        <div className="min-w-[320px] my-3 mt-10  grid grid-cols-2 md:flex md:justify-center gap-y-3 md:gap-x-3 ">
           {subCategories.map(
             ({ label, value }: { label: string; value: string }) => (
               <button
@@ -187,7 +196,7 @@ const ProductList = () => {
                 }
                 className={`font-medium sm:py-1 md:text-md lg:text-lg mx-6 cursor-pointer  ${
                   currentSubCategory === value ? "font-bold" : "text-gray-700"
-                }`}
+                } `}
                 style={
                   currentSubCategory === value
                     ? { color: "var(--color-logo)" }

@@ -68,7 +68,7 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
       setLiked(!liked);
       setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
 
-      // showSuccess(liked ? "좋아요를 취소했습니다." : "좋아요를 누르셨습니다.");
+      showSuccess(liked ? "좋아요를 취소했습니다." : "좋아요를 누르셨습니다.");
     } catch (error) {
       console.error("좋아요 요청 오류:", error);
 
