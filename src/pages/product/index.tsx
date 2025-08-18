@@ -42,28 +42,36 @@ const ProductList = () => {
     subCategory = "all",
     page = "1",
     sort = "latest",
+    brandId, // 브랜드 ID 추가
   } = router.query;
 
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); // 전체 상품 데이터
+  const [filteredProducts, setFilteredProducts] = useState([]); // 필터링된 상품
+  const [displayProducts, setDisplayProducts] = useState([]); // 현재 페이지에 표시할 상품
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedBrandId, setSelectedBrandId] = useState<number | null>(null);
 
   const currentCategory = typeof category === "string" ? category : "beauty";
   const currentSubCategory =
     typeof subCategory === "string" ? subCategory : "all";
   const currentPage = Number(page) || 1;
   const currentSort = typeof sort === "string" ? sort : "latest";
+  const currentBrandId = brandId ? Number(brandId) : null;
   const subCategories =
     mainToSubMap[currentCategory as keyof typeof mainToSubMap] || [];
 
+  const ITEMS_PER_PAGE = 10;
+
+  // 전체 상품 데이터 fetch (처음 한 번만)
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchAllProducts = async () => {
       try {
         const params: Record<string, string> = {
           category: currentCategory,
-          page: currentPage.toString(),
+          page: "1",
           sort: currentSort,
-          limit: "10",
+          limit: "1000", // 충분히 큰 수로 설정하여 모든 상품 가져오기
         };
 
         if (currentSubCategory !== "all") {
@@ -71,16 +79,69 @@ const ProductList = () => {
         }
 
         const res = await axiosInstance.get("/api/product", { params });
-        setProducts(res.data.products);
-        setTotalCount(res.data.totalCount || 0);
-        setTotalPages(Math.ceil((res.data.totalCount || 0) / 10));
+        setAllProducts(res.data.products);
       } catch (error) {
         console.error("상품 불러오기 실패", error);
       }
     };
 
-    fetchProducts();
-  }, [currentCategory, currentSubCategory, currentPage, currentSort]);
+    fetchAllProducts();
+  }, [currentCategory, currentSubCategory, currentSort]);
+
+  // URL의 brandId 변경 감지
+  useEffect(() => {
+    setSelectedBrandId(currentBrandId);
+  }, [currentBrandId]);
+
+  // 브랜드 필터링 및 정렬 처리
+  useEffect(() => {
+    let filtered = [...allProducts];
+
+    // 브랜드 필터링
+    if (selectedBrandId) {
+      filtered = filtered.filter(
+        (product) => product.brandId === selectedBrandId
+      );
+    }
+
+    // 정렬 처리
+    switch (currentSort) {
+      case "latest":
+        filtered.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        break;
+      case "oldest":
+        filtered.sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+        break;
+      case "priceHigh":
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case "priceLow":
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case "rating":
+        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      default:
+        break;
+    }
+
+    setFilteredProducts(filtered);
+    setTotalCount(filtered.length);
+    setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  }, [allProducts, selectedBrandId, currentSort]);
+
+  // 페이지네이션 처리
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    setDisplayProducts(filteredProducts.slice(startIndex, endIndex));
+  }, [filteredProducts, currentPage]);
 
   const updateQuery = (newQuery: Partial<Record<string, string>>) => {
     router.push(
@@ -91,6 +152,15 @@ const ProductList = () => {
       undefined,
       { shallow: true }
     );
+  };
+
+  // 브랜드 선택 핸들러
+  const handleBrandSelect = (brandId: number | null) => {
+    setSelectedBrandId(brandId);
+    updateQuery({
+      brandId: brandId ? brandId.toString() : undefined,
+      page: "1", // 브랜드 변경 시 첫 페이지로 이동
+    });
   };
 
   return (
@@ -108,7 +178,13 @@ const ProductList = () => {
             ({ label, value }: { label: string; value: string }) => (
               <button
                 key={value}
-                onClick={() => updateQuery({ subCategory: value, page: "1" })}
+                onClick={() =>
+                  updateQuery({
+                    subCategory: value,
+                    page: "1",
+                    brandId: undefined,
+                  })
+                }
                 className={`font-medium sm:py-1 md:text-md lg:text-lg mx-6 cursor-pointer  ${
                   currentSubCategory === value ? "font-bold" : "text-gray-700"
                 }`}
@@ -123,11 +199,29 @@ const ProductList = () => {
             )
           )}
         </div>
+
         {/* 브랜드 슬라이더 */}
         <BrandSlider
           category={currentCategory}
           subCategory={currentSubCategory}
+          selectedBrandId={selectedBrandId}
+          onBrandSelect={handleBrandSelect}
         />
+
+        {/* 선택된 브랜드 표시 */}
+        {selectedBrandId && (
+          <div className="flex items-center justify-center my-4">
+            <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full">
+              <span className="text-sm text-gray-600">선택된 브랜드</span>
+              <button
+                onClick={() => handleBrandSelect(null)}
+                className="text-sm text-gray-400 hover:text-gray-600"
+              >
+                ✕ 전체보기
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* 정렬 바 */}
         <SortBar
@@ -137,14 +231,23 @@ const ProductList = () => {
         />
 
         {/* 상품 그리드 */}
-        <ProductGrid products={products} />
+        <ProductGrid products={displayProducts} />
 
         {/* 페이지네이션 */}
-        <PaginationBar
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => updateQuery({ page: page.toString() })}
-        />
+        {totalPages > 1 && (
+          <PaginationBar
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => updateQuery({ page: page.toString() })}
+          />
+        )}
+
+        {/* 상품이 없을 때 */}
+        {displayProducts.length === 0 && (
+          <div className="text-center py-20 text-gray-500">
+            선택한 조건에 맞는 상품이 없습니다.
+          </div>
+        )}
       </div>
     </>
   );
