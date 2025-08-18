@@ -6,6 +6,7 @@ import Button from "@/components/ui/Button";
 import { WishlistItem } from "@/lib/apis/wishlist";
 import { axiosWishlist } from "../../lib/apis/wishlist";
 import SEO from "@/components/SEO";
+import Spinner from "@/components/ui/Spinner";
 
 const PAGE_SIZE = 8;
 
@@ -21,11 +22,6 @@ const Index = () => {
 
   useEffect(() => {
     setLoading(true);
-
-    // 테스트용: UI 작업용 찜한 상품 없을때
-    // setWishlist([]);
-    // setTotalPages(1);
-    // setLoading(false);
 
     axiosWishlist(currentPage, PAGE_SIZE)
       .then((data) => {
@@ -55,7 +51,7 @@ const Index = () => {
           </h2>
 
           {loading ? (
-            <p>로딩중...</p>
+            <Spinner />
           ) : wishlist.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center text-gray-600">
               {/* <Image

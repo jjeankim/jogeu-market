@@ -37,11 +37,12 @@ export default function ReviewTabContent({
   };
 
   return (
+
     <div className="flex flex-col space-y-3 pt-4 pb-10 justify-center">
       <div className="flex flex-col">
         <div className="flex justify-start space-x-3">
-          <span className="text-md font-semibold">상품후기</span>
-          <span className="text-md text-gray-500">{safeReviewStats.total}</span>
+          <span className="text-base md:text-md font-semibold">상품후기</span>
+          <span className="text-base md:text-md text-gray-500">{safeReviewStats.total}</span>
         </div>
 
         <div className="w-full border-2 rounded-md p-10 grid grid-cols-2 gap-3 justify-items-center">
@@ -100,6 +101,7 @@ export default function ReviewTabContent({
           </div>
         </div>
       </div>
+
 
       {/* 후기 리스트 */}
       <div className="flex flex-col">

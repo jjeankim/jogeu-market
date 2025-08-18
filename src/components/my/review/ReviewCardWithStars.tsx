@@ -39,9 +39,10 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
   const [likesCount, setLikesCount] = useState(initialLikesCount);
   const [liked, setLiked] = useState(initialLikedByUser);
   const [loading, setLoading] = useState(false);
+
   const { showSuccess, showError } = useToast();
 
-  // 날짜 가공
+
   const formattedDate = (() => {
     if (!createdAt) return "";
     const date = new Date(createdAt);
@@ -58,20 +59,16 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
 
       let response;
       if (liked) {
-        // 좋아요 취소: DELETE 요청
         response = await axiosInstance.delete(url);
       } else {
-        // 좋아요: POST 요청
         response = await axiosInstance.post(url);
       }
 
-      console.log("좋아요 응답:", response.data); // 디버깅용 로그
+      console.log("좋아요 응답:", response.data); 
 
-      // 성공 처리
       setLiked(!liked);
       setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
 
-      // 성공 메시지 (선택사항)
       // showSuccess(liked ? "좋아요를 취소했습니다." : "좋아요를 누르셨습니다.");
     } catch (error) {
       console.error("좋아요 요청 오류:", error);
@@ -98,43 +95,46 @@ const ReviewCardWithStars: React.FC<ReviewCardWithStarsProps> = ({
   };
 
   return (
-    <div className="flex justify-between px-3 py-3 border-b-2">
-      {/* 아이디, 작성일 별, 후기 내용 */}
-      <div className="flex flex-col space-y-3 max-w-1/2">
-        <div className="flex space-x-3 space-y-3">
-          <span>{maskedLocalPart}</span>
-          <span className="">{formattedDate}</span>
+    <div className="flex flex-col md:flex-row justify-between px-3 py-3 border-b-2">
+      {/* 리뷰 정보 */}
+      <div className="flex flex-col space-y-3 flex-1 min-w-0">
+        <div className="flex flex-col md:flex-row md:space-x-3 space-y-1 md:space-y-0">
+          <span className="text-sm md:text-base">{maskedLocalPart}</span>
+          <span className="text-sm md:text-base text-gray-500">{formattedDate}</span>
         </div>
         <StarRating rating={rating} />
-        <p>{reviewText}</p>
+        <p className="text-sm md:text-base break-words">{reviewText}</p>
       </div>
-      {/* 사진, 좋아요 */}
-      <div className="min-w-56 flex justify-around">
+
+      {/* 이미지 & 좋아요 */}
+      <div className="flex flex-row md:flex-col justify-between md:justify-around items-center mt-3 md:mt-0 md:min-w-56">
         <div className="flex items-center justify-center rounded-2xl overflow-hidden">
           {imageUrl ? (
             <Image
-              width={150}
-              height={150}
+              width={80}
+              height={80}
               src={imageUrl}
               alt=""
-              className="object-cover"
+              className="object-cover w-20 h-20 md:w-[150px] md:h-[150px]"
             />
           ) : (
-            <div className="w-35 h-[100%]"></div>
+            <div className="w-20 h-20 md:w-35 md:h-[100%]"></div>
           )}
         </div>
         <div
-          className={`flex flex-col items-center cursor-pointer select-none ${
+          className={`flex flex-row md:flex-col items-center cursor-pointer select-none ml-4 md:ml-0 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={handleLikeToggle}
         >
           <FiThumbsUp
-            size={25}
+            size={20}
             color={liked ? "#2563EB" : "#999"}
             style={{ transition: "color 0.3s" }}
           />
-          <h4 className="text-center">({likesCount})</h4>
+          <h4 className="text-sm md:text-base ml-1 md:ml-0 md:text-center">
+            ({likesCount})
+          </h4>
         </div>
       </div>
     </div>

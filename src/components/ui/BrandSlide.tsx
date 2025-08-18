@@ -58,6 +58,7 @@ function BrandSlider({
     }
   }, [navReady]);
 
+
   const handleBrandClick = (brandId: number) => {
     if (selectedBrandId === brandId) {
       onBrandSelect(null);

@@ -4,14 +4,12 @@ import { IoMdClose } from "react-icons/io";
 import { HiMenu } from "react-icons/hi";
 import { Category } from "@/lib/apis/category";
 
-
 const Navigator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
-    console.log(isMenuOpen);
   };
 
   useEffect(() => {
@@ -24,7 +22,6 @@ const Navigator = () => {
         return;
       }
       const data = await response.json();
-      console.log("fetched Categories:", data);
       setCategories(data);
     };
 

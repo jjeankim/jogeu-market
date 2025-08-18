@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
-
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
@@ -53,6 +48,16 @@ jobs:
       NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME: ${{ secrets.NEXT_PUBLIC_AZURE_CQA_DEPLOYMENT_NAME }}
       NEXT_PUBLIC_AZURE_CQA_API_VERSION:
         ${{ secrets.NEXT_PUBLIC_AZURE_CQA_API_VERSION }}
+      NEXT_PUBLIC_KAKAO_CLIENT_ID:
+        ${{ secrets.NEXT_PUBLIC_KAKAO_CLIENT_ID }}
+      NEXT_PUBLIC_KAKAO_REDIRECT_URI:
+        ${{ secrets.NEXT_PUBLIC_KAKAO_REDIRECT_URI }}
+      NEXT_PUBLIC_NAVER_CLIENT_ID:
+        ${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_ID }}
+      NEXT_PUBLIC_NAVER_CLIENT_SECRET:
+        ${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_SECRET }}
+      NEXT_PUBLIC_NAVER_REDIRECT_URI:
+        ${{ secrets.NEXT_PUBLIC_NAVER_REDIRECT_URI }}
         ###### End of Repository/Build Configurations ######
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

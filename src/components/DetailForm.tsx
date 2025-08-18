@@ -204,7 +204,35 @@ export default function ProductDetailPage() {
 
   return (
     <>
-      <div className="flex w-full pt-10 mb-20">
+      {/* 모바일 레이아웃 */}
+      <div className="md:hidden w-full pt-4 pb-20 px-4">
+        <ProductImage
+          imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
+          name={product.name}
+        />
+        <div className="mt-8">
+          <DetailInfo
+            product={product}
+            brand={product.brand}
+            wish={wish}
+            handleWishClick={handleWishClick}
+            handleShareClick={handleShareClick}
+            handleCartClick={handleCartClick}
+            handleOrderClick={handleOrderClick}
+            quantity={quantity}
+            quantityInc={quantityInc}
+            quantityDec={quantityDec}
+            formattedOrigin={formattedOrigin}
+            formattedSale={formattedSale}
+            discountRate={discountRate}
+            isDiscounted={isDiscounted}
+            totalPrice={totalPrice}
+          />
+        </div>
+      </div>
+
+      {/* 데스크탑 레이아웃 */}
+      <div className="hidden md:flex w-full pt-10 mb-20">
         <ProductImage
           imgUrl={product?.thumbnailImageUrl || "/images/noImg.png"}
           name={product.name}
@@ -231,7 +259,7 @@ export default function ProductDetailPage() {
       <TabContents
         tabs={["상품 정보", "상품 후기", "상품 문의"]}
         content={[
-          <div key="info" className="flex pt-4 pb-10 justify-center">
+          <div key="info" className="flex pt-4 pb-10 justify-center px-4 md:px-0">
             {product.detailDescription || (
               <div className="text-center py-10 text-gray-500">
                 상품 상세 정보가 없습니다.
@@ -263,7 +291,7 @@ export default function ProductDetailPage() {
             )}
           </div>,
 
-          <div key="qna" className="flex pt-4 pb-10 justify-center">
+          <div key="qna" className="flex pt-4 pb-10 justify-center px-4 md:px-0">
             <QnABox productId={product.id} />
           </div>,
         ]}

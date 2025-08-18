@@ -182,41 +182,83 @@ const Success = () => {
         <link rel="icon" href="https://static.toss.im/icons/png/4x/icon-toss-logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      
-      <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-[50px] mt-[30px] mx-auto text-[#333d4b] items-center text-center overflow-x-auto whitespace-nowrap w-[600px] max-w-[600px]">
-        <Image 
-          width={100} 
+
+      <div className="bg-white rounded-[10px] shadow-[0_10px_20px_rgb(0_0_0_/_1%),0_6px_6px_rgb(0_0_0_/_6%)] p-4 md:p-[50px] mt-[30px] mx-auto text-[#333d4b] items-center text-center w-full max-w-[600px]">
+        <Image
+          width={100}
           height={100}
           src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png" 
           alt="결제 성공 아이콘"
         />
-        <h2>결제를 완료했어요</h2>
+        <h2 className="text-lg md:text-xl">결제를 완료했어요</h2>
 
-        <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[18px] pb-[18px] px-6">
-          <div className="flex-grow pr-6 text-left"><b>결제금액</b></div>
-          <div className="flex-grow pr-6 text-right">{paymentData?.amount}원</div>
-        </div>
-        <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[7px] pb-[7px] px-3">
-          <div className="flex-grow pr-6 text-left"><b>주문번호</b></div>
-          <div className="flex-grow pr-6 text-right">{paymentData?.orderNumber}</div>
-        </div>
-        <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[7px] pb-[7px] px-3">
-          <div className="flex-grow pr-6 text-left"><b>paymentKey</b></div>
-          <div className="flex-grow pr-6 text-right" style={{ whiteSpace: "initial", width: 250 }}>
-            {paymentData?.paymentKey}
+          {/* 모바일 */}
+        <div className="md:hidden space-y-3 mt-6">
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <span className="font-semibold text-sm">결제금액</span>
+            <span className="text-sm">{paymentData?.amount}원</span>
           </div>
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <span className="font-semibold text-sm">주문번호</span>
+            <span className="text-sm break-all">{paymentData?.orderNumber}</span>
+          </div>
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <span className="font-semibold text-sm">paymentKey</span>
+            <span className="text-xs break-all">{paymentData?.paymentKey}</span>
+          </div>
+          {orderCreated && (
+            <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+              <span className="font-semibold text-sm">주문 상태</span>
+              <span className="text-sm text-green-600">주문 완료</span>
+            </div>
+          )}
         </div>
-        
-        {orderCreated && (
+
+        {/* 데스크톱 */}
+        <div className="hidden md:block">
+          <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[18px] pb-[18px] px-6">
+            <div className="flex-grow pr-6 text-left">
+              <b>결제금액</b>
+            </div>
+            <div className="flex-grow pr-6 text-right">
+              {paymentData?.amount}원
+            </div>
+          </div>
           <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[7px] pb-[7px] px-3">
-            <div className="flex-grow pr-6 text-left"><b>주문 상태</b></div>
-            <div className="flex-grow pr-6 text-right text-green-600">주문 완료</div>
+            <div className="flex-grow pr-6 text-left">
+              <b>주문번호</b>
+            </div>
+            <div className="flex-grow pr-6 text-right">
+              {paymentData?.orderNumber}
+            </div>
           </div>
-        )}
-        
-        <div className="h-full flex flex-wrap -mr-6 pt-1 pb-1 px-2">
-          <button 
-            className="text-[#f9fafb] bg-[#3182f6] my-[30px] mx-[15px] mt-0 text-[15px] font-semibold leading-[18px] whitespace-nowrap text-center cursor-pointer border-0 border-transparent select-none transition-all duration-200 ease-in-out no-underline rounded-[7px] py-[11px] px-4 w-[250px] inline-block hover:text-white hover:bg-[#1b64da] flex-[0_0_100%] max-w-[100%]" 
+          <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[7px] pb-[7px] px-3">
+            <div className="flex-grow pr-6 text-left">
+              <b>paymentKey</b>
+            </div>
+            <div
+              className="flex-grow pr-6 text-right"
+              style={{ whiteSpace: "initial", width: 250 }}
+            >
+              {paymentData?.paymentKey}
+            </div>
+          </div>
+
+          {orderCreated && (
+            <div className="h-full flex flex-wrap -mr-6 text-[15px] leading-[1.6] pt-[7px] pb-[7px] px-3">
+              <div className="flex-grow pr-6 text-left">
+                <b>주문 상태</b>
+              </div>
+              <div className="flex-grow pr-6 text-right text-green-600">
+                주문 완료
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="h-full flex flex-wrap pt-1 pb-1 px-2">
+          <button
+            className="text-[#f9fafb] bg-[#3182f6] my-[30px] mx-[15px] mt-0 text-[15px] font-semibold leading-[18px] whitespace-nowrap text-center cursor-pointer border-0 border-transparent select-none transition-all duration-200 ease-in-out no-underline rounded-[7px] py-[11px] px-4 w-full md:w-[250px] inline-block hover:text-white hover:bg-[#1b64da] flex-[0_0_100%] max-w-[100%]"
             onClick={() => {
               console.log('조그마켓으로 돌아가기 버튼 클릭');
               window.location.href = '/payComplete';
@@ -227,9 +269,9 @@ const Success = () => {
           </button>
         </div>
       </div>
-
     </>
   );
 };
 
 export default Success;
+
