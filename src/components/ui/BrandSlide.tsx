@@ -3,16 +3,22 @@ import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import Link from "next/link";
 import { Swiper } from "swiper/types";
 import { Brand } from "@/lib/apis/brand";
 
 interface SliderProps {
   BrandList: Brand[];
   slidesPerView: number;
+  selectedBrandId?: number | null;
+  onBrandSelect: (brandId: number | null) => void;
 }
 
-function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
+function BrandSlider({
+  BrandList,
+  slidesPerView,
+  selectedBrandId,
+  onBrandSelect,
+}: SliderProps) {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
   const swiperRef = useRef<Swiper | null>(null);
@@ -28,12 +34,10 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
     if (navReady && swiperRef.current && prevRef.current && nextRef.current) {
       const swiper = swiperRef.current;
 
-      // params.navigation이 존재하고 객체인지 확인
       if (
         swiper.params.navigation &&
         typeof swiper.params.navigation === "object"
       ) {
-        // 타입 단언을 사용하여 안전하게 할당
         (
           swiper.params.navigation as {
             prevEl?: HTMLElement;
@@ -47,15 +51,24 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
           }
         ).nextEl = nextRef.current;
 
-        swiper.navigation.destroy(); // 기존 내비게이션 초기화
-        swiper.navigation.init(); // 새로 초기화
-        swiper.navigation.update(); // 업데이트
+        swiper.navigation.destroy();
+        swiper.navigation.init();
+        swiper.navigation.update();
       }
     }
   }, [navReady]);
 
+
+  const handleBrandClick = (brandId: number) => {
+    if (selectedBrandId === brandId) {
+      onBrandSelect(null);
+    } else {
+      onBrandSelect(brandId);
+    }
+  };
+
   return (
-    <div className="brand-slider relative max-w-[500px] mx-auto">
+    <div className="brand-slider relative max-w-[480px] mx-auto">
       <SwiperReact
         modules={[Navigation]}
         slidesPerView={slidesPerView}
@@ -71,7 +84,6 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
-        // navigation={true}
         navigation={{
           prevEl: prevRef.current,
           nextEl: nextRef.current,
@@ -80,30 +92,65 @@ function BrandSlider({ BrandList, slidesPerView }: SliderProps) {
         {BrandList.map((brand) => (
           <SwiperSlide
             key={brand.id}
-            className="!w-[110px] flex items-center justify-center"
+            className="!w-[100px] flex flex-col items-center justify-center p-3"
           >
-            <Link href="" className="relative text-center aspect-square w-full">
+            <button
+              onClick={() => handleBrandClick(brand.id)}
+              className={`relative text-center w-[100px] h-[100px] rounded-full overflow-hidden transition-all duration-200 ${
+                selectedBrandId === brand.id
+                  ? "ring-3 ring-offset-2 scale-105"
+                  : "hover:scale-105 hover:shadow-lg"
+              }`}
+              style={
+                selectedBrandId === brand.id
+                  ? ({
+                      "--tw-ring-color": "var(--color-logo)",
+                      "--tw-ring-opacity": "1",
+                    } as React.CSSProperties)
+                  : undefined
+              }
+            >
               <Image
                 src={brand.logoImageUrl || "/images/noImg.png"}
-                width={110}
-                height={110}
+                width={100}
+                height={100}
                 alt={brand.name}
-                className="rounded-full object-cover"
+                className="rounded-full object-cover w-full h-full"
               />
-            </Link>
+              {selectedBrandId === brand.id && (
+                <div
+                  className="absolute inset-0 bg-opacity-15 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: "var(--color-logo)" }}
+                >
+                  <div
+                    className="text-white text-xs px-2 py-1 rounded-full font-medium"
+                    style={{ backgroundColor: "var(--color-logo)" }}
+                  >
+                    선택됨
+                  </div>
+                </div>
+              )}
+            </button>
+            <div className="text-center mt-2 text-sm font-medium truncate w-full">
+              {brand.name}
+            </div>
           </SwiperSlide>
         ))}
       </SwiperReact>
 
       {/* 내비게이션 버튼 */}
       <div
-        className={`custom-prev absolute -translate-y-1/2 top-1/2 -left-15 z-10 cursor-pointer ${isBeginning ? "opacity-0 pointer-events-none" : ""}`}
+        className={`custom-prev absolute -translate-y-1/2 top-1/2 -left-15 z-10 cursor-pointer ${
+          isBeginning ? "opacity-0 pointer-events-none" : ""
+        }`}
         ref={prevRef}
       >
         <FiChevronLeft size={40} className="text-gray-400" />
       </div>
       <div
-        className={`custom-next absolute -translate-y-1/2 top-1/2 -right-15 z-10 cursor-pointer ${isEnd ? "opacity-0 pointer-events-none" : ""}`}
+        className={`custom-next absolute -translate-y-1/2 top-1/2 -right-15 z-10 cursor-pointer ${
+          isEnd ? "opacity-0 pointer-events-none" : ""
+        }`}
         ref={nextRef}
       >
         <FiChevronRight size={40} className="text-gray-400" />
