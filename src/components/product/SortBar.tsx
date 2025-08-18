@@ -11,7 +11,6 @@ const sortOptions = [
   { label: "인기 많은 순", value: "popularity" },
   { label: "낮은 가격 순", value: "lowPrice" },
   { label: "높은 가격 순", value: "highPrice" },
-  { label: "리뷰 많은 순", value: "mostReviewed" },
 ];
 
 const SortBar = ({ totalItems, selectedSort, onChange }: Props) => {

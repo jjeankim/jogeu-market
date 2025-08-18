@@ -3,34 +3,31 @@ import Link from "next/link";
 import SortDropdown from "@/components/ui/SortDropdown";
 import { useState } from "react";
 import Pagination from "./Pagination";
-import { axiosSearchProducts , Product} from "@/lib/apis/product";
+import { axiosSearchProducts, Product } from "@/lib/apis/product";
 import { useEffect } from "react";
 import Image from "next/image";
 import Spinner from "@/components/ui/Spinner";
 
 interface SearchFormProps {
-    searchQuery?: string;
-  }
+  searchQuery?: string;
+}
 
-
-const SearchForm = ({searchQuery}: SearchFormProps) => {
-
+const SearchForm = ({ searchQuery }: SearchFormProps) => {
   const sortOptions = [
     { label: "최신순", value: "latest" },
     { label: "인기 많은 순", value: "popularity" },
     { label: "낮은 가격 순", value: "lowPrice" },
     { label: "높은 가격 순", value: "highPrice" },
-    { label: "리뷰 많은 순", value: "mostReviewed" },
   ];
 
   const [sortValue, setSortValue] = useState("latest");
   const [page, setPage] = useState(1);
-  const [productList, setProductList] = useState<Product[]>([])
-  const [loading, setLoading] = useState(false); 
+  const [productList, setProductList] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
   const totalPages = 10;
 
   // useEffect로 검색 실행
-useEffect(() => {
+  useEffect(() => {
     if (searchQuery) {
       setLoading(true);
       axiosSearchProducts(searchQuery)
@@ -77,7 +74,9 @@ useEffect(() => {
               height={180}
               priority={false}
             />
-            <p className="mt-6 text-md md:text-4xl text-center font-medium text-gray-400">[검색 결과가 없습니다]</p>
+            <p className="mt-6 text-md md:text-4xl text-center font-medium text-gray-400">
+              [검색 결과가 없습니다]
+            </p>
           </div>
         ) : (
           <ul className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-15">
