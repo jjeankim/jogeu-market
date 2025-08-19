@@ -2,7 +2,8 @@
 
 <br />
 
-![logo_jogeuMarket](https://github.com/user-attachments/assets/223aba14-7ef6-4204-8531-04a5df591c0e)
+<img width="1368" height="730" alt="스크린샷 2025-08-19 232204" src="https://github.com/user-attachments/assets/d4b39bda-4e22-49b0-91d8-14ef7972db4e" />
+
 
 <br />
 
