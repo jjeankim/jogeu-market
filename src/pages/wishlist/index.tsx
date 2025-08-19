@@ -46,10 +46,9 @@ const Index = () => {
       <SEO title="위시리스트" />
       <MyPageLayoutWithWelcome>
         <div className="grid gap-14">
-          <h2 className="text-4xl font-bold border-b-2 pb-3.5 mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 md:mb-10">
             위시 리스트
           </h2>
-
           {loading ? (
             <Spinner />
           ) : wishlist.length === 0 ? (
