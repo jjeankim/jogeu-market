@@ -36,6 +36,7 @@ const Header = () => {
   const handleSearch = () => {
     if (searchTerm.trim()) {
       router.push(`/search?q=${searchTerm}`);
+      // setSearchTerm("")
     }
   };
 
