@@ -2,7 +2,8 @@
 
 <br />
 
-![logo_jogeuMarket](https://github.com/user-attachments/assets/223aba14-7ef6-4204-8531-04a5df591c0e)
+<img width="1368" height="730" alt="스크린샷 2025-08-19 232204" src="https://github.com/user-attachments/assets/d4b39bda-4e22-49b0-91d8-14ef7972db4e" />
+
 
 <br />
 
@@ -137,3 +138,8 @@
 | 위시리스트 |
 |:---:|
 |<img src="https://github.com/user-attachments/assets/908ff8b2-8dbb-43ac-a9af-cd453876eb9e" width=600 />|
+
+| 챗봇 |
+|:---:|
+|<img src="https://github.com/user-attachments/assets/f1d225c1-b27f-4dc1-b467-63abd57ebabe" width=600 />|
+
