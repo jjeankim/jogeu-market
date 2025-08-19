@@ -103,17 +103,17 @@ const useAuthStore = create<AuthStore>((set) => ({
       const userName = (profileRes.data.name as string) ?? null;
 
       set({ userName });
-      set((prev) => {
-        console.log("[initializeAuth] 상태 업데이트", {
-          accessToken,
-          prevUserName: prev.userName,
-        });
-        return {
-          accessToken,
-          isLoggedIn: true,
-          userName: prev.userName, // 이전 값 유지
-        };
-      });
+      // set((prev) => {
+      //   console.log("[initializeAuth] 상태 업데이트", {
+      //     accessToken,
+      //     prevUserName: prev.userName,
+      //   });
+      //   return {
+      //     accessToken,
+      //     isLoggedIn: true,
+      //     userName: prev.userName, // 이전 값 유지
+      //   };
+      // });
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
