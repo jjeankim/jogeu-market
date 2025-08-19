@@ -308,9 +308,7 @@ const PayCompleteFrom = () => {
                 {orderData.orderInfo.address.roadAddrPart1}{" "}
                 {orderData.orderInfo.address.addrDetail}
               </p>{" "}
-              <button className="px-3 py-1 bg-logo text-white outline-4 outline-logo rounded-full text-center hover:scale-105  transition-all duration-300 cursor-pointer">
-                배송지 변경
-              </button>
+      
             </span>
             <span className="w-full border-t-2 border-gray-200 p-2.5">
               {" "}

@@ -29,7 +29,7 @@ const PasswordChangeModal = ({ onClose }: PasswordChangeModalProps) => {
       );
       return;
     }
-    const success = await changePassword(data);
+    const success = await changePassword(data.currentPassword, data.newPassword);
 
     if (success) {
       showSuccess("비밀번호가 성공적으로 변경되었습니다.");

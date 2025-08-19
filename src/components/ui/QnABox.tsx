@@ -91,7 +91,7 @@ const QnABox = ({ productId }: QnABoxProps) => {
                 <div className="text-xs text-gray-500">
                   {item.isPublic ? "공개" : "비공개"} · {item.status}
                 </div>
-              </div>
+              </div>  147369
               {item.answer ? (
                 <div className="mt-2 text-gray-700 text-sm md:text-base break-words">A. {item.answer}</div>
               ) : (
