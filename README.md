@@ -138,3 +138,8 @@
 | 위시리스트 |
 |:---:|
 |<img src="https://github.com/user-attachments/assets/908ff8b2-8dbb-43ac-a9af-cd453876eb9e" width=600 />|
+
+| 챗봇 |
+|:---:|
+|<img src="https://github.com/user-attachments/assets/f1d225c1-b27f-4dc1-b467-63abd57ebabe" width=600 />|
+
