@@ -82,9 +82,7 @@ const SearchForm = ({ searchQuery }: SearchFormProps) => {
           <ul className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-15">
             {productList.map((product, index) => (
               <li key={index}>
-                <Link href={`/product/${product.id}`} className="group">
-                  <ListCard product={product} />
-                </Link>
+                <ListCard product={product} />
               </li>
             ))}
           </ul>
