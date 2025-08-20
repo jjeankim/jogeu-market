@@ -20,6 +20,7 @@ const AuthFormLayout = ({
               style={{ height: "auto" }}
               src={"/images/logo_jogeuMarket.svg"}
               alt="조그마켓 로고"
+              priority
             />
           </Link>
         </div>
