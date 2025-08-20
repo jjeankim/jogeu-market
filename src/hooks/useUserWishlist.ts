@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/lib/axiosInstance";
 import { WishlistItem } from "@/lib/apis/wishlist";
 import { AxiosError } from "axios";
+import useAuthStore from "@/store/AuthStore";
 
 interface WishlistItemWithId {
   productId: number;
@@ -14,8 +15,13 @@ const useUserWishlist = () => {
     new Map()
   );
   const { showSuccess, showError } = useToast();
+  const { isLoggedIn } = useAuthStore(); // 👈 로그인 여부
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      setUserWishlist(new Map()); // 로그인 안됐으면 비워두기
+      return;
+    }
     const fetchWishlist = async () => {
       try {
         const res = await axiosInstance.get(`/api/wishlist`);
@@ -37,7 +43,7 @@ const useUserWishlist = () => {
       }
     };
     fetchWishlist();
-  }, [showError]);
+  }, [showError, isLoggedIn]);
 
   const toggleWishlist = async (productId: number) => {
     try {
