@@ -1,5 +1,4 @@
 import ListCard from "@/components/ui/ListCard";
-import Link from "next/link";
 import SortDropdown from "@/components/ui/SortDropdown";
 import { useState } from "react";
 import Pagination from "./Pagination";
