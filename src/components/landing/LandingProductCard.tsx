@@ -27,7 +27,7 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
     >
       <div className="w-full max-w-[280px] ">
         <div className="relative w-full aspect-square max-w-[230px] mx-auto">
-          <div>
+          <div className="relative w-full h-full">
             <Image
               src={imageUrl || "/images/noImg.png"}
               alt={name}
@@ -39,7 +39,7 @@ const LandingProductCard: React.FC<LandingProductCardProps> = ({
               fill
               sizes="(max-width: 768px) 280px, 230px"
             />
-            <div className=" absolute bottom-0 flex justify-between w-full">
+            <div className="absolute bottom-0 flex justify-between w-full">
               <button
                 className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95"
                 onClick={(e) => {
