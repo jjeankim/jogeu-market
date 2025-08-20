@@ -78,11 +78,14 @@ const Header = () => {
           <div className="flex flex-col">
             <Link href="/" className="w-50">
               <Image
+                width={128}
+                height={0}
+                style={{ height: "auto" }}
+                className="w-24 sm:w-28 md:w-32"
                 src="/images/logo_s_jogeuMarket.svg"
                 alt="조그마켓 로고"
-                width={100}
-                height={40}
-                className="mt-5"
+                priority
+                sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
               />
             </Link>
             <Navigator />
@@ -172,7 +175,11 @@ const Header = () => {
               src="/images/logo_s_jogeuMarket.svg"
               alt="조그마켓 로고"
               width={80}
-              height={32}
+              height={0}
+              style={{ height: "auto" }}
+              className="w-16 sm:w-20"
+              sizes="(max-width: 640px) 64px, 80px"
+              priority
             />
           </Link>
 

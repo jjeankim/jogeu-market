@@ -105,7 +105,7 @@ const ProductList = () => {
   // 브랜드 필터링 및 정렬 처리
   useEffect(() => {
     let filtered: Product[] = [...allProducts];
-    console.log("===filtered===", filtered);
+
     // 브랜드 필터링
     if (selectedBrandId) {
       filtered = filtered.filter(
@@ -133,9 +133,7 @@ const ProductList = () => {
       case "priceLow":
         filtered.sort((a, b) => a.price - b.price);
         break;
-      // case "rating":
-      //   filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      //   break;
+
       default:
         break;
     }
