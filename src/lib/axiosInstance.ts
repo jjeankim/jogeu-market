@@ -5,6 +5,9 @@ import useAuthStore from "@/store/AuthStore";
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN", // 서버에서 내려주는 쿠키 이름
+  xsrfHeaderName: "X-CSRF-Token", // 서버가 검사할 헤더 이름
+  withXSRFToken: true,
 });
 
 // 인증이 필요한 요청 시 액세스토큰 자동 삽입
@@ -28,12 +31,9 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const refreshRes = await axios.post(
-          `${API_BASE_URL}/api/auth/refresh`,
-          {},
-          { withCredentials: true }
-        );
+        const refreshRes = await axiosInstance.post("/api/auth/refresh", {});
         const newToken = refreshRes.data.accessToken;
+
         useAuthStore.getState().setAccessToken(newToken);
 
         if (originalRequest.headers) {
