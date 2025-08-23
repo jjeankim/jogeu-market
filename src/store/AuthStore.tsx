@@ -1,5 +1,4 @@
 import axiosInstance from "@/lib/axiosInstance";
-import { API_BASE_URL } from "@/lib/constants";
 import { AuthValues } from "@/types/auth";
 import axios, { AxiosError } from "axios";
 import { create } from "zustand";
@@ -24,31 +23,19 @@ const useAuthStore = create<AuthStore>((set) => ({
   accessToken: null,
 
   setAuth: (token, userName) => {
-    console.log("[setAuth] setting accessToken + userName", {
-      token,
-      userName,
-    });
     set({ accessToken: token, isLoggedIn: true, userName });
   },
 
   login: async ({ email, password }: AuthValues) => {
-    console.log("[login] 요청 시작", { email, password });
-    const res = await axios.post(
-      `${API_BASE_URL}/api/auth/login`,
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-
-    console.log("[login] 응답", res.data);
+    const res = await axiosInstance.post("/api/auth/login", {
+      email,
+      password,
+    });
 
     const token = res.data?.accessToken as string | undefined;
     const userName = (res.data?.user?.name as string) ?? null;
 
     if (token) {
-      console.log("[login] 로그인 성공 → 상태 업데이트", { token, userName });
       set({ accessToken: token, isLoggedIn: true, userName });
     } else {
       console.warn("[login] accessToken 없음");
@@ -58,62 +45,34 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signup: async ({ email, password, name }: AuthValues) => {
-    console.log("[signup] 요청 시작", { email, password, name });
-    await axios.post(`${API_BASE_URL}/api/auth/signup`, {
+    await axiosInstance.post("/api/auth/signup", {
       email,
       password,
       name,
     });
-    console.log("[signup] 완료");
   },
 
   initializeAuth: async () => {
     try {
-      const res = await axios.post(
-        `${API_BASE_URL}/api/auth/refresh`,
-        {},
-        { withCredentials: true }
-      );
-
-      console.log("[initializeAuth] refresh 응답", res.status, res.data);
+      const res = await axiosInstance.post("/api/auth/refresh", {});
 
       if (res.status === 204) {
-        console.log("[initializeAuth] refreshToken 없음 → 로그아웃 처리");
-        // set({ accessToken: null, isLoggedIn: false, userName: null });
         return;
       }
 
       const accessToken = res.data.accessToken as string | undefined;
       if (!accessToken) {
-        console.log("[initializeAuth] accessToken 없음");
         set({ accessToken, isLoggedIn: false, userName: null });
         return;
       }
-      console.log("[initializeAuth] accessToken 재발급 성공", accessToken);
 
       set({ accessToken, isLoggedIn: true });
 
-      const profileRes = await axiosInstance.get(
-        `${API_BASE_URL}/api/users/me`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
+      const profileRes = await axiosInstance.get("/api/users/me");
 
       const userName = (profileRes.data.name as string) ?? null;
 
       set({ userName });
-      // set((prev) => {
-      //   console.log("[initializeAuth] 상태 업데이트", {
-      //     accessToken,
-      //     prevUserName: prev.userName,
-      //   });
-      //   return {
-      //     accessToken,
-      //     isLoggedIn: true,
-      //     userName: prev.userName, // 이전 값 유지
-      //   };
-      // });
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
@@ -137,17 +96,12 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   setAccessToken: (token) => {
-    console.log("[setAccessToken] accessToken 설정", token);
     set({ accessToken: token, isLoggedIn: true });
   },
 
   logout: async () => {
     try {
-      await axios.post(
-        `${API_BASE_URL}/api/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await axiosInstance.post("/api/auth/logout", {});
     } catch (err) {
       console.error("로그아웃 API 실패", err);
     }
