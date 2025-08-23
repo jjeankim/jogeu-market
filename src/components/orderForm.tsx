@@ -5,23 +5,28 @@ import { useRouter } from "next/router";
 import { CartItem } from "@/lib/apis/cart";
 import useAuthStore from "@/store/AuthStore";
 import { fetchMyCouponList } from "@/lib/apis/coupon";
-import { fetchUser, fetchUserAddresses, createUserAddress, updateUserInfo, AddressData } from "@/lib/apis/user";
+import {
+  fetchUser,
+  fetchUserAddresses,
+  createUserAddress,
+  AddressData,
+} from "@/lib/apis/user";
 import { CouponData } from "@/types/my/coupon";
 import Image from "next/image";
 
 // 배송지 관리 모달 컴포넌트
-const AddressManagementModal = ({ 
-  isOpen, 
-  onClose, 
-  addresses, 
+const AddressManagementModal = ({
+  isOpen,
+  onClose,
+  addresses,
   onAddressSelect,
-  onAddressSave 
+  onAddressSave,
 }: {
   isOpen: boolean;
   onClose: () => void;
   addresses: AddressData[];
   onAddressSelect: (address: AddressData) => void;
-  onAddressSave: (address: Omit<AddressData, 'id'>) => void;
+  onAddressSave: (address: Omit<AddressData, "id">) => void;
 }) => {
   const [newAddress, setNewAddress] = useState({
     recipientName: "",
@@ -34,7 +39,8 @@ const AddressManagementModal = ({
 
   const openJusoPopup = () => {
     const script = document.createElement("script");
-    script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.src =
+      "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.onload = () => {
       new window.daum.Postcode({
         oncomplete: function (data: {
@@ -42,7 +48,7 @@ const AddressManagementModal = ({
           roadAddress: string;
           jibunAddress: string;
         }) {
-          setNewAddress(prev => ({
+          setNewAddress((prev) => ({
             ...prev,
             zipCode: data.zonecode,
             roadAddress: data.roadAddress,
@@ -52,8 +58,6 @@ const AddressManagementModal = ({
     };
     document.head.appendChild(script);
   };
-
-
 
   const handleCloseModal = () => {
     setNewAddress({
@@ -67,8 +71,6 @@ const AddressManagementModal = ({
     onClose();
   };
 
-
-
   if (!isOpen) return null;
 
   return (
@@ -76,7 +78,10 @@ const AddressManagementModal = ({
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">배송지 관리</h2>
-          <button onClick={handleCloseModal} className="text-gray-500 hover:text-gray-700 text-xl font-bold">
+          <button
+            onClick={handleCloseModal}
+            className="text-gray-500 hover:text-gray-700 text-xl font-bold"
+          >
             ✕
           </button>
         </div>
@@ -87,14 +92,35 @@ const AddressManagementModal = ({
           {addresses.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-gray-400 mb-4">
-                <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg
+                  className="w-16 h-16 mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
               </div>
-              <p className="text-gray-600 text-lg font-medium mb-3">저장된 배송지가 없습니다</p>
-              <p className="text-gray-500 text-sm mb-2">아직 주문한 적이 없거나 배송지를 저장하지 않으셨네요.</p>
-              <p className="text-gray-400 text-sm">아래에서 새 배송지를 추가해보세요!</p>
+              <p className="text-gray-600 text-lg font-medium mb-3">
+                저장된 배송지가 없습니다
+              </p>
+              <p className="text-gray-500 text-sm mb-2">
+                아직 주문한 적이 없거나 배송지를 저장하지 않으셨네요.
+              </p>
+              <p className="text-gray-400 text-sm">
+                아래에서 새 배송지를 추가해보세요!
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -103,7 +129,9 @@ const AddressManagementModal = ({
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <p className="font-medium">{address.recipientName}</p>
-                      <p className="text-sm text-gray-600">{address.recipientPhone}</p>
+                      <p className="text-sm text-gray-600">
+                        {address.recipientPhone}
+                      </p>
                       <p className="text-sm text-gray-600">
                         [{address.zipCode}] {address.roadAddress}
                         {address.detailAddress && ` ${address.detailAddress}`}
@@ -136,14 +164,24 @@ const AddressManagementModal = ({
                 type="text"
                 placeholder="받으실 분"
                 value={newAddress.recipientName}
-                onChange={(e) => setNewAddress(prev => ({ ...prev, recipientName: e.target.value }))}
+                onChange={(e) =>
+                  setNewAddress((prev) => ({
+                    ...prev,
+                    recipientName: e.target.value,
+                  }))
+                }
                 className="px-3 py-2 border border-gray-300 rounded-md"
               />
               <input
                 type="tel"
                 placeholder="연락처"
                 value={newAddress.recipientPhone}
-                onChange={(e) => setNewAddress(prev => ({ ...prev, recipientPhone: e.target.value }))}
+                onChange={(e) =>
+                  setNewAddress((prev) => ({
+                    ...prev,
+                    recipientPhone: e.target.value,
+                  }))
+                }
                 className="px-3 py-2 border border-gray-300 rounded-md"
               />
             </div>
@@ -174,7 +212,12 @@ const AddressManagementModal = ({
               type="text"
               placeholder="상세주소"
               value={newAddress.detailAddress}
-              onChange={(e) => setNewAddress(prev => ({ ...prev, detailAddress: e.target.value }))}
+              onChange={(e) =>
+                setNewAddress((prev) => ({
+                  ...prev,
+                  detailAddress: e.target.value,
+                }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
             <div className="flex items-center">
@@ -182,14 +225,26 @@ const AddressManagementModal = ({
                 type="checkbox"
                 id="isDefault"
                 checked={newAddress.isDefault}
-                onChange={(e) => setNewAddress(prev => ({ ...prev, isDefault: e.target.checked }))}
+                onChange={(e) =>
+                  setNewAddress((prev) => ({
+                    ...prev,
+                    isDefault: e.target.checked,
+                  }))
+                }
                 className="mr-2"
               />
-              <label htmlFor="isDefault" className="text-sm">기본 배송지로 설정</label>
+              <label htmlFor="isDefault" className="text-sm">
+                기본 배송지로 설정
+              </label>
             </div>
             <Button
               onClick={() => {
-                if (!newAddress.recipientName || !newAddress.recipientPhone || !newAddress.zipCode || !newAddress.roadAddress) {
+                if (
+                  !newAddress.recipientName ||
+                  !newAddress.recipientPhone ||
+                  !newAddress.zipCode ||
+                  !newAddress.roadAddress
+                ) {
                   alert("필수 정보를 모두 입력해주세요.");
                   return;
                 }
@@ -275,7 +330,8 @@ const OrderForm = () => {
   const [discountAmount, setDiscountAmount] = useState(0);
 
   // 배송지 관리 모달 상태
-  const [isAddressManagementModalOpen, setIsAddressManagementModalOpen] = useState(false);
+  const [isAddressManagementModalOpen, setIsAddressManagementModalOpen] =
+    useState(false);
   const [userAddresses, setUserAddresses] = useState<AddressData[]>([]);
 
   const { isLoggedIn } = useAuthStore();
@@ -432,8 +488,6 @@ const OrderForm = () => {
     );
   };
 
-
-
   const openJusoPopup = () => {
     // 카카오 주소 API 스크립트 로드
     const script = document.createElement("script");
@@ -588,15 +642,15 @@ const OrderForm = () => {
                           ...prev,
                           phone: phoneNumber,
                         }));
-                        
-
                       }}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="연락처를 입력하세요"
                       required
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      {ordererInfo.phone ? "회원 정보에 저장된 전화번호입니다" : "전화번호를 입력해주세요 (첫 주문 시 자동 저장됩니다)"}
+                      {ordererInfo.phone
+                        ? "회원 정보에 저장된 전화번호입니다"
+                        : "전화번호를 입력해주세요 (첫 주문 시 자동 저장됩니다)"}
                     </p>
                   </div>
                   <div className="md:col-span-2">
@@ -626,12 +680,14 @@ const OrderForm = () => {
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">배송지 정보</h2>
-                <Button 
+                <Button
                   onClick={() => {
                     if (isLoggedIn) {
                       setIsAddressManagementModalOpen(true);
                     } else {
-                      alert("배송지 관리를 위해 로그인이 필요합니다.\n로그인 페이지로 이동합니다.");
+                      alert(
+                        "배송지 관리를 위해 로그인이 필요합니다.\n로그인 페이지로 이동합니다."
+                      );
                       router.push("/login");
                     }
                   }}
@@ -685,8 +741,6 @@ const OrderForm = () => {
                           ...prev,
                           phone: phoneNumber,
                         }));
-                        
-
                       }}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="연락처"
@@ -856,45 +910,43 @@ const OrderForm = () => {
         isOpen={isAddressManagementModalOpen}
         onClose={() => setIsAddressManagementModalOpen(false)}
         addresses={userAddresses}
-                 onAddressSelect={(address) => {
-           setShippingInfo({
-             name: address.recipientName,
-             phone: address.recipientPhone,
-             useOrdererInfo: false,
-           });
-           setAddressData({
-             zipNo: address.zipCode,
-             roadAddrPart1: address.roadAddress,
-             roadAddrPart2: address.detailAddress || "",
-             addrDetail: address.detailAddress || "",
-           });
-           
+        onAddressSelect={(address) => {
+          setShippingInfo({
+            name: address.recipientName,
+            phone: address.recipientPhone,
+            useOrdererInfo: false,
+          });
+          setAddressData({
+            zipNo: address.zipCode,
+            roadAddrPart1: address.roadAddress,
+            roadAddrPart2: address.detailAddress || "",
+            addrDetail: address.detailAddress || "",
+          });
 
-           
-           alert(`${address.recipientName}님의 배송지가 선택되었습니다.`);
-           setIsAddressManagementModalOpen(false);
-         }}
-                 onAddressSave={async (newAddress) => {
-           if (isLoggedIn) {
-             try {
-               const success = await createUserAddress(newAddress);
-               if (success) {
-                 alert("배송지가 저장되었습니다.");
-                 const updatedAddresses = await fetchUserAddresses();
-                 setUserAddresses(updatedAddresses);
-                 setIsAddressManagementModalOpen(false);
-               } else {
-                 alert("배송지 저장에 실패했습니다.");
-               }
-             } catch (error) {
-               console.error("배송지 저장 실패:", error);
-               alert("배송지 저장에 실패했습니다.");
-             }
-           } else {
-             alert("로그인이 필요합니다.");
-             router.push("/login");
-           }
-         }}
+          alert(`${address.recipientName}님의 배송지가 선택되었습니다.`);
+          setIsAddressManagementModalOpen(false);
+        }}
+        onAddressSave={async (newAddress) => {
+          if (isLoggedIn) {
+            try {
+              const success = await createUserAddress(newAddress);
+              if (success) {
+                alert("배송지가 저장되었습니다.");
+                const updatedAddresses = await fetchUserAddresses();
+                setUserAddresses(updatedAddresses);
+                setIsAddressManagementModalOpen(false);
+              } else {
+                alert("배송지 저장에 실패했습니다.");
+              }
+            } catch (error) {
+              console.error("배송지 저장 실패:", error);
+              alert("배송지 저장에 실패했습니다.");
+            }
+          } else {
+            alert("로그인이 필요합니다.");
+            router.push("/login");
+          }
+        }}
       />
     </div>
   );
