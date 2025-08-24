@@ -1,4 +1,4 @@
-import axiosInstance from "@/lib/axiosInstance";
+import axiosInstance, { ensureCsrfToken } from "@/lib/axiosInstance";
 import { AuthValues } from "@/types/auth";
 import axios, { AxiosError } from "axios";
 import { create } from "zustand";
@@ -27,6 +27,7 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   login: async ({ email, password }: AuthValues) => {
+    await ensureCsrfToken()
     const res = await axiosInstance.post("/api/auth/login", {
       email,
       password,
@@ -45,6 +46,7 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signup: async ({ email, password, name }: AuthValues) => {
+    await ensureCsrfToken()
     await axiosInstance.post("/api/auth/signup", {
       email,
       password,
@@ -100,6 +102,7 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   logout: async () => {
+    await ensureCsrfToken()
     try {
       await axiosInstance.post("/api/auth/logout", {});
     } catch (err) {

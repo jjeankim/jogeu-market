@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { API_BASE_URL } from "./constants";
 import useAuthStore from "@/store/AuthStore";
 
@@ -9,16 +9,20 @@ export const setCsrfToken = (t: string | null) => {
 };
 export const getCsrfToken = () => CSRF_TOKEN_MEM;
 
-//필요 시 초기 발급 (응답 바디에 { csrfToken } 내려주도록 서버도 지원 권장)
+// 토큰 1회 발급(바디 { csrfToken } 권장)
 export const fetchAndSetCsrfToken = async () => {
   const res = await axios.get(`${API_BASE_URL}/api/csrf-token`, {
     withCredentials: true,
   });
-  // 서버가 쿠키만 내려줄 수도 있으니, 바디/쿠키 둘 다 케이스 허용
-  if ((res.data && res.data.csrfToken) || typeof document !== "undefined") {
-    setCsrfToken(res.data?.csrfToken ?? null);
-  }
+  setCsrfToken(res.data?.csrfToken ?? null);
   return res;
+};
+
+// 변이요청 전에 보장
+export const ensureCsrfToken = async () => {
+  if (!getCsrfToken()) {
+    await fetchAndSetCsrfToken();
+  }
 };
 
 const axiosInstance = axios.create({
@@ -29,52 +33,80 @@ const axiosInstance = axios.create({
   withXSRFToken: true,
 });
 
-// 인증이 필요한 요청 시 액세스토큰 자동 삽입
-axiosInstance.interceptors.request.use((config) => {
+const MUTATING = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
+axiosInstance.interceptors.request.use(async (config) => {
+  const method = (config.method || "GET").toUpperCase();
+
+  // 1) 변이 요청이면 CSRF 토큰 보장
+  if (MUTATING.has(method) && !getCsrfToken()) {
+    try {
+      await fetchAndSetCsrfToken();
+    } catch {}
+  }
+
+  // 2) CSRF 헤더 부착
   const csrf = getCsrfToken();
   if (csrf) {
     config.headers = config.headers ?? {};
-    if (!config.headers["X-CSRF-Token"]) {
-      config.headers["X-CSRF-Token"] = csrf;
-    }
+    config.headers["X-CSRF-Token"] = csrf;
   }
-  
-  const token = useAuthStore.getState().accessToken;
-  if (token) {
-    config.headers = config.headers || {};
-    config.headers.Authorization = `Bearer ${token}`;
+
+  // 3) Authorization 부착
+  const at = useAuthStore.getState().accessToken;
+  if (at) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${at}`;
   }
+
   return config;
 });
 
-// 응답 인터셉터로 액세스토큰 만료 시 재발급
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
+  (response: AxiosResponse): AxiosResponse => response,
+  async (error: AxiosError): Promise<AxiosResponse> => {
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
+      _csrfRetry?: boolean; // CSRF 재시도 플래그
     };
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    // A) CSRF 실패(403)면 1회 재발급 후 재시도
+    if (error.response?.status === 403 && !originalRequest._csrfRetry) {
+      originalRequest._csrfRetry = true;
       try {
-        const refreshRes = await axiosInstance.post("/api/auth/refresh", {});
-        const newToken = refreshRes.data.accessToken;
-
-        useAuthStore.getState().setAccessToken(newToken);
-
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        }
-
+        await fetchAndSetCsrfToken();
         return axiosInstance(originalRequest);
-      } catch (refreshErr) {
-        useAuthStore.getState().logout();
-        return Promise.reject(refreshErr);
+      } catch {
+        // 재발급 실패 시엔 다음 분기로 넘어가거나 그대로 throw
       }
     }
 
-    return Promise.reject(error);
+    // B) 인증 실패(401)면 refresh 1회 시도 (AT 없으면 재시도 금지)
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshRes = await axiosInstance.post<{ accessToken: string }>(
+          "/api/auth/refresh",
+          {}
+        );
+        const newToken = refreshRes.data.accessToken;
+        if (!newToken) {
+          await useAuthStore.getState().logout();
+          throw error;
+        }
+        useAuthStore.getState().setAccessToken(newToken);
+
+        originalRequest.headers = originalRequest.headers ?? {};
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+        return axiosInstance(originalRequest);
+      } catch (refreshErr) {
+        await useAuthStore.getState().logout();
+        throw refreshErr;
+      }
+    }
+
+    throw error;
   }
 );
 
