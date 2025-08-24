@@ -22,18 +22,27 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
 const AppInitializer = () => {
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       // CSRF 토큰 쿠키(XSRF-TOKEN) 선발급
+  //       await fetchAndSetCsrfToken()
+  //     } catch (e) {
+  //       // 초기 로드 실패해도 앱 진행은 계속
+  //       console.warn("[AppInitializer] CSRF init failed", e);
+  //     } finally {
+  //       // accessToken 복원(POST /auth/refresh) 시도
+  //       await initializeAuth();
+  //     }
+  //   })();
+  // }, [initializeAuth]);
   useEffect(() => {
     (async () => {
       try {
-        // CSRF 토큰 쿠키(XSRF-TOKEN) 선발급
-        await fetchAndSetCsrfToken()
-      } catch (e) {
-        // 초기 로드 실패해도 앱 진행은 계속
-        console.warn("[AppInitializer] CSRF init failed", e);
-      } finally {
-        // accessToken 복원(POST /auth/refresh) 시도
-        await initializeAuth();
-      }
+        await fetchAndSetCsrfToken();
+      } catch {}
+
+      await initializeAuth();
     })();
   }, [initializeAuth]);
 
