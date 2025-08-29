@@ -29,16 +29,16 @@ const SocialLoginLink = () => {
         </span>
         <div className="flex-grow border-t border-gray-300" />
       </div>
-      <div className="flex justify-center gap-5">
+      <div className="flex justify-center gap-10">
         <button
           type="button"
-          className="rounded-[10px] w-50 h-12 bg-[url('/images/naver_logo.png')] bg-no-repeat bg-center bg-cover cursor-pointer"
+          className="rounded-[10px] w-16 h-16 bg-[url('/images/btn_naver.svg')] bg-no-repeat bg-center bg-cover cursor-pointer"
           onClick={handleNaverLogin}
         />
 
         <button
           type="button"
-          className="rounded-[10px] w-50 h-12 bg-[url('/images/kakao_logo.png')] bg-no-repeat bg-[position:1rem_center] bg-cover cursor-pointer"
+          className="rounded-[10px] w-16 h-16 bg-[url('/images/btn_kakao.svg')] bg-no-repeat bg-center bg-cover cursor-pointer"
           onClick={handleKakaoLogin}
         />
       </div>
